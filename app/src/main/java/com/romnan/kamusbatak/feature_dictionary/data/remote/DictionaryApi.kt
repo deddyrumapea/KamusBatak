@@ -8,12 +8,13 @@ import retrofit2.http.Query
 interface DictionaryApi {
 
     companion object {
+        // TODO: hide this base URL
         const val BASE_URL = "https://xuodmwstqpsmiabqemoy.supabase.co/rest/v1/"
     }
 
     @GET("entry")
     suspend fun searchWithBatakKeyword(
-        @Query("btk_word") keyword: String,
-        @Query("select") select: String = "*"
+        @Query("btk_word") keyword: String, // TODO: "like.%keyword%"
+        @Query("select") select: String = "*" // TODO: hide this select param
     ): List<EntryDto>
 }

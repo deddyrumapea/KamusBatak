@@ -14,6 +14,7 @@ import com.romnan.kamusbatak.feature_dictionary.domain.model.Entry
 
 @Composable
 fun EntryItem(entry: Entry, modifier: Modifier = Modifier) {
+    // TODO: improve item design
     Column(modifier = modifier) {
         Text(
             text = entry.btkWord,

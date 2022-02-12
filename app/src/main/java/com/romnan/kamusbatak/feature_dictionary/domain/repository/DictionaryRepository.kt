@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface DictionaryRepository {
     fun searchWithBatakKeyword(keyword: String): Flow<Resource<List<Entry>>>
+
+    // TODO: add search with indonesian keyword
 }

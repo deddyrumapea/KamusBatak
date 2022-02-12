@@ -25,6 +25,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KamusBatakTheme {
+                // TODO: add progress bar when loading
+
                 val viewModel: SearchEntriesViewModel = hiltViewModel()
                 val state = viewModel.state.value
                 val scaffoldState = rememberScaffoldState()
@@ -53,6 +55,7 @@ class MainActivity : ComponentActivity() {
                                 onValueChange = viewModel::onSearchWithBatakKeyword,
                                 modifier = Modifier.fillMaxWidth(),
                                 placeholder = {
+                                    // TODO: extract string resource
                                     Text(text = "Type word here")
                                 }
                             )
@@ -79,6 +82,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+// TODO: delete unused composables
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")

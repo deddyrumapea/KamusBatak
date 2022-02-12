@@ -44,13 +44,14 @@ object DictionaryModule {
         return Room.databaseBuilder(
             app,
             DictionaryDatabase::class.java,
-            "dictionary_batak"
+            "dictionary_batak" // TODO: move db name to database class
         ).build()
     }
 
     @Provides
     @Singleton
     fun provideDictionaryApi(): DictionaryApi {
+        // TODO: hide api keys
         val headerInterceptor = Interceptor { chain ->
             val request = chain
                 .request()

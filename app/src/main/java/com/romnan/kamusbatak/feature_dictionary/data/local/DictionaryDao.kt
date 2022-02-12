@@ -17,4 +17,6 @@ interface DictionaryDao {
 
     @Query("SELECT * FROM entryentity WHERE btkWord LIKE '%' || :keyword || '%'")
     suspend fun searchWithBatakKeyword(keyword: String): List<EntryEntity>
+
+    // TODO: add search with Bahasa Indonesia keyword
 }

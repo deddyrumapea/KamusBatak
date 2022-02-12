@@ -56,6 +56,7 @@ class SearchEntriesViewModel @Inject constructor(
                             entries = result.data ?: emptyList(),
                             isLoading = false
                         )
+                        // TODO: extract string resource
                         _eventFlow.emit(UIEvent.ShowSnackbar(result.message ?: "Unknown error"))
                     }
                 }
