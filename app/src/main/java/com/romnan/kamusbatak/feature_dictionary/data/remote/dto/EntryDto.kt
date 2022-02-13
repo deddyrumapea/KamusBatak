@@ -12,6 +12,7 @@ data class EntryDto(
     @SerializedName("example") val example: String?
 ) {
     fun toEntryEntity() = EntryEntity(
+        id = id,
         btkWord = btkWord,
         indWord = indWord,
         dialect = dialect,
