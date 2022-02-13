@@ -2,8 +2,7 @@ package com.romnan.kamusbatak.feature_dictionary.data.remote
 
 import com.romnan.kamusbatak.feature_dictionary.data.remote.dto.EntryDto
 import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface DictionaryApi {
 
@@ -13,8 +12,7 @@ interface DictionaryApi {
     }
 
     @GET("entry")
-    suspend fun searchWithBatakKeyword(
-        @Query("btk_word") keyword: String, // TODO: "like.%keyword%"
-        @Query("select") select: String = "*" // TODO: hide this select param
+    suspend fun getEntries(
+        @QueryMap params: Map<String, String>
     ): List<EntryDto>
 }
