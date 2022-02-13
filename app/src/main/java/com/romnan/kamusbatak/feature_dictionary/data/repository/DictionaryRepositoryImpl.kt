@@ -3,6 +3,8 @@ package com.romnan.kamusbatak.feature_dictionary.data.repository
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.feature_dictionary.data.local.DictionaryDao
 import com.romnan.kamusbatak.feature_dictionary.data.remote.DictionaryApi
+import com.romnan.kamusbatak.feature_dictionary.data.remote.dto.EntryDto
+import com.romnan.kamusbatak.feature_dictionary.data.util.Language
 import com.romnan.kamusbatak.feature_dictionary.domain.model.Entry
 import com.romnan.kamusbatak.feature_dictionary.domain.repository.DictionaryRepository
 import kotlinx.coroutines.flow.Flow
@@ -14,38 +16,52 @@ class DictionaryRepositoryImpl(
     private val api: DictionaryApi,
     private val dao: DictionaryDao
 ) : DictionaryRepository {
+    override fun searchEntries(keyword: String, kwLanguage: Language): Flow<Resource<List<Entry>>> =
+        flow {
+            emit(Resource.Loading(data = emptyList<Entry>()))
 
-    override fun searchWithBatakKeyword(keyword: String): Flow<Resource<List<Entry>>> = flow {
-        emit(Resource.Loading())
+            val localEntries = getLocalEntries(keyword, kwLanguage)
+            emit(Resource.Loading(data = localEntries))
 
-        val entries = dao.searchWithBatakKeyword(keyword).map { it.toEntry() }
-        emit(Resource.Loading(data = entries))
-
-
-        try {
-            // TODO: move like.%keyword% to Api service interface
-            val remoteEntries = api.searchWithBatakKeyword(keyword = "like.%$keyword%")
-            dao.deleteEntries(remoteEntries.map { it.btkWord })
-            dao.insertEntries(remoteEntries.map { it.toEntryEntity() })
-        } catch (e: HttpException) {
-            emit(
-                // TODO: extract to string resources
-                Resource.Error(
-                    message = "Oops, something went wrong!", // TODO: extract string resource
-                    data = entries
-                )
-            )
-        } catch (e: IOException) {
-            emit(
-                Resource.Error(
+            try {
+                val remoteEntries = getRemoteEntries(keyword, kwLanguage)
+                dao.insertEntries(remoteEntries.map { it.toEntryEntity() })
+            } catch (e: HttpException) {
+                emit(
                     // TODO: extract to string resources
-                    message = "Couldn't reach server. Please check your internet connection.",
-                    data = entries
+                    Resource.Error(
+                        message = "Oops, something went wrong!",
+                        data = localEntries
+                    )
                 )
-            )
+            } catch (e: IOException) {
+                emit(
+                    Resource.Error(
+                        // TODO: extract to string resources
+                        message = "Couldn't reach server. Please check your internet connection.",
+                        data = localEntries
+                    )
+                )
+            }
+
+            val newEntries = getLocalEntries(keyword, kwLanguage)
+            emit(Resource.Success(newEntries))
         }
 
-        val newEntries = dao.searchWithBatakKeyword(keyword).map { it.toEntry() }
-        emit(Resource.Success(newEntries))
+    private suspend fun getLocalEntries(keyword: String, kwLanguage: Language): List<Entry> {
+        return when (kwLanguage) {
+            is Language.Ind -> dao.getEntriesWithIndKeyword(keyword).map { it.toEntry() }
+            is Language.Btk -> dao.getEntriesWithBtkKeyword(keyword).map { it.toEntry() }
+        }
+    }
+
+    suspend fun getRemoteEntries(keyword: String, kwLanguage: Language): List<EntryDto> {
+        val params = mapOf(
+            when (kwLanguage) {
+                is Language.Ind -> "ind_word"
+                is Language.Btk -> "btk_word"
+            } to "like.$keyword%"
+        )
+        return api.getEntries(params = params)
     }
 }
