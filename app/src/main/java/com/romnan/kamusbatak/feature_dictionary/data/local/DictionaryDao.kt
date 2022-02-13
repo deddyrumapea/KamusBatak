@@ -8,15 +8,12 @@ import com.romnan.kamusbatak.feature_dictionary.data.local.entity.EntryEntity
 
 @Dao
 interface DictionaryDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntries(entries: List<EntryEntity>)
 
-    @Query("DELETE FROM entryentity WHERE btkWord IN (:btkWords)")
-    suspend fun deleteEntries(btkWords: List<String>)
+    @Query("SELECT * FROM entryentity WHERE indWord LIKE :keyword || '%'")
+    suspend fun getEntriesWithIndKeyword(keyword: String): List<EntryEntity>
 
-    @Query("SELECT * FROM entryentity WHERE btkWord LIKE '%' || :keyword || '%'")
-    suspend fun searchWithBatakKeyword(keyword: String): List<EntryEntity>
-
-    // TODO: add search with Bahasa Indonesia keyword
+    @Query("SELECT * FROM entryentity WHERE btkWord LIKE :keyword || '%'")
+    suspend fun getEntriesWithBtkKeyword(keyword: String): List<EntryEntity>
 }
