@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_dictionary.domain.use_case.SearchWithBatakKeyword
+import com.romnan.kamusbatak.feature_dictionary.domain.use_case.SearchEntries
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchEntriesViewModel @Inject constructor(
-    private val searchWithBatakKeyword: SearchWithBatakKeyword
+    private val searchEntries: SearchEntries
 ) : ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -32,12 +32,47 @@ class SearchEntriesViewModel @Inject constructor(
 
     private var searchJob: Job? = null
 
-    fun onSearchWithBatakKeyword(query: String) {
-        _searchQuery.value = query
+    fun onEvent(event: SearchEntriesEvent) {
+        when (event) {
+            is SearchEntriesEvent.QueryChange -> {
+                _searchQuery.value = event.query
+                fetchEntries()
+            }
+
+            is SearchEntriesEvent.LanguagesSwap -> {
+                swapLanguage()
+                fetchEntries()
+            }
+        }
+    }
+
+    private fun swapLanguage() {
+        _state.value = _state.value.copy(
+            sourceLanguage = _state.value.targetLanguage,
+            targetLanguage = _state.value.sourceLanguage
+        )
+    }
+
+    private fun clearEntries() {
+        _state.value = _state.value.copy(
+            entries = emptyList()
+        )
+    }
+
+    private fun fetchEntries() {
         searchJob?.cancel()
+
+        if (searchQuery.value.isBlank()) {
+            clearEntries()
+            return
+        }
+
         searchJob = viewModelScope.launch {
             delay(500L)
-            searchWithBatakKeyword(query).onEach { result ->
+            searchEntries(
+                keyword = searchQuery.value,
+                kwLanguage = state.value.sourceLanguage
+            ).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
                         _state.value = state.value.copy(
