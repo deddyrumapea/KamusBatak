@@ -1,12 +1,12 @@
-package com.romnan.kamusbatak.feature_dictionary.data.repository
+package com.romnan.kamusbatak.feature_search_entries.data.repository
 
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_dictionary.data.local.DictionaryDao
-import com.romnan.kamusbatak.feature_dictionary.data.remote.DictionaryApi
-import com.romnan.kamusbatak.feature_dictionary.data.remote.dto.EntryDto
-import com.romnan.kamusbatak.feature_dictionary.data.util.Language
-import com.romnan.kamusbatak.feature_dictionary.domain.model.Entry
-import com.romnan.kamusbatak.feature_dictionary.domain.repository.DictionaryRepository
+import com.romnan.kamusbatak.feature_search_entries.data.local.DictionaryDao
+import com.romnan.kamusbatak.feature_search_entries.data.remote.DictionaryApi
+import com.romnan.kamusbatak.feature_search_entries.data.remote.dto.EntryDto
+import com.romnan.kamusbatak.feature_search_entries.data.util.Language
+import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
+import com.romnan.kamusbatak.feature_search_entries.domain.repository.DictionaryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

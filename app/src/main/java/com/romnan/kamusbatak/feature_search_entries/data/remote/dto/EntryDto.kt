@@ -1,7 +1,7 @@
-package com.romnan.kamusbatak.feature_dictionary.data.remote.dto
+package com.romnan.kamusbatak.feature_search_entries.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.romnan.kamusbatak.feature_dictionary.data.local.entity.EntryEntity
+import com.romnan.kamusbatak.feature_search_entries.data.local.entity.EntryEntity
 
 data class EntryDto(
     @SerializedName("id") val id: Int,

@@ -1,7 +1,7 @@
-package com.romnan.kamusbatak.feature_dictionary.presentation
+package com.romnan.kamusbatak.feature_search_entries.presentation
 
-import com.romnan.kamusbatak.feature_dictionary.data.util.Language
-import com.romnan.kamusbatak.feature_dictionary.domain.model.Entry
+import com.romnan.kamusbatak.feature_search_entries.data.util.Language
+import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
 
 data class SearchEntriesState(
     val entries: List<Entry> = emptyList(),

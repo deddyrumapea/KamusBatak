@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_dictionary.presentation
+package com.romnan.kamusbatak.feature_search_entries.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.romnan.kamusbatak.feature_dictionary.domain.model.Entry
+import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
 
 @Composable
 fun EntryItem(entry: Entry, modifier: Modifier = Modifier) {

@@ -1,10 +1,10 @@
-package com.romnan.kamusbatak.feature_dictionary.data.local
+package com.romnan.kamusbatak.feature_search_entries.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.romnan.kamusbatak.feature_dictionary.data.local.entity.EntryEntity
+import com.romnan.kamusbatak.feature_search_entries.data.local.entity.EntryEntity
 
 @Dao
 interface DictionaryDao {

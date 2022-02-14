@@ -1,9 +1,9 @@
-package com.romnan.kamusbatak.feature_dictionary.domain.use_case
+package com.romnan.kamusbatak.feature_search_entries.domain.use_case
 
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_dictionary.data.util.Language
-import com.romnan.kamusbatak.feature_dictionary.domain.model.Entry
-import com.romnan.kamusbatak.feature_dictionary.domain.repository.DictionaryRepository
+import com.romnan.kamusbatak.feature_search_entries.data.util.Language
+import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
+import com.romnan.kamusbatak.feature_search_entries.domain.repository.DictionaryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

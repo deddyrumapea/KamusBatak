@@ -1,11 +1,11 @@
-package com.romnan.kamusbatak.feature_dictionary.presentation
+package com.romnan.kamusbatak.feature_search_entries.presentation
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_dictionary.domain.use_case.SearchEntries
+import com.romnan.kamusbatak.feature_search_entries.domain.use_case.SearchEntries
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -47,14 +47,14 @@ class SearchEntriesViewModel @Inject constructor(
     }
 
     private fun swapLanguage() {
-        _state.value = _state.value.copy(
-            sourceLanguage = _state.value.targetLanguage,
-            targetLanguage = _state.value.sourceLanguage
+        _state.value = state.value.copy(
+            sourceLanguage = state.value.targetLanguage,
+            targetLanguage = state.value.sourceLanguage
         )
     }
 
     private fun clearEntries() {
-        _state.value = _state.value.copy(
+        _state.value = state.value.copy(
             entries = emptyList()
         )
     }
