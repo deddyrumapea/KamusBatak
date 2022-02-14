@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,60 +53,57 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(scaffoldState = scaffoldState) {
                     Column(modifier = Modifier.fillMaxSize()) {
-                        TopAppBar(
-                            title = {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceEvenly,
-                                    verticalAlignment = Alignment.CenterVertically
+                        TopAppBar(backgroundColor = MaterialTheme.colors.primary) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                AnimatedContent(
+                                    targetState = state.targetLanguage.fullName,
+                                    modifier = Modifier.weight(1f),
+                                    transitionSpec = {
+                                        slideIntoContainer(
+                                            towards = AnimatedContentScope.SlideDirection.Left
+                                        ) with slideOutOfContainer(
+                                            towards = AnimatedContentScope.SlideDirection.Right
+                                        )
+                                    }
                                 ) {
-                                    AnimatedContent(
-                                        targetState = state.targetLanguage.fullName,
-                                        modifier = Modifier.weight(1f),
-                                        transitionSpec = {
-                                            slideIntoContainer(
-                                                towards = AnimatedContentScope.SlideDirection.Left
-                                            ) with slideOutOfContainer(
-                                                towards = AnimatedContentScope.SlideDirection.Right
-                                            )
-                                        }
-                                    ) {
-                                        Text(
-                                            text = state.sourceLanguage.fullName,
-                                            textAlign = TextAlign.Center,
-                                            style = MaterialTheme.typography.h6
-                                        )
-                                    }
-                                    IconButton(onClick = {
-                                        viewModel.onEvent(SearchEntriesEvent.LanguagesSwap)
-                                    }
-                                    ) {
-                                        Icon(
-                                            painterResource(R.drawable.ic_baseline_swap_horiz_24),
-                                            getString(R.string.swap_languages)
-                                        )
-                                    }
-                                    AnimatedContent(
-                                        targetState = state.targetLanguage.fullName,
-                                        modifier = Modifier.weight(1f),
-                                        transitionSpec = {
-                                            slideIntoContainer(
-                                                towards = AnimatedContentScope.SlideDirection.Right
-                                            ) with slideOutOfContainer(
-                                                towards = AnimatedContentScope.SlideDirection.Left
-                                            )
-                                        }
-                                    ) {
-                                        Text(
-                                            text = state.targetLanguage.fullName,
-                                            textAlign = TextAlign.Center,
-                                            style = MaterialTheme.typography.h6
-                                        )
-                                    }
+                                    Text(
+                                        text = state.sourceLanguage.fullName,
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.h6
+                                    )
                                 }
-                            },
-                            backgroundColor = MaterialTheme.colors.primary
-                        )
+                                IconButton(onClick = {
+                                    viewModel.onEvent(SearchEntriesEvent.LanguagesSwap)
+                                }
+                                ) {
+                                    Icon(
+                                        painterResource(R.drawable.ic_baseline_swap_horiz_24),
+                                        getString(R.string.swap_languages)
+                                    )
+                                }
+                                AnimatedContent(
+                                    targetState = state.targetLanguage.fullName,
+                                    modifier = Modifier.weight(1f),
+                                    transitionSpec = {
+                                        slideIntoContainer(
+                                            towards = AnimatedContentScope.SlideDirection.Right
+                                        ) with slideOutOfContainer(
+                                            towards = AnimatedContentScope.SlideDirection.Left
+                                        )
+                                    }
+                                ) {
+                                    Text(
+                                        text = state.targetLanguage.fullName,
+                                        textAlign = TextAlign.Center,
+                                        style = MaterialTheme.typography.h6
+                                    )
+                                }
+                            }
+                        }
 
                         Spacer(modifier = Modifier.height(8.dp))
 
@@ -144,7 +142,9 @@ class MainActivity : ComponentActivity() {
                                     if (i > 0) Spacer(modifier = Modifier.height(8.dp))
                                     EntryItem(entry = state.entries[i])
                                     Spacer(modifier = Modifier.height(8.dp))
-                                    if (i < state.entries.size - 1) Divider()
+                                    if (i < state.entries.size - 1) Divider(
+                                        modifier = Modifier.padding(horizontal = 8.dp)
+                                    )
                                 }
                             }
                         }
