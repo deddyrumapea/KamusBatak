@@ -1,6 +1,6 @@
 package com.romnan.kamusbatak.feature_search_entries.presentation
 
-import com.romnan.kamusbatak.feature_search_entries.data.util.Language
+import com.romnan.kamusbatak.core.util.Language
 import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
 
 data class SearchEntriesState(
