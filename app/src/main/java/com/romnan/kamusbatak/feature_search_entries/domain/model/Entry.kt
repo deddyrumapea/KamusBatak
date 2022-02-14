@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_dictionary.domain.model
+package com.romnan.kamusbatak.feature_search_entries.domain.model
 
 data class Entry(
     val btkWord: String,

@@ -1,12 +1,12 @@
-package com.romnan.kamusbatak.feature_dictionary.di
+package com.romnan.kamusbatak.feature_search_entries.di
 
 import android.app.Application
 import androidx.room.Room
-import com.romnan.kamusbatak.feature_dictionary.data.local.DictionaryDatabase
-import com.romnan.kamusbatak.feature_dictionary.data.remote.DictionaryApi
-import com.romnan.kamusbatak.feature_dictionary.data.repository.DictionaryRepositoryImpl
-import com.romnan.kamusbatak.feature_dictionary.domain.repository.DictionaryRepository
-import com.romnan.kamusbatak.feature_dictionary.domain.use_case.SearchWithBatakKeyword
+import com.romnan.kamusbatak.feature_search_entries.data.local.DictionaryDatabase
+import com.romnan.kamusbatak.feature_search_entries.data.remote.DictionaryApi
+import com.romnan.kamusbatak.feature_search_entries.data.repository.DictionaryRepositoryImpl
+import com.romnan.kamusbatak.feature_search_entries.domain.repository.DictionaryRepository
+import com.romnan.kamusbatak.feature_search_entries.domain.use_case.SearchEntries
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,8 +25,8 @@ object DictionaryModule {
     @Singleton
     fun provideSearchWithBatakKeyword(
         repository: DictionaryRepository
-    ): SearchWithBatakKeyword {
-        return SearchWithBatakKeyword(repository)
+    ): SearchEntries {
+        return SearchEntries(repository)
     }
 
     @Provides

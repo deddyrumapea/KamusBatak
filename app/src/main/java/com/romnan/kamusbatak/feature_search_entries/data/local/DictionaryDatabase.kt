@@ -1,8 +1,8 @@
-package com.romnan.kamusbatak.feature_dictionary.data.local
+package com.romnan.kamusbatak.feature_search_entries.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.romnan.kamusbatak.feature_dictionary.data.local.entity.EntryEntity
+import com.romnan.kamusbatak.feature_search_entries.data.local.entity.EntryEntity
 
 @Database(
     entities = [EntryEntity::class],
