@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_search_entries.data.util
+package com.romnan.kamusbatak.core.util
 
 sealed class Language {
     abstract val fullName: String
