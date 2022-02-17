@@ -6,5 +6,5 @@ import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
 import kotlinx.coroutines.flow.Flow
 
 interface DictionaryRepository {
-    fun searchEntries(keyword: String, kwLanguage: Language): Flow<Resource<List<Entry>>>
+    fun searchEntries(keyword: String, srcLang: Language): Flow<Resource<List<Entry>>>
 }
