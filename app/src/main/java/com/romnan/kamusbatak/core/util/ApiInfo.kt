@@ -6,5 +6,6 @@ object ApiInfo {
     }
 
     external fun baseUrl(): String
-    external fun key(): String
+    external fun keyValue(): String
+    external fun keyParam(): String
 }
