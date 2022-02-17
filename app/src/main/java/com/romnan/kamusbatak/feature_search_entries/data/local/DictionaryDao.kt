@@ -11,6 +11,6 @@ interface DictionaryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntries(entries: List<EntryEntity>)
 
-    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLang AND word LIKE :keyword")
+    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLang AND word LIKE :keyword ORDER BY word ASC")
     suspend fun getEntries(keyword: String, srcLang: String): List<EntryEntity>
 }
