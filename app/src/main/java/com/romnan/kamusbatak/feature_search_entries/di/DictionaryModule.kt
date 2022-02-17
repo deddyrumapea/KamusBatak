@@ -14,7 +14,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -52,24 +51,20 @@ object DictionaryModule {
     @Provides
     @Singleton
     fun provideDictionaryApi(): DictionaryApi {
-        val headerInterceptor = Interceptor { chain ->
+        val interceptor = Interceptor { chain ->
             val request = chain
                 .request()
                 .newBuilder()
                 .addHeader(
-                    "apikey",
-                    ApiInfo.key()
+                    ApiInfo.keyParam(),
+                    ApiInfo.keyValue()
                 )
                 .build()
             chain.proceed(request)
         }
 
-        val loggingInterceptor = HttpLoggingInterceptor()
-            .setLevel(HttpLoggingInterceptor.Level.BODY)
-
         val client = OkHttpClient.Builder()
-            .addInterceptor(headerInterceptor)
-            .addInterceptor(loggingInterceptor)
+            .addInterceptor(interceptor)
             .build()
 
         return Retrofit.Builder()
