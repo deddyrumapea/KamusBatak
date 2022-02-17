@@ -4,19 +4,15 @@ import com.google.gson.annotations.SerializedName
 import com.romnan.kamusbatak.feature_search_entries.data.local.entity.EntryEntity
 
 data class EntryDto(
-    @SerializedName("id") val id: Int,
-    @SerializedName("btk_word") val btkWord: String,
-    @SerializedName("ind_word") val indWord: String,
-    @SerializedName("dialect") val dialect: String?,
-    @SerializedName("phonetic") val phonetic: String?,
-    @SerializedName("example") val example: String?
+    @SerializedName("id") val id: Int?,
+    @SerializedName("src_lang") val srcLang: String?,
+    @SerializedName("word") val word: String?,
+    @SerializedName("meaning") val meaning: String?
 ) {
     fun toEntryEntity() = EntryEntity(
         id = id,
-        btkWord = btkWord,
-        indWord = indWord,
-        dialect = dialect,
-        phonetic = phonetic,
-        example = example
+        srcLang = srcLang ?: "",
+        word = word ?: "",
+        meaning = meaning ?: ""
     )
 }

@@ -1,10 +1,10 @@
 package com.romnan.kamusbatak.feature_search_entries.data.repository
 
+import com.romnan.kamusbatak.core.util.Language
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.feature_search_entries.data.local.DictionaryDao
 import com.romnan.kamusbatak.feature_search_entries.data.remote.DictionaryApi
 import com.romnan.kamusbatak.feature_search_entries.data.remote.dto.EntryDto
-import com.romnan.kamusbatak.core.util.Language
 import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
 import com.romnan.kamusbatak.feature_search_entries.domain.repository.DictionaryRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,15 +16,15 @@ class DictionaryRepositoryImpl(
     private val api: DictionaryApi,
     private val dao: DictionaryDao
 ) : DictionaryRepository {
-    override fun searchEntries(keyword: String, kwLanguage: Language): Flow<Resource<List<Entry>>> =
+    override fun searchEntries(keyword: String, srcLang: Language): Flow<Resource<List<Entry>>> =
         flow {
-            emit(Resource.Loading(data = emptyList<Entry>()))
+            emit(Resource.Loading(data = emptyList()))
 
-            val localEntries = getLocalEntries(keyword, kwLanguage)
+            val localEntries = getLocalEntries(keyword, srcLang)
             emit(Resource.Loading(data = localEntries))
 
             try {
-                val remoteEntries = getRemoteEntries(keyword, kwLanguage)
+                val remoteEntries = getRemoteEntries(keyword, srcLang)
                 dao.insertEntries(remoteEntries.map { it.toEntryEntity() })
             } catch (e: HttpException) {
                 emit(
@@ -44,23 +44,20 @@ class DictionaryRepositoryImpl(
                 )
             }
 
-            val newEntries = getLocalEntries(keyword, kwLanguage)
+            val newEntries = getLocalEntries(keyword, srcLang)
             emit(Resource.Success(newEntries))
         }
 
-    private suspend fun getLocalEntries(keyword: String, kwLanguage: Language): List<Entry> {
-        return when (kwLanguage) {
-            is Language.Ind -> dao.getEntriesWithIndKeyword(keyword).map { it.toEntry() }
-            is Language.Btk -> dao.getEntriesWithBtkKeyword(keyword).map { it.toEntry() }
-        }
+    private suspend fun getLocalEntries(keyword: String, srcLang: Language): List<Entry> {
+        return dao
+            .getEntries(keyword = keyword, srcLang = srcLang.codename)
+            .map { it.toEntry() }
     }
 
-    suspend fun getRemoteEntries(keyword: String, kwLanguage: Language): List<EntryDto> {
+    private suspend fun getRemoteEntries(keyword: String, srcLang: Language): List<EntryDto> {
         val params = mapOf(
-            when (kwLanguage) {
-                is Language.Ind -> "ind_word"
-                is Language.Btk -> "btk_word"
-            } to "like.$keyword%"
+            "word" to "like.$keyword",
+            "src_lang" to "eq.${srcLang.codename}"
         )
         return api.getEntries(params = params)
     }

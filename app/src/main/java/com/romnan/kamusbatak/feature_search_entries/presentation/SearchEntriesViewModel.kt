@@ -71,7 +71,7 @@ class SearchEntriesViewModel @Inject constructor(
             delay(500L)
             searchEntries(
                 keyword = searchQuery.value,
-                kwLanguage = state.value.sourceLanguage
+                srcLang = state.value.sourceLanguage
             ).onEach { result ->
                 when (result) {
                     is Resource.Success -> {

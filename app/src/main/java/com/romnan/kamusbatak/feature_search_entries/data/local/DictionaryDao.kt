@@ -11,9 +11,6 @@ interface DictionaryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntries(entries: List<EntryEntity>)
 
-    @Query("SELECT * FROM entryentity WHERE indWord LIKE :keyword || '%'")
-    suspend fun getEntriesWithIndKeyword(keyword: String): List<EntryEntity>
-
-    @Query("SELECT * FROM entryentity WHERE btkWord LIKE :keyword || '%'")
-    suspend fun getEntriesWithBtkKeyword(keyword: String): List<EntryEntity>
+    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLang AND word LIKE :keyword")
+    suspend fun getEntries(keyword: String, srcLang: String): List<EntryEntity>
 }
