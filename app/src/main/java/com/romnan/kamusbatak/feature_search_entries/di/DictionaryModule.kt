@@ -2,6 +2,7 @@ package com.romnan.kamusbatak.feature_search_entries.di
 
 import android.app.Application
 import androidx.room.Room
+import com.romnan.kamusbatak.core.util.ApiInfo
 import com.romnan.kamusbatak.feature_search_entries.data.local.DictionaryDatabase
 import com.romnan.kamusbatak.feature_search_entries.data.remote.DictionaryApi
 import com.romnan.kamusbatak.feature_search_entries.data.repository.DictionaryRepositoryImpl
@@ -51,18 +52,13 @@ object DictionaryModule {
     @Provides
     @Singleton
     fun provideDictionaryApi(): DictionaryApi {
-        // TODO: hide api keys
         val headerInterceptor = Interceptor { chain ->
             val request = chain
                 .request()
                 .newBuilder()
                 .addHeader(
                     "apikey",
-                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzgxMDcyNiwiZXhwIjoxOTU5Mzg2NzI2fQ.XBDJKVy3FKXoS-1boDHNN4JixbXxTFy_44nRRATpYUA"
-                )
-                .addHeader(
-                    "Authorization",
-                    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzgxMDcyNiwiZXhwIjoxOTU5Mzg2NzI2fQ.XBDJKVy3FKXoS-1boDHNN4JixbXxTFy_44nRRATpYUA"
+                    ApiInfo.key()
                 )
                 .build()
             chain.proceed(request)
@@ -77,7 +73,7 @@ object DictionaryModule {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl(DictionaryApi.BASE_URL)
+            .baseUrl(ApiInfo.baseUrl())
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
