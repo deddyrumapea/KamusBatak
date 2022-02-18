@@ -13,9 +13,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -37,11 +41,15 @@ class MainActivity : ComponentActivity() {
                 val viewModel: SearchEntriesViewModel = hiltViewModel()
                 val state = viewModel.state.value
                 val scaffoldState = rememberScaffoldState()
+                val focusManager = LocalFocusManager.current
+                val focusRequester = remember { FocusRequester() }
 
                 LaunchedEffect(key1 = true) {
+                    focusRequester.requestFocus()
                     viewModel.eventFlow.collectLatest { event ->
                         when (event) {
                             is SearchEntriesViewModel.UIEvent.ShowSnackbar -> {
+                                focusManager.clearFocus() // TODO: find another way to display this
                                 scaffoldState.snackbarHostState.showSnackbar(
                                     message = event.message
                                 )
@@ -123,6 +131,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 8.dp)
+                                .focusRequester(focusRequester)
                         )
 
                         AnimatedVisibility(visible = state.isLoading) {
