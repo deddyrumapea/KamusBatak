@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Kamus Batak</string>
     <string name="enter_words_here">Enter words here</string>
-    <string name="switch_language">Switch language</string>
-    <string name="indonesia">Indonesia</string>
-    <string name="batak">Batak</string>
     <string name="swap_languages">Swap languages</string>
 </resources>
