@@ -1,6 +1,6 @@
-package com.romnan.kamusbatak.core.util
+package com.romnan.kamusbatak.core.data.remote
 
-object ApiInfo {
+object CoreApiInfo {
     init {
         System.loadLibrary("native-lib")
     }

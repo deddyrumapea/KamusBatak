@@ -24,9 +24,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.romnan.kamusbatak.feature_search_entries.presentation.EntryItem
-import com.romnan.kamusbatak.feature_search_entries.presentation.SearchEntriesEvent
-import com.romnan.kamusbatak.feature_search_entries.presentation.SearchEntriesViewModel
+import com.romnan.kamusbatak.feature_entries_finder.presentation.EntryItem
+import com.romnan.kamusbatak.feature_entries_finder.presentation.EntriesFinderEvent
+import com.romnan.kamusbatak.feature_entries_finder.presentation.EntriesFinderViewModel
 import com.romnan.kamusbatak.ui.theme.KamusBatakTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KamusBatakTheme {
-                val viewModel: SearchEntriesViewModel = hiltViewModel()
+                val viewModel: EntriesFinderViewModel = hiltViewModel()
                 val state = viewModel.state.value
                 val scaffoldState = rememberScaffoldState()
                 val focusManager = LocalFocusManager.current
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     focusRequester.requestFocus()
                     viewModel.eventFlow.collectLatest { event ->
                         when (event) {
-                            is SearchEntriesViewModel.UIEvent.ShowSnackbar -> {
+                            is EntriesFinderViewModel.UIEvent.ShowSnackbar -> {
                                 focusManager.clearFocus() // TODO: find another way to display this
                                 scaffoldState.snackbarHostState.showSnackbar(
                                     message = event.message
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                                 IconButton(onClick = {
-                                    viewModel.onEvent(SearchEntriesEvent.LanguagesSwap)
+                                    viewModel.onEvent(EntriesFinderEvent.LanguagesSwap)
                                 }
                                 ) {
                                     Icon(
@@ -119,7 +119,7 @@ class MainActivity : ComponentActivity() {
                             singleLine = true,
                             value = viewModel.searchQuery.value,
                             placeholder = { Text(text = getString(R.string.enter_words_here)) },
-                            onValueChange = { viewModel.onEvent(SearchEntriesEvent.QueryChange(it)) },
+                            onValueChange = { viewModel.onEvent(EntriesFinderEvent.QueryChange(it)) },
                             trailingIcon = {
                                 Icon(Icons.Default.Search, getString(R.string.enter_words_here))
                             },

@@ -1,11 +1,11 @@
-package com.romnan.kamusbatak.feature_search_entries.data.local.entity
+package com.romnan.kamusbatak.core.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
+import com.romnan.kamusbatak.core.domain.model.Entry
 
 @Entity
-data class EntryEntity(
+data class CachedEntryEntity(
     @PrimaryKey val id: Int? = null,
     val srcLang: String,
     val word: String,

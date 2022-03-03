@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_search_entries.domain.model
+package com.romnan.kamusbatak.core.domain.model
 
 data class Entry(
     val srcLang: String,

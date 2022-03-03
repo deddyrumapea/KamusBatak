@@ -1,11 +1,11 @@
-package com.romnan.kamusbatak.feature_search_entries.presentation
+package com.romnan.kamusbatak.feature_entries_finder.presentation
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_search_entries.domain.use_case.SearchEntries
+import com.romnan.kamusbatak.feature_entries_finder.domain.use_case.EntriesFinderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,29 +17,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchEntriesViewModel @Inject constructor(
-    private val searchEntries: SearchEntries
+class EntriesFinderViewModel @Inject constructor(
+    private val useCase: EntriesFinderUseCase
 ) : ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
     val searchQuery: State<String> = _searchQuery
 
-    private val _state = mutableStateOf(SearchEntriesState())
-    val state: State<SearchEntriesState> = _state
+    private val _state = mutableStateOf(EntriesFinderState())
+    val state: State<EntriesFinderState> = _state
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var searchJob: Job? = null
 
-    fun onEvent(event: SearchEntriesEvent) {
+    fun onEvent(event: EntriesFinderEvent) {
         when (event) {
-            is SearchEntriesEvent.QueryChange -> {
+            is EntriesFinderEvent.QueryChange -> {
                 _searchQuery.value = event.query
                 fetchEntries()
             }
 
-            is SearchEntriesEvent.LanguagesSwap -> {
+            is EntriesFinderEvent.LanguagesSwap -> {
                 swapLanguage()
                 fetchEntries()
             }
@@ -60,16 +60,15 @@ class SearchEntriesViewModel @Inject constructor(
     }
 
     private fun fetchEntries() {
-        searchJob?.cancel()
-
         if (searchQuery.value.isBlank()) {
             clearEntries()
             return
         }
 
+        searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500L)
-            searchEntries(
+            useCase.getEntries(
                 keyword = searchQuery.value,
                 srcLang = state.value.sourceLanguage
             ).onEach { result ->

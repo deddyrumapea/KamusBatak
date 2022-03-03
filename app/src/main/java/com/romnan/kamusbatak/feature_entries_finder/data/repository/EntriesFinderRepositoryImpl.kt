@@ -1,22 +1,22 @@
-package com.romnan.kamusbatak.feature_search_entries.data.repository
+package com.romnan.kamusbatak.feature_entries_finder.data.repository
 
 import com.romnan.kamusbatak.core.util.Language
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_search_entries.data.local.DictionaryDao
-import com.romnan.kamusbatak.feature_search_entries.data.remote.DictionaryApi
-import com.romnan.kamusbatak.feature_search_entries.data.remote.dto.EntryDto
-import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
-import com.romnan.kamusbatak.feature_search_entries.domain.repository.DictionaryRepository
+import com.romnan.kamusbatak.core.data.local.CoreDao
+import com.romnan.kamusbatak.feature_entries_finder.data.remote.EntriesFinderApi
+import com.romnan.kamusbatak.feature_entries_finder.data.remote.dto.FoundEntryDto
+import com.romnan.kamusbatak.core.domain.model.Entry
+import com.romnan.kamusbatak.feature_entries_finder.domain.repository.EntriesFinderRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
-class DictionaryRepositoryImpl(
-    private val api: DictionaryApi,
-    private val dao: DictionaryDao
-) : DictionaryRepository {
-    override fun searchEntries(keyword: String, srcLang: Language): Flow<Resource<List<Entry>>> =
+class EntriesFinderRepositoryImpl(
+    private val api: EntriesFinderApi,
+    private val coreDao: CoreDao
+) : EntriesFinderRepository {
+    override fun getEntries(keyword: String, srcLang: Language): Flow<Resource<List<Entry>>> =
         flow {
             emit(Resource.Loading(data = emptyList()))
 
@@ -25,7 +25,7 @@ class DictionaryRepositoryImpl(
 
             try {
                 val remoteEntries = getRemoteEntries(keyword, srcLang)
-                dao.insertEntries(remoteEntries.map { it.toEntryEntity() })
+                coreDao.insertCachedEntries(remoteEntries.map { it.toCachedEntryEntity() })
             } catch (e: HttpException) {
                 emit(
                     // TODO: extract to string resources
@@ -49,12 +49,12 @@ class DictionaryRepositoryImpl(
         }
 
     private suspend fun getLocalEntries(keyword: String, srcLang: Language): List<Entry> {
-        return dao
-            .getEntries(keyword = keyword, srcLang = srcLang.codename)
+        return coreDao
+            .getCachedEntries(keyword = keyword, srcLang = srcLang.codename)
             .map { it.toEntry() }
     }
 
-    private suspend fun getRemoteEntries(keyword: String, srcLang: Language): List<EntryDto> {
+    private suspend fun getRemoteEntries(keyword: String, srcLang: Language): List<FoundEntryDto> {
         val params = mapOf(
             "word" to "like.$keyword",
             "src_lang" to "eq.${srcLang.codename}"

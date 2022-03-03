@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_search_entries.presentation
+package com.romnan.kamusbatak.feature_entries_finder.presentation
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -10,7 +10,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.romnan.kamusbatak.feature_search_entries.domain.model.Entry
+import com.romnan.kamusbatak.core.domain.model.Entry
 
 
 @Composable
