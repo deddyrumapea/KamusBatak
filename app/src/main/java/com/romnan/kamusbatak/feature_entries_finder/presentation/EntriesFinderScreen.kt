@@ -12,11 +12,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -41,10 +38,8 @@ fun EntriesFinderScreen(
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
     val focusManager = LocalFocusManager.current
-    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(key1 = true) {
-        focusRequester.requestFocus()
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is EntriesFinderViewModel.UIEvent.ShowSnackbar -> {
@@ -130,7 +125,6 @@ fun EntriesFinderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
-                    .focusRequester(focusRequester)
             )
 
             AnimatedVisibility(visible = state.isLoading) {
@@ -148,8 +142,6 @@ fun EntriesFinderScreen(
                     items(state.entries.size) { i ->
                         val entry = state.entries[i]
 
-                        if (i > 0) Spacer(modifier = Modifier.height(8.dp))
-
                         EntryItem(entry = entry, modifier = Modifier.clickable {
                             navigator.navigate(
                                 EntryDetailScreenDestination(
@@ -157,8 +149,6 @@ fun EntriesFinderScreen(
                                 )
                             )
                         })
-
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         if (i < state.entries.size - 1) Divider(
                             modifier = Modifier.padding(horizontal = 8.dp)
