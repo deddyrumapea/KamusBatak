@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_entry_detail
+package com.romnan.kamusbatak.feature_entry_detail.presentation
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
@@ -45,13 +45,13 @@ fun EntryDetailScreen(
                     }
 
                     Row {
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = stringResource(R.string.add_to_favorite)
-                            )
-                        }
-
+                        // TODO: implement favorite feature
+//                        IconButton(onClick = {  }) {
+//                            Icon(
+//                                imageVector = Icons.Default.FavoriteBorder,
+//                                contentDescription = stringResource(R.string.add_to_favorite)
+//                            )
+//                        }
                         IconButton(onClick = {
                             val text = context.getString(
                                 R.string.share_text_format,
