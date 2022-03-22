@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_entries_finder.presentation
+package com.romnan.kamusbatak.features.entriesFinder.presentation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState

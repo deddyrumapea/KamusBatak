@@ -1,6 +1,6 @@
-package com.romnan.kamusbatak.feature_entries_finder.data.remote
+package com.romnan.kamusbatak.features.entriesFinder.data.remote
 
-import com.romnan.kamusbatak.feature_entries_finder.data.remote.dto.RemoteEntryDto
+import com.romnan.kamusbatak.features.entriesFinder.data.remote.dto.RemoteEntryDto
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 

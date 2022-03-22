@@ -1,13 +1,13 @@
-package com.romnan.kamusbatak.feature_entries_finder.data.repository
+package com.romnan.kamusbatak.features.entriesFinder.data.repository
 
 import com.romnan.kamusbatak.core.data.local.CoreDao
 import com.romnan.kamusbatak.core.domain.model.Entry
 import com.romnan.kamusbatak.core.util.Language
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_entries_finder.data.remote.EntriesFinderApi
-import com.romnan.kamusbatak.feature_entries_finder.data.remote.dto.RemoteEntryDto
-import com.romnan.kamusbatak.feature_entries_finder.domain.repository.EntriesFinderRepository
-import com.romnan.kamusbatak.feature_entries_finder.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.features.entriesFinder.data.remote.EntriesFinderApi
+import com.romnan.kamusbatak.features.entriesFinder.data.remote.dto.RemoteEntryDto
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.OfflineSupportRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

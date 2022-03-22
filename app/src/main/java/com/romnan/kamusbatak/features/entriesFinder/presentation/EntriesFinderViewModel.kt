@@ -1,11 +1,11 @@
-package com.romnan.kamusbatak.feature_entries_finder.presentation
+package com.romnan.kamusbatak.features.entriesFinder.presentation
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_entries_finder.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

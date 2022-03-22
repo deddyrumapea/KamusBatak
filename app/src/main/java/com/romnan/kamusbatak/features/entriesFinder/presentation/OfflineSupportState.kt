@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_entries_finder.presentation
+package com.romnan.kamusbatak.features.entriesFinder.presentation
 
 data class OfflineSupportState(
     val isUpdating: Boolean = false,

@@ -1,12 +1,12 @@
-package com.romnan.kamusbatak.feature_entries_finder.di
+package com.romnan.kamusbatak.features.entriesFinder.di
 
 import com.romnan.kamusbatak.core.data.local.CoreDatabase
 import com.romnan.kamusbatak.core.domain.repository.PreferencesRepository
-import com.romnan.kamusbatak.feature_entries_finder.data.remote.EntriesFinderApi
-import com.romnan.kamusbatak.feature_entries_finder.data.repository.EntriesFinderRepositoryImpl
-import com.romnan.kamusbatak.feature_entries_finder.data.repository.OfflineSupportRepositoryImpl
-import com.romnan.kamusbatak.feature_entries_finder.domain.repository.EntriesFinderRepository
-import com.romnan.kamusbatak.feature_entries_finder.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.features.entriesFinder.data.remote.EntriesFinderApi
+import com.romnan.kamusbatak.features.entriesFinder.data.repository.EntriesFinderRepositoryImpl
+import com.romnan.kamusbatak.features.entriesFinder.data.repository.OfflineSupportRepositoryImpl
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.OfflineSupportRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.feature_entries_finder.data.remote.dto
+package com.romnan.kamusbatak.features.entriesFinder.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import com.romnan.kamusbatak.core.data.local.entity.CachedEntryEntity
