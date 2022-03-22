@@ -7,4 +7,14 @@
     <string name="share">Share</string>
     <string name="share_intent_type">text/plain</string>
     <string name="share_text_format">%1$s\n%2$s\n\nDownload Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="error_update">Error updating</string>
+    <string name="up_to_date">Up to date</string>
+    <string name="download_description">Save dictionary data for offline support</string>
+    <string name="download_dictionary_data">Download dictionary data</string>
+    <string name="downloaded">Downloaded</string>
+    <string name="downloading">Downloading…</string>
+    <string name="download">Download</string>
+    <string name="close">Close</string>
+    <string name="update">Update</string>
+    <string name="options">Options</string>
 </resources>

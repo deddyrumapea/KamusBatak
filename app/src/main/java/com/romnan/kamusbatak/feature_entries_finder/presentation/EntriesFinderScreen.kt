@@ -8,15 +8,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,17 +32,18 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun EntriesFinderScreen(
     navigator: DestinationsNavigator,
-    viewModel: EntriesFinderViewModel = hiltViewModel()
+    viewModel: EntriesFinderViewModel = hiltViewModel(),
+    offlineSupportViewModel: OfflineSupportViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
+    val offlineSupportState = offlineSupportViewModel.state.value
     val scaffoldState = rememberScaffoldState()
-    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is EntriesFinderViewModel.UIEvent.ShowSnackbar -> {
-                    focusManager.clearFocus() // TODO: find another way to display this
+                    // TODO: find another way to display this
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message
                     )
@@ -60,6 +60,7 @@ fun EntriesFinderScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Spacer(modifier = Modifier.width(48.dp))
                     AnimatedContent(
                         targetState = state.targetLanguage.fullName,
                         modifier = Modifier.weight(1f),
@@ -82,8 +83,8 @@ fun EntriesFinderScreen(
                     }
                     ) {
                         Icon(
-                            painterResource(id = R.drawable.ic_baseline_swap_horiz_24),
-                            stringResource(id = R.string.swap_languages)
+                            imageVector = Icons.Outlined.SwapHoriz,
+                            contentDescription = stringResource(id = R.string.swap_languages)
                         )
                     }
                     AnimatedContent(
@@ -103,12 +104,45 @@ fun EntriesFinderScreen(
                             style = MaterialTheme.typography.h6
                         )
                     }
+
+                    IconButton(onClick = {
+                        viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(true))
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.options)
+                        )
+                    }
+                }
+
+                Box {
+                    IconButton(onClick = {
+                        viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(true))
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.options)
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = state.isOptionsMenuShown,
+                        onDismissRequest = {
+                            viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(false))
+                        }
+                    ) {
+                        DropdownMenuItem(onClick = {
+                            viewModel.onEvent(EntriesFinderEvent.SetShowUpdateDialog(true))
+                            viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(false))
+                        }) {
+                            Text(text = stringResource(R.string.update))
+                        }
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            val bottomCorRad by animateDpAsState(if (state.isLoading) 0.dp else 8.dp)
+            val bottomCorRad by animateDpAsState(if (state.isLoadingEntries) 0.dp else 8.dp)
             TextField(
                 singleLine = true,
                 value = viewModel.searchQuery.value,
@@ -127,7 +161,7 @@ fun EntriesFinderScreen(
                     .padding(horizontal = 8.dp)
             )
 
-            AnimatedVisibility(visible = state.isLoading) {
+            AnimatedVisibility(visible = state.isLoadingEntries) {
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -156,6 +190,64 @@ fun EntriesFinderScreen(
                     }
                 }
             }
+        }
+        if (state.isUpdateDialogShown) {
+            AlertDialog(
+                onDismissRequest = { viewModel.onEvent(EntriesFinderEvent.SetShowUpdateDialog(false)) },
+                title = { Text(text = stringResource(R.string.download_dictionary_data)) },
+                text = {
+                    Column {
+                        Text(text = stringResource(R.string.download_description))
+                        Text(text = "Last update: ${offlineSupportState.lastUpdated}")
+                    }
+                },
+                buttons = {
+                    Column(
+                        modifier = Modifier.padding(8.dp),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                if (!offlineSupportState.isUpToDate && !offlineSupportState.isUpdating) {
+                                    offlineSupportViewModel.onEvent(OfflineSupportEvent.DownloadUpdate)
+                                }
+                            },
+                            enabled = !offlineSupportState.isUpToDate && !offlineSupportState.isUpdating
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = when {
+                                        offlineSupportState.isUpToDate -> Icons.Default.DownloadDone
+                                        offlineSupportState.isUpdating -> Icons.Default.Downloading
+                                        else -> Icons.Default.Download
+                                    },
+                                    contentDescription = stringResource(R.string.download)
+                                )
+
+                                Text(
+                                    text = when {
+                                        offlineSupportState.isUpToDate -> stringResource(R.string.downloaded)
+                                        offlineSupportState.isUpdating -> stringResource(R.string.downloading)
+                                        else -> stringResource(R.string.download)
+                                    }
+                                )
+                            }
+                        }
+
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                viewModel.onEvent(
+                                    EntriesFinderEvent.SetShowUpdateDialog(false)
+                                )
+                            }
+                        ) {
+                            Text(text = stringResource(R.string.close))
+                        }
+                    }
+                }
+            )
         }
     }
 }

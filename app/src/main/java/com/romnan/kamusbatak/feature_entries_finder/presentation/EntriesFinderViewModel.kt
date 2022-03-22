@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_entries_finder.domain.use_case.EntriesFinderUseCase
+import com.romnan.kamusbatak.feature_entries_finder.domain.repository.EntriesFinderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EntriesFinderViewModel @Inject constructor(
-    private val useCase: EntriesFinderUseCase
+    private val repository: EntriesFinderRepository
 ) : ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -43,6 +43,15 @@ class EntriesFinderViewModel @Inject constructor(
                 swapLanguage()
                 fetchEntries()
             }
+
+            is EntriesFinderEvent.SetShowUpdateDialog -> _state.value =
+                state.value.copy(
+                    isUpdateDialogShown = event.show
+                )
+
+            is EntriesFinderEvent.SetShowOptionsMenu -> _state.value = state.value.copy(
+                isOptionsMenuShown = event.show
+            )
         }
     }
 
@@ -68,7 +77,7 @@ class EntriesFinderViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500L)
-            useCase.getEntries(
+            repository.getEntries(
                 keyword = searchQuery.value,
                 srcLang = state.value.sourceLanguage
             ).onEach { result ->
@@ -76,19 +85,19 @@ class EntriesFinderViewModel @Inject constructor(
                     is Resource.Success -> {
                         _state.value = state.value.copy(
                             entries = result.data ?: emptyList(),
-                            isLoading = false
+                            isLoadingEntries = false
                         )
                     }
                     is Resource.Loading -> {
                         _state.value = state.value.copy(
                             entries = result.data ?: emptyList(),
-                            isLoading = true
+                            isLoadingEntries = true
                         )
                     }
                     is Resource.Error -> {
                         _state.value = state.value.copy(
                             entries = result.data ?: emptyList(),
-                            isLoading = false
+                            isLoadingEntries = false
                         )
                         // TODO: extract string resource
                         _eventFlow.emit(UIEvent.ShowSnackbar(result.message ?: "Unknown error"))
