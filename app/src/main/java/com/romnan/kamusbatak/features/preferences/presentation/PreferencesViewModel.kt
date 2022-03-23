@@ -4,9 +4,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.util.Resource
+import com.romnan.kamusbatak.core.util.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -71,7 +73,11 @@ class PreferencesViewModel @Inject constructor(
                     is Resource.Loading -> _state.value = state.value.copy(isUpdating = true)
                     is Resource.Error -> {
                         _state.value = state.value.copy(isUpdating = false)
-                        _eventFlow.emit(UIEvent.ShowSnackbar(result.message ?: "Unknown error"))
+                        _eventFlow.emit(
+                            UIEvent.ShowSnackbar(
+                                result.uiText ?: UIText.StringResource(R.string.em_unknown)
+                            )
+                        )
                     }
                 }
             }.launchIn(this)

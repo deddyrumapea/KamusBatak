@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.features.entriesFinder.presentation
+package com.romnan.kamusbatak.features.entriesFinder.presentation.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

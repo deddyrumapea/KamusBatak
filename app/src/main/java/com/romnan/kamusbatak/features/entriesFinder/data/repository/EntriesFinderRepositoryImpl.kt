@@ -1,13 +1,15 @@
 package com.romnan.kamusbatak.features.entriesFinder.data.repository
 
+import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.data.local.CoreDao
-import com.romnan.kamusbatak.core.domain.model.Entry
-import com.romnan.kamusbatak.core.util.Language
-import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.data.remote.CoreApi
 import com.romnan.kamusbatak.core.data.remote.dto.RemoteEntryDto
-import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.core.domain.model.Entry
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.core.util.Language
+import com.romnan.kamusbatak.core.util.Resource
+import com.romnan.kamusbatak.core.util.UIText
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -41,10 +43,8 @@ class EntriesFinderRepositoryImpl(
                 if (offlineSupportRepository.isOfflineFullySupported()) {
                     Resource.Success(localEntries)
                 } else {
-                    // TODO: extract to string resources
                     Resource.Error(
-                        message = "Oops, something went wrong!",
-                        data = localEntries
+                        uiText = UIText.StringResource(R.string.em_http_exception)
                     )
                 }
             )
@@ -54,8 +54,7 @@ class EntriesFinderRepositoryImpl(
                     Resource.Success(localEntries)
                 } else {
                     Resource.Error(
-                        // TODO: extract to string resources
-                        message = "Couldn't reach server. Please check your internet connection.",
+                        uiText = UIText.StringResource(R.string.em_io_exception),
                         data = localEntries
                     )
                 }

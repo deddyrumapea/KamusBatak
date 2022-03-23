@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kamus Batak</string>
+    <string name="ph_enter_words_here">Masukkan kata di sini</string>
+    <string name="cd_swap_languages">Tukar bahasa</string>
+    <string name="cd_nav_back">Kembali</string>
+    <string name="cd_share">Bagikan</string>
+    <string name="download_dictionary_data">Unduh data kamus</string>
+    <string name="cd_options">Pilihan</string>
+    <string name="preferences">Pengaturan</string>
+    <string name="format_last_updated">Terakhir diperbarui: %1$s</string>
+    <string name="update">Perbarui</string>
+    <string name="update_dictionary_data">Perbarui data kamus</string>
+    <string name="update_description">Unduh pembaruan untuk dukungan offline</string>
+    <string name="data_never_downloaded">Data belum pernah diunduh</string>
+    <string name="em_io_exception">Tidak dapat menjangkau server. Mohon periksa koneksi internet.</string>
+    <string name="em_http_exception">Terjadi error</string>
+    <string name="em_unknown">Error tidak diketahui</string>
+    <string name="format_share_message">%1$s\n%2$s\n\nUnduh aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+</resources>
