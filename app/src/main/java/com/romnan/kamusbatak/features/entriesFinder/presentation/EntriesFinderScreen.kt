@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.model.EntryParcelable
+import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.features.destinations.EntryDetailScreenDestination
 import com.romnan.kamusbatak.features.destinations.PreferencesScreenDestination
 import kotlinx.coroutines.flow.collectLatest
@@ -38,12 +40,13 @@ fun EntriesFinderScreen(
 ) {
     val state = viewModel.state.value
     val scaffoldState = rememberScaffoldState()
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
-                is EntriesFinderViewModel.UIEvent.ShowSnackbar -> {
-                    // TODO: find another way to display this
+                is UIEvent.ShowSnackbar -> {
+                    focusManager.clearFocus() // TODO: find another way to display this
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message
                     )
