@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -114,9 +115,5 @@ class EntriesFinderViewModel @Inject constructor(
                 }
             }.launchIn(this)
         }
-    }
-
-    sealed class UIEvent {
-        data class ShowSnackbar(val message: String) : UIEvent()
     }
 }

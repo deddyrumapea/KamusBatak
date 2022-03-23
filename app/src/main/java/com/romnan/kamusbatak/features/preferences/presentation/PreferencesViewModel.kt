@@ -5,9 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -22,6 +25,9 @@ class PreferencesViewModel @Inject constructor(
 
     private val _state = mutableStateOf(OfflineSupportState())
     val state: State<OfflineSupportState> = _state
+
+    private val _eventFlow = MutableSharedFlow<UIEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     private var downloadUpdateJob: Job? = null
     private var getLastUpdatedJob: Job? = null
@@ -61,26 +67,11 @@ class PreferencesViewModel @Inject constructor(
         downloadUpdateJob = viewModelScope.launch {
             offlineSupportRepository.downloadUpdate().onEach { result ->
                 when (result) {
-                    is Resource.Success -> {
-                        _state.value = state.value.copy(
-                            isUpdating = false,
-                            isErrorUpdating = false,
-                            isUpToDate = true
-                        )
-                    }
+                    is Resource.Success -> _state.value = state.value.copy(isUpdating = false)
+                    is Resource.Loading -> _state.value = state.value.copy(isUpdating = true)
                     is Resource.Error -> {
-                        _state.value = state.value.copy(
-                            isUpdating = false,
-                            isErrorUpdating = true,
-                            isUpToDate = false
-                        )
-                    }
-                    is Resource.Loading -> {
-                        _state.value = state.value.copy(
-                            isUpdating = true,
-                            isErrorUpdating = false,
-                            isUpToDate = false
-                        )
+                        _state.value = state.value.copy(isUpdating = false)
+                        _eventFlow.emit(UIEvent.ShowSnackbar(result.message ?: "Unknown error"))
                     }
                 }
             }.launchIn(this)
