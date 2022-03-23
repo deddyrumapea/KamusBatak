@@ -1,11 +1,13 @@
-package com.romnan.kamusbatak.feature_entries_finder.presentation
+package com.romnan.kamusbatak.features.entriesFinder.presentation
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.feature_entries_finder.domain.use_case.EntriesFinderUseCase
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EntriesFinderViewModel @Inject constructor(
-    private val useCase: EntriesFinderUseCase
+    private val repository: EntriesFinderRepository,
+    private val offlineSupportRepository: OfflineSupportRepository
 ) : ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -31,6 +34,11 @@ class EntriesFinderViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var searchJob: Job? = null
+    private var downloadUpdateJob: Job? = null
+
+    init {
+        downloadUpdate()
+    }
 
     fun onEvent(event: EntriesFinderEvent) {
         when (event) {
@@ -43,6 +51,17 @@ class EntriesFinderViewModel @Inject constructor(
                 swapLanguage()
                 fetchEntries()
             }
+            is EntriesFinderEvent.SetShowOptionsMenu -> _state.value =
+                state.value.copy(isOptionsMenuShown = event.show)
+        }
+    }
+
+    private fun downloadUpdate() {
+        downloadUpdateJob?.cancel()
+        downloadUpdateJob = viewModelScope.launch {
+            offlineSupportRepository
+                .downloadUpdate()
+                .launchIn(this)
         }
     }
 
@@ -68,7 +87,7 @@ class EntriesFinderViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500L)
-            useCase.getEntries(
+            repository.getEntries(
                 keyword = searchQuery.value,
                 srcLang = state.value.sourceLanguage
             ).onEach { result ->
@@ -76,19 +95,19 @@ class EntriesFinderViewModel @Inject constructor(
                     is Resource.Success -> {
                         _state.value = state.value.copy(
                             entries = result.data ?: emptyList(),
-                            isLoading = false
+                            isLoadingEntries = false
                         )
                     }
                     is Resource.Loading -> {
                         _state.value = state.value.copy(
                             entries = result.data ?: emptyList(),
-                            isLoading = true
+                            isLoadingEntries = true
                         )
                     }
                     is Resource.Error -> {
                         _state.value = state.value.copy(
                             entries = result.data ?: emptyList(),
-                            isLoading = false
+                            isLoadingEntries = false
                         )
                         // TODO: extract string resource
                         _eventFlow.emit(UIEvent.ShowSnackbar(result.message ?: "Unknown error"))
@@ -96,9 +115,5 @@ class EntriesFinderViewModel @Inject constructor(
                 }
             }.launchIn(this)
         }
-    }
-
-    sealed class UIEvent {
-        data class ShowSnackbar(val message: String) : UIEvent()
     }
 }

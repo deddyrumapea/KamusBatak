@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-##---------------Begin: proguard configuration for Gson  ----------
+##----- BEGIN Gson -----
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
 -keepattributes Signature
@@ -46,9 +46,9 @@
 -keepclassmembers,allowobfuscation class * {
   @com.google.gson.annotations.SerializedName <fields>;
 }
-##---------------End: proguard configuration for Gson  ----------
+##----- END Gson -----
 
-##--------------- BEGIN: proguard configuration for Retrofit  ----------
+##----- BEGIN Retrofit -----
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
 # EnclosingMethod is required to use InnerClasses.
 -keepattributes Signature, InnerClasses, EnclosingMethod
@@ -106,10 +106,14 @@
 -dontwarn org.conscrypt.**
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
-##--------------- END: proguard configuration for Retrofit  ----------
+##----- END Retrofit -----
 
-##--------------- BEGIN: proguard configuration for Dagger Hilt  ----------
+##----- BEGIN Dagger Hilt -----
 # Keep for the reflective cast done in EntryPoints.
 # See b/183070411#comment4 for more info.
 -keep,allowobfuscation,allowshrinking @dagger.hilt.EntryPoint class *
-##--------------- END: proguard configuration for Dagger Hilt  ----------
+##----- END Dagger Hilt -----
+
+###----- BEGIN DataStore -----
+#-keep class androidx.datastore.*.** {*;}
+###----- END DataStore -----

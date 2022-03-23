@@ -9,7 +9,8 @@ data class CachedEntryEntity(
     @PrimaryKey val id: Int? = null,
     val srcLang: String,
     val word: String,
-    val meaning: String
+    val meaning: String,
+    val updatedAt: String
 ) {
     fun toEntry() = Entry(
         srcLang = srcLang,

@@ -1,11 +1,10 @@
-package com.romnan.kamusbatak.feature_entry_detail.presentation
+package com.romnan.kamusbatak.features.entryDetail.presentation
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,8 +25,9 @@ fun EntryDetailScreen(
     entry: EntryParcelable
 ) {
     val context = LocalContext.current
+    val scaffoldState = rememberScaffoldState()
 
-    Scaffold {
+    Scaffold(scaffoldState = scaffoldState) {
         Column(modifier = Modifier.fillMaxSize()) {
             TopAppBar(backgroundColor = MaterialTheme.colors.primary) {
                 Row(
