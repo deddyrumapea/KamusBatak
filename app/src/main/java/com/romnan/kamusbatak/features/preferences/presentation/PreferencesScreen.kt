@@ -18,6 +18,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
+import com.romnan.kamusbatak.core.presentation.util.asString
 import kotlinx.coroutines.flow.collectLatest
 
 @Destination
@@ -34,9 +35,8 @@ fun PreferencesScreen(
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UIEvent.ShowSnackbar -> {
-                    // TODO: find another way to display this
                     scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.message
+                        message = event.uiText.asString(context)
                     )
                 }
             }
@@ -55,7 +55,7 @@ fun PreferencesScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back)
+                            contentDescription = stringResource(id = R.string.cd_nav_back)
                         )
                     }
 
@@ -109,7 +109,7 @@ fun PreferencesScreen(
                             state.lastUpdated.isNullOrEmpty() ->
                                 stringResource(R.string.data_never_downloaded)
 
-                            else -> context.getString(R.string.last_updated, state.lastUpdated)
+                            else -> context.getString(R.string.format_last_updated, state.lastUpdated)
                         },
                         style = MaterialTheme.typography.caption
                     )

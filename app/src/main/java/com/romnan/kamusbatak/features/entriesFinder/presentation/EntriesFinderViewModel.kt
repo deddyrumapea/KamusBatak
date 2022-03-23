@@ -4,10 +4,12 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
+import com.romnan.kamusbatak.core.util.Resource
+import com.romnan.kamusbatak.core.util.UIText
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -109,8 +111,11 @@ class EntriesFinderViewModel @Inject constructor(
                             entries = result.data ?: emptyList(),
                             isLoadingEntries = false
                         )
-                        // TODO: extract string resource
-                        _eventFlow.emit(UIEvent.ShowSnackbar(result.message ?: "Unknown error"))
+                        _eventFlow.emit(
+                            UIEvent.ShowSnackbar(
+                                result.uiText ?: UIText.StringResource(R.string.em_unknown)
+                            )
+                        )
                     }
                 }
             }.launchIn(this)
