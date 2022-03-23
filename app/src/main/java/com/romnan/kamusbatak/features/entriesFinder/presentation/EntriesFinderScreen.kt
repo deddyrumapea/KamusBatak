@@ -31,6 +31,7 @@ import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
 import com.romnan.kamusbatak.features.destinations.EntryDetailScreenDestination
 import com.romnan.kamusbatak.features.destinations.PreferencesScreenDestination
+import com.romnan.kamusbatak.features.entriesFinder.presentation.components.EntryItem
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalAnimationApi::class)
