@@ -2,13 +2,15 @@ package com.romnan.kamusbatak.core.data.repository
 
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
+import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.data.local.CoreDao
 import com.romnan.kamusbatak.core.data.preferences.CorePreferences
 import com.romnan.kamusbatak.core.data.remote.CoreApi
+import com.romnan.kamusbatak.core.data.remote.dto.RemoteEntryDto
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.util.SimpleResource
-import com.romnan.kamusbatak.core.data.remote.dto.RemoteEntryDto
+import com.romnan.kamusbatak.core.util.UIText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
@@ -45,14 +47,14 @@ class OfflineSupportRepositoryImpl(
 
         } catch (e: HttpException) {
             emit(
-                // TODO: extract to string resources
-                Resource.Error(message = "Oops, something went wrong!")
+                Resource.Error(
+                    uiText = UIText.StringResource(R.string.api_http_exception_message)
+                )
             )
         } catch (e: IOException) {
             emit(
                 Resource.Error(
-                    // TODO: extract to string resources
-                    message = "Couldn't reach server. Please check your internet connection."
+                    uiText = UIText.StringResource(R.string.api_io_exception_message)
                 )
             )
         }
