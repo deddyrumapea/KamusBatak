@@ -8,6 +8,5 @@ data class EntriesFinderState(
     val isLoadingEntries: Boolean = false,
     val sourceLanguage: Language = Language.Btk,
     val targetLanguage: Language = Language.Ind,
-    val isOptionsMenuShown: Boolean = false,
-    val isUpdateDialogShown: Boolean = false
+    val isOptionsMenuShown: Boolean = false
 )

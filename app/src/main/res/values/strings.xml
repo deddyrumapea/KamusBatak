@@ -3,18 +3,15 @@
     <string name="enter_words_here">Enter words here</string>
     <string name="swap_languages">Swap languages</string>
     <string name="back">Back</string>
-    <string name="add_to_favorite">Add to favorite</string>
     <string name="share">Share</string>
     <string name="share_intent_type">text/plain</string>
     <string name="share_text_format">%1$s\n%2$s\n\nDownload Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
-    <string name="error_update">Error updating</string>
-    <string name="up_to_date">Up to date</string>
-    <string name="download_description">Save dictionary data for offline support</string>
     <string name="download_dictionary_data">Download dictionary data</string>
-    <string name="downloaded">Downloaded</string>
-    <string name="downloading">Downloading…</string>
-    <string name="download">Download</string>
-    <string name="close">Close</string>
-    <string name="update">Update</string>
     <string name="options">Options</string>
+    <string name="preferences">Preferences</string>
+    <string name="last_updated">Last updated: %1$s</string>
+    <string name="update">Update</string>
+    <string name="update_dictionary_data">Update dictionary data</string>
+    <string name="update_description">Download updates for offline support</string>
+    <string name="data_never_downloaded">Data have never been downloaded</string>
 </resources>

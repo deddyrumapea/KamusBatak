@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import com.ramcosta.composedestinations.DestinationsNavHost
-import com.romnan.kamusbatak.NavGraphs
+import com.romnan.kamusbatak.features.NavGraphs
 import com.romnan.kamusbatak.ui.theme.KamusBatakTheme
 import dagger.hilt.android.AndroidEntryPoint
 

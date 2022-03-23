@@ -8,7 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +25,8 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.model.EntryParcelable
-import com.romnan.kamusbatak.destinations.EntryDetailScreenDestination
+import com.romnan.kamusbatak.features.destinations.EntryDetailScreenDestination
+import com.romnan.kamusbatak.features.destinations.PreferencesScreenDestination
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -33,10 +35,8 @@ import kotlinx.coroutines.flow.collectLatest
 fun EntriesFinderScreen(
     navigator: DestinationsNavigator,
     viewModel: EntriesFinderViewModel = hiltViewModel(),
-    offlineSupportViewModel: OfflineSupportViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    val offlineSupportState = offlineSupportViewModel.state.value
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect(key1 = true) {
@@ -116,14 +116,6 @@ fun EntriesFinderScreen(
                 }
 
                 Box {
-                    IconButton(onClick = {
-                        viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(true))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.options)
-                        )
-                    }
                     DropdownMenu(
                         expanded = state.isOptionsMenuShown,
                         onDismissRequest = {
@@ -131,10 +123,10 @@ fun EntriesFinderScreen(
                         }
                     ) {
                         DropdownMenuItem(onClick = {
-                            viewModel.onEvent(EntriesFinderEvent.SetShowUpdateDialog(true))
                             viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(false))
+                            navigator.navigate(PreferencesScreenDestination())
                         }) {
-                            Text(text = stringResource(R.string.update))
+                            Text(text = stringResource(id = R.string.preferences))
                         }
                     }
                 }
@@ -190,64 +182,6 @@ fun EntriesFinderScreen(
                     }
                 }
             }
-        }
-        if (state.isUpdateDialogShown) {
-            AlertDialog(
-                onDismissRequest = { viewModel.onEvent(EntriesFinderEvent.SetShowUpdateDialog(false)) },
-                title = { Text(text = stringResource(R.string.download_dictionary_data)) },
-                text = {
-                    Column {
-                        Text(text = stringResource(R.string.download_description))
-                        Text(text = "Last update: ${offlineSupportState.lastUpdated}")
-                    }
-                },
-                buttons = {
-                    Column(
-                        modifier = Modifier.padding(8.dp),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                if (!offlineSupportState.isUpToDate && !offlineSupportState.isUpdating) {
-                                    offlineSupportViewModel.onEvent(OfflineSupportEvent.DownloadUpdate)
-                                }
-                            },
-                            enabled = !offlineSupportState.isUpToDate && !offlineSupportState.isUpdating
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = when {
-                                        offlineSupportState.isUpToDate -> Icons.Default.DownloadDone
-                                        offlineSupportState.isUpdating -> Icons.Default.Downloading
-                                        else -> Icons.Default.Download
-                                    },
-                                    contentDescription = stringResource(R.string.download)
-                                )
-
-                                Text(
-                                    text = when {
-                                        offlineSupportState.isUpToDate -> stringResource(R.string.downloaded)
-                                        offlineSupportState.isUpdating -> stringResource(R.string.downloading)
-                                        else -> stringResource(R.string.download)
-                                    }
-                                )
-                            }
-                        }
-
-                        Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                viewModel.onEvent(
-                                    EntriesFinderEvent.SetShowUpdateDialog(false)
-                                )
-                            }
-                        ) {
-                            Text(text = stringResource(R.string.close))
-                        }
-                    }
-                }
-            )
         }
     }
 }

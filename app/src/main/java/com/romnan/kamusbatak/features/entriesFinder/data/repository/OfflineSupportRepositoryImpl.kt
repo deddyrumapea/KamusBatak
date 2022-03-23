@@ -1,12 +1,12 @@
 package com.romnan.kamusbatak.features.entriesFinder.data.repository
 
 import com.romnan.kamusbatak.core.data.local.CoreDao
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.domain.repository.PreferencesRepository
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.util.SimpleResource
 import com.romnan.kamusbatak.features.entriesFinder.data.remote.EntriesFinderApi
 import com.romnan.kamusbatak.features.entriesFinder.data.remote.dto.RemoteEntryDto
-import com.romnan.kamusbatak.features.entriesFinder.domain.repository.OfflineSupportRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow

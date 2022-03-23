@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.features.entriesFinder.domain.repository.OfflineSupportRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EntriesFinderViewModel @Inject constructor(
-    private val repository: EntriesFinderRepository
+    private val repository: EntriesFinderRepository,
+    private val offlineSupportRepository: OfflineSupportRepository
 ) : ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -31,6 +33,11 @@ class EntriesFinderViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var searchJob: Job? = null
+    private var downloadUpdateJob: Job? = null
+
+    init {
+        downloadUpdate()
+    }
 
     fun onEvent(event: EntriesFinderEvent) {
         when (event) {
@@ -43,15 +50,17 @@ class EntriesFinderViewModel @Inject constructor(
                 swapLanguage()
                 fetchEntries()
             }
+            is EntriesFinderEvent.SetShowOptionsMenu -> _state.value =
+                state.value.copy(isOptionsMenuShown = event.show)
+        }
+    }
 
-            is EntriesFinderEvent.SetShowUpdateDialog -> _state.value =
-                state.value.copy(
-                    isUpdateDialogShown = event.show
-                )
-
-            is EntriesFinderEvent.SetShowOptionsMenu -> _state.value = state.value.copy(
-                isOptionsMenuShown = event.show
-            )
+    private fun downloadUpdate() {
+        downloadUpdateJob?.cancel()
+        downloadUpdateJob = viewModelScope.launch {
+            offlineSupportRepository
+                .downloadUpdate()
+                .launchIn(this)
         }
     }
 

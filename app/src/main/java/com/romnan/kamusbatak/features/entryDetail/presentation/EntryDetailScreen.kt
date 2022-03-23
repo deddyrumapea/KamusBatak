@@ -25,8 +25,9 @@ fun EntryDetailScreen(
     entry: EntryParcelable
 ) {
     val context = LocalContext.current
+    val scaffoldState = rememberScaffoldState()
 
-    Scaffold {
+    Scaffold(scaffoldState = scaffoldState) {
         Column(modifier = Modifier.fillMaxSize()) {
             TopAppBar(backgroundColor = MaterialTheme.colors.primary) {
                 Row(

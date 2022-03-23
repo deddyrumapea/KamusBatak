@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.features.entriesFinder.presentation
+package com.romnan.kamusbatak.features.preferences.presentation
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -12,10 +12,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class OfflineSupportViewModel @Inject constructor(
+class PreferencesViewModel @Inject constructor(
     private val repository: OfflineSupportRepository,
     private val prefRepository: PreferencesRepository
 ) : ViewModel() {
@@ -31,9 +33,9 @@ class OfflineSupportViewModel @Inject constructor(
         getLastUpdated()
     }
 
-    fun onEvent(event: OfflineSupportEvent) {
+    fun onEvent(event: PreferencesEvent) {
         when (event) {
-            is OfflineSupportEvent.DownloadUpdate -> {
+            is PreferencesEvent.DownloadUpdate -> {
                 downloadUpdate()
                 getLastUpdated()
             }
@@ -45,11 +47,16 @@ class OfflineSupportViewModel @Inject constructor(
         getLastUpdatedJob?.cancel()
         getLastUpdatedJob = viewModelScope.launch {
             prefRepository.getLastOfflineSupportUpdatedAt().onEach {
-                _state.value = state.value.copy(lastUpdated = it)
+                it?.let {
+                    val sdf = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault())
+                    val date = Date()
+                    date.time = it
+
+                    _state.value = state.value.copy(lastUpdated = sdf.format(date))
+                }
             }.launchIn(this)
         }
     }
-
 
     private fun downloadUpdate() {
         downloadUpdateJob?.cancel()
@@ -81,5 +88,4 @@ class OfflineSupportViewModel @Inject constructor(
             }.launchIn(this)
         }
     }
-
 }
