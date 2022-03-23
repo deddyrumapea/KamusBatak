@@ -75,7 +75,7 @@ class PreferencesViewModel @Inject constructor(
                         _state.value = state.value.copy(isUpdating = false)
                         _eventFlow.emit(
                             UIEvent.ShowSnackbar(
-                                result.uiText ?: UIText.StringResource(R.string.unknown_error)
+                                result.uiText ?: UIText.StringResource(R.string.em_unknown)
                             )
                         )
                     }

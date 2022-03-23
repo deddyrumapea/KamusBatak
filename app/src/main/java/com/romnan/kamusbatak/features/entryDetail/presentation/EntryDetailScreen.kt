@@ -40,7 +40,7 @@ fun EntryDetailScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back)
+                            contentDescription = stringResource(id = R.string.cd_nav_back)
                         )
                     }
 
@@ -54,13 +54,13 @@ fun EntryDetailScreen(
 //                        }
                         IconButton(onClick = {
                             val text = context.getString(
-                                R.string.share_text_format,
+                                R.string.format_share_message,
                                 entry.word,
                                 entry.meaning
                             )
 
                             val intent = Intent(Intent.ACTION_SEND).apply {
-                                type = context.getString(R.string.share_intent_type)
+                                type = context.getString(R.string.util_share_intent_type)
                                 putExtra(Intent.EXTRA_TEXT, text)
                             }
 
@@ -68,7 +68,7 @@ fun EntryDetailScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
-                                contentDescription = stringResource(R.string.share)
+                                contentDescription = stringResource(R.string.cd_share)
                             )
                         }
                     }

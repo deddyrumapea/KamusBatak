@@ -90,7 +90,7 @@ fun EntriesFinderScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.SwapHoriz,
-                            contentDescription = stringResource(id = R.string.swap_languages)
+                            contentDescription = stringResource(id = R.string.cd_swap_languages)
                         )
                     }
                     AnimatedContent(
@@ -116,7 +116,7 @@ fun EntriesFinderScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.options)
+                            contentDescription = stringResource(R.string.cd_options)
                         )
                     }
                 }
@@ -144,10 +144,10 @@ fun EntriesFinderScreen(
             TextField(
                 singleLine = true,
                 value = viewModel.searchQuery.value,
-                placeholder = { Text(text = stringResource(R.string.enter_words_here)) },
+                placeholder = { Text(text = stringResource(R.string.ph_enter_words_here)) },
                 onValueChange = { viewModel.onEvent(EntriesFinderEvent.QueryChange(it)) },
                 trailingIcon = {
-                    Icon(Icons.Default.Search, stringResource(R.string.enter_words_here))
+                    Icon(Icons.Default.Search, stringResource(R.string.ph_enter_words_here))
                 },
                 shape = RoundedCornerShape(8.dp, 8.dp, bottomCorRad, bottomCorRad),
                 colors = TextFieldDefaults.textFieldColors(

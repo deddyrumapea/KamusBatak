@@ -44,7 +44,7 @@ class EntriesFinderRepositoryImpl(
                     Resource.Success(localEntries)
                 } else {
                     Resource.Error(
-                        uiText = UIText.StringResource(R.string.api_http_exception_message)
+                        uiText = UIText.StringResource(R.string.em_http_exception)
                     )
                 }
             )
@@ -54,7 +54,7 @@ class EntriesFinderRepositoryImpl(
                     Resource.Success(localEntries)
                 } else {
                     Resource.Error(
-                        uiText = UIText.StringResource(R.string.api_io_exception_message),
+                        uiText = UIText.StringResource(R.string.em_io_exception),
                         data = localEntries
                     )
                 }

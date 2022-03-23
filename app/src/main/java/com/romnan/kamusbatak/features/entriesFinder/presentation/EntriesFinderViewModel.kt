@@ -113,7 +113,7 @@ class EntriesFinderViewModel @Inject constructor(
                         )
                         _eventFlow.emit(
                             UIEvent.ShowSnackbar(
-                                result.uiText ?: UIText.StringResource(R.string.unknown_error)
+                                result.uiText ?: UIText.StringResource(R.string.em_unknown)
                             )
                         )
                     }
