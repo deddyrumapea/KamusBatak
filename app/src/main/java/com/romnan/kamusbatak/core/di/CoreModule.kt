@@ -4,9 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.romnan.kamusbatak.core.data.local.CoreDatabase
+import com.romnan.kamusbatak.core.data.preferences.CorePreferences
+import com.romnan.kamusbatak.core.data.remote.CoreApi
 import com.romnan.kamusbatak.core.data.remote.CoreApiInfo
-import com.romnan.kamusbatak.core.data.repository.PreferencesRepositoryImpl
-import com.romnan.kamusbatak.core.domain.repository.PreferencesRepository
+import com.romnan.kamusbatak.core.data.repository.OfflineSupportRepositoryImpl
+import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +23,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class CoreModule {
+    @Provides
+    @Singleton
+    fun provideCoreApi(coreRetrofit: Retrofit): CoreApi {
+        return coreRetrofit.create(CoreApi::class.java)
+    }
+
     @Provides
     @Singleton
     fun provideCoreDatabase(app: Application): CoreDatabase {
@@ -62,9 +70,23 @@ class CoreModule {
 
     @Provides
     @Singleton
-    fun providePreferencesRepository(
-        @ApplicationContext context: Context
-    ): PreferencesRepository {
-        return PreferencesRepositoryImpl(context)
+    fun provideCorePreferences(
+        @ApplicationContext appContext: Context
+    ): CorePreferences {
+        return CorePreferences(appContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOfflineSupportRepository(
+        coreApi: CoreApi,
+        coreDb: CoreDatabase,
+        corePref: CorePreferences
+    ): OfflineSupportRepository {
+        return OfflineSupportRepositoryImpl(
+            coreApi = coreApi,
+            coreDao = coreDb.dao,
+            corePref = corePref
+        )
     }
 }

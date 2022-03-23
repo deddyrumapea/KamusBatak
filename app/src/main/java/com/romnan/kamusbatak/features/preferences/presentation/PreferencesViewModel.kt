@@ -4,9 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.romnan.kamusbatak.core.domain.repository.PreferencesRepository
+import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.features.entriesFinder.domain.repository.OfflineSupportRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -18,8 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreferencesViewModel @Inject constructor(
-    private val repository: OfflineSupportRepository,
-    private val prefRepository: PreferencesRepository
+    private val offlineSupportRepository: OfflineSupportRepository
 ) : ViewModel() {
 
     private val _state = mutableStateOf(OfflineSupportState())
@@ -46,7 +44,7 @@ class PreferencesViewModel @Inject constructor(
     private fun getLastUpdated() {
         getLastUpdatedJob?.cancel()
         getLastUpdatedJob = viewModelScope.launch {
-            prefRepository.getLastOfflineSupportUpdatedAt().onEach {
+            offlineSupportRepository.getLastUpdatedAt().onEach {
                 it?.let {
                     val sdf = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault())
                     val date = Date()
@@ -61,7 +59,7 @@ class PreferencesViewModel @Inject constructor(
     private fun downloadUpdate() {
         downloadUpdateJob?.cancel()
         downloadUpdateJob = viewModelScope.launch {
-            repository.downloadUpdate().onEach { result ->
+            offlineSupportRepository.downloadUpdate().onEach { result ->
                 when (result) {
                     is Resource.Success -> {
                         _state.value = state.value.copy(

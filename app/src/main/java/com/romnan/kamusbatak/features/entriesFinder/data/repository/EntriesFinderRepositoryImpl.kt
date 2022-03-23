@@ -4,17 +4,17 @@ import com.romnan.kamusbatak.core.data.local.CoreDao
 import com.romnan.kamusbatak.core.domain.model.Entry
 import com.romnan.kamusbatak.core.util.Language
 import com.romnan.kamusbatak.core.util.Resource
-import com.romnan.kamusbatak.features.entriesFinder.data.remote.EntriesFinderApi
-import com.romnan.kamusbatak.features.entriesFinder.data.remote.dto.RemoteEntryDto
+import com.romnan.kamusbatak.core.data.remote.CoreApi
+import com.romnan.kamusbatak.core.data.remote.dto.RemoteEntryDto
 import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
-import com.romnan.kamusbatak.features.entriesFinder.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
 class EntriesFinderRepositoryImpl(
-    private val api: EntriesFinderApi,
+    private val coreApi: CoreApi,
     private val coreDao: CoreDao,
     private val offlineSupportRepository: OfflineSupportRepository
 ) : EntriesFinderRepository {
@@ -86,6 +86,6 @@ class EntriesFinderRepositoryImpl(
             RemoteEntryDto.Field.WORD to "like.$keyword",
             RemoteEntryDto.Field.SRC_LANG to "eq.${srcLang.codename}"
         )
-        return api.getEntries(params = params)
+        return coreApi.getEntries(params = params)
     }
 }
