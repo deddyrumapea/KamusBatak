@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
+import com.romnan.kamusbatak.core.util.Constants
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.util.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,12 +53,10 @@ class PreferencesViewModel @Inject constructor(
     private fun getLastUpdated() {
         getLastUpdatedJob?.cancel()
         getLastUpdatedJob = viewModelScope.launch {
-            offlineSupportRepository.getLastUpdatedAt().onEach {
-                it?.let {
-                    val sdf = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.getDefault())
-                    val date = Date()
-                    date.time = it
-
+            offlineSupportRepository.getLastUpdatedAt().onEach { timeInMillis ->
+                timeInMillis?.let {
+                    val sdf = SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault())
+                    val date = Date().apply { this.time = timeInMillis }
                     _state.value = state.value.copy(lastUpdated = sdf.format(date))
                 }
             }.launchIn(this)

@@ -17,6 +17,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.model.EntryParcelable
+import com.romnan.kamusbatak.core.util.Constants
 
 @Destination
 @Composable
@@ -60,7 +61,7 @@ fun EntryDetailScreen(
                             )
 
                             val intent = Intent(Intent.ACTION_SEND).apply {
-                                type = context.getString(R.string.util_share_intent_type)
+                                type = Constants.INTENT_TYPE_PLAIN_TEXT
                                 putExtra(Intent.EXTRA_TEXT, text)
                             }
 

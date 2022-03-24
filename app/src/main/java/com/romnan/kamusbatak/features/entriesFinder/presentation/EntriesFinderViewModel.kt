@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
+import com.romnan.kamusbatak.core.util.Constants
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.util.UIText
 import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
@@ -88,7 +89,7 @@ class EntriesFinderViewModel @Inject constructor(
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(500L)
+            delay(Constants.DURATION_SEARCH_DELAY)
             repository.getEntries(
                 keyword = searchQuery.value,
                 srcLang = state.value.sourceLanguage

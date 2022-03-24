@@ -4,7 +4,6 @@
     <string name="cd_swap_languages">Swap languages</string>
     <string name="cd_nav_back">Back</string>
     <string name="cd_share">Share</string>
-    <string name="util_share_intent_type" translatable="false">text/plain</string>
     <string name="format_share_message">%1$s\n%2$s\n\nDownload Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="download_dictionary_data">Download dictionary data</string>
     <string name="cd_options">Options</string>
