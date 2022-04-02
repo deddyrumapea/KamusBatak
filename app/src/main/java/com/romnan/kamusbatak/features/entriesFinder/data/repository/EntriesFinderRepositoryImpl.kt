@@ -25,6 +25,11 @@ class EntriesFinderRepositoryImpl(
         keyword: String,
         srcLang: Language
     ): Flow<Resource<List<Entry>>> = flow {
+        if (keyword.isBlank()) {
+            emit(Resource.Success(null))
+            return@flow
+        }
+
         emit(Resource.Loading(data = emptyList()))
 
         val formattedKeyword = when (keyword.length) {
