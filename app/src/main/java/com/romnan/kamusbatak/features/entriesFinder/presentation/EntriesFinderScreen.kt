@@ -69,7 +69,7 @@ fun EntriesFinderScreen(
                 ) {
                     Spacer(modifier = Modifier.width(48.dp))
                     AnimatedContent(
-                        targetState = state.targetLanguage.fullName,
+                        targetState = state.targetLanguage.displayName,
                         modifier = Modifier.weight(1f),
                         transitionSpec = {
                             slideIntoContainer(
@@ -80,7 +80,7 @@ fun EntriesFinderScreen(
                         }
                     ) {
                         Text(
-                            text = state.sourceLanguage.fullName,
+                            text = state.sourceLanguage.displayName.asString(),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.h6
                         )
@@ -95,7 +95,7 @@ fun EntriesFinderScreen(
                         )
                     }
                     AnimatedContent(
-                        targetState = state.targetLanguage.fullName,
+                        targetState = state.targetLanguage.displayName,
                         modifier = Modifier.weight(1f),
                         transitionSpec = {
                             slideIntoContainer(
@@ -106,7 +106,7 @@ fun EntriesFinderScreen(
                         }
                     ) {
                         Text(
-                            text = state.targetLanguage.fullName,
+                            text = state.targetLanguage.displayName.asString(),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.h6
                         )

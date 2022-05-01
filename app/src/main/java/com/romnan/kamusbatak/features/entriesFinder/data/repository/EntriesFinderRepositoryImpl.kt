@@ -6,7 +6,7 @@ import com.romnan.kamusbatak.core.data.remote.CoreApi
 import com.romnan.kamusbatak.core.data.remote.dto.RemoteEntryDto
 import com.romnan.kamusbatak.core.domain.model.Entry
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
-import com.romnan.kamusbatak.core.util.Language
+import com.romnan.kamusbatak.core.domain.model.Language
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.util.UIText
 import com.romnan.kamusbatak.features.entriesFinder.domain.repository.EntriesFinderRepository
@@ -77,7 +77,7 @@ class EntriesFinderRepositoryImpl(
         return coreDao
             .getCachedEntries(
                 keyword = keyword,
-                srcLang = srcLang.codename
+                srcLang = srcLang.codeName
             )
             .map { it.toEntry() }
     }
@@ -88,7 +88,7 @@ class EntriesFinderRepositoryImpl(
     ): List<RemoteEntryDto> {
         val params = mapOf(
             RemoteEntryDto.Field.WORD to "like.$keyword",
-            RemoteEntryDto.Field.SRC_LANG to "eq.${srcLang.codename}"
+            RemoteEntryDto.Field.SRC_LANG to "eq.${srcLang.codeName}"
         )
         return coreApi.getEntries(params = params)
     }

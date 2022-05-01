@@ -17,4 +17,6 @@
     <string name="em_http_exception">Terjadi error</string>
     <string name="em_unknown">Error tidak diketahui</string>
     <string name="format_share_message">%1$s\n%2$s\n\nUnduh aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="indonesia">Indonesia</string>
+    <string name="batak">Batak</string>
 </resources>
