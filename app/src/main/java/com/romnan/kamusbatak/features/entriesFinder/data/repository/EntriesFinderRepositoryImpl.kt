@@ -25,7 +25,7 @@ class EntriesFinderRepositoryImpl(
         keyword: String,
         srcLang: Language
     ): Flow<Resource<List<Entry>>> = flow {
-        if (keyword.isBlank()) {
+        if (keyword.isBlank() || !keyword.all { it.isLetterOrDigit() }) {
             emit(Resource.Success(null))
             return@flow
         }
