@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.model.EntryParcelable
@@ -38,7 +39,8 @@ import com.romnan.kamusbatak.featEntriesFinder.presentation.components.EntryItem
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalAnimationApi::class)
-@Destination(start = true)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun EntriesFinderScreen(
     navigator: DestinationsNavigator,
