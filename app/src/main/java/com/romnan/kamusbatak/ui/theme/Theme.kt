@@ -5,38 +5,53 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-
-private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
-)
+import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
+    primary = Red800,
+    primaryVariant = Red600,
     onPrimary = Color.White,
+
+    secondary = Teal300,
+    secondaryVariant = Teal700,
     onSecondary = Color.Black,
+
+    background = BlueGray50,
     onBackground = Color.Black,
+
+    surface = Color.White,
     onSurface = Color.Black,
-    */
+)
+
+private val DarkColorPalette = darkColors(
+    primary = Red900,
+    primaryVariant = Color.White,
+    onPrimary = Color.White,
+
+    secondary = Teal700,
+    onSecondary = Color.White,
+
+    background = Color.Black,
+    onBackground = Color.White,
+
+    surface = AlmostBlack,
+    onSurface = Color.White
 )
 
 @Composable
-fun KamusBatakTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+fun KamusBatakTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(
+        if (darkTheme) Color.Black
+        else DarkColorPalette.primary
+    )
 
     MaterialTheme(
-        colors = colors,
+        colors = if (darkTheme) DarkColorPalette else LightColorPalette,
         typography = Typography,
         shapes = Shapes,
         content = content

@@ -23,10 +23,7 @@ fun EntryItem(
     Row(
         verticalAlignment = Alignment.Top,
         modifier = modifier
-            .padding(
-                vertical = 8.dp,
-                horizontal = 16.dp
-            )
+            .padding(vertical = 8.dp, horizontal = 16.dp)
             .fillMaxWidth()
     ) {
 

@@ -14,8 +14,7 @@
         android:theme="@style/Theme.KamusBatak">
         <activity
             android:name=".core.presentation.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.KamusBatak">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
