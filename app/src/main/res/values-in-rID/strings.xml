@@ -19,4 +19,5 @@
     <string name="format_share_message">%1$s\n%2$s\n\nUnduh aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="indonesia">Indonesia</string>
     <string name="batak">Batak</string>
+    <string name="menu">Menu</string>
 </resources>
