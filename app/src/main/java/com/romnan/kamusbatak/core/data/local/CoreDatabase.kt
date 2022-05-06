@@ -6,7 +6,8 @@ import com.romnan.kamusbatak.core.data.local.entity.CachedEntryEntity
 
 @Database(
     entities = [CachedEntryEntity::class],
-    version = 2
+    version = 2,
+    exportSchema = false,
 )
 abstract class CoreDatabase : RoomDatabase() {
     abstract val dao: CoreDao
