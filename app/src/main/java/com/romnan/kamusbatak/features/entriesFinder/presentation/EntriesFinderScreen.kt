@@ -2,12 +2,15 @@ package com.romnan.kamusbatak.features.entriesFinder.presentation
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.SwapHoriz
@@ -60,14 +63,27 @@ fun EntriesFinderScreen(
     }
 
     Scaffold(scaffoldState = scaffoldState) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            TopAppBar(backgroundColor = MaterialTheme.colors.primary) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+        ) {
+            TopAppBar(backgroundColor = MaterialTheme.colors.surface) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Spacer(modifier = Modifier.width(48.dp))
+                    IconButton(onClick = {
+                        // TODO: implement menu
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = stringResource(R.string.menu),
+                            tint = MaterialTheme.colors.onSurface
+                        )
+                    }
+
                     AnimatedContent(
                         targetState = state.targetLanguage.displayName,
                         modifier = Modifier.weight(1f),
@@ -82,18 +98,24 @@ fun EntriesFinderScreen(
                         Text(
                             text = state.sourceLanguage.displayName.asString(),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.h6
+                            style = MaterialTheme.typography.h6,
+                            color = MaterialTheme.colors.onSurface
                         )
                     }
-                    IconButton(onClick = {
-                        viewModel.onEvent(EntriesFinderEvent.LanguagesSwap)
-                    }
+
+                    IconButton(
+                        onClick = { viewModel.onEvent(EntriesFinderEvent.LanguagesSwap) },
+                        modifier = Modifier
+                            .background(color = MaterialTheme.colors.primary, shape = CircleShape)
+                            .size(36.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.SwapHoriz,
-                            contentDescription = stringResource(id = R.string.cd_swap_languages)
+                            contentDescription = stringResource(id = R.string.cd_swap_languages),
+                            tint = MaterialTheme.colors.onPrimary,
                         )
                     }
+
                     AnimatedContent(
                         targetState = state.targetLanguage.displayName,
                         modifier = Modifier.weight(1f),
@@ -108,7 +130,8 @@ fun EntriesFinderScreen(
                         Text(
                             text = state.targetLanguage.displayName.asString(),
                             textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.h6
+                            style = MaterialTheme.typography.h6,
+                            color = MaterialTheme.colors.onSurface
                         )
                     }
 
@@ -117,7 +140,8 @@ fun EntriesFinderScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.cd_options)
+                            contentDescription = stringResource(R.string.cd_options),
+                            tint = MaterialTheme.colors.onSurface
                         )
                     }
                 }
@@ -153,7 +177,8 @@ fun EntriesFinderScreen(
                 shape = RoundedCornerShape(8.dp, 8.dp, bottomCorRad, bottomCorRad),
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
+                    unfocusedIndicatorColor = Color.Transparent,
+                    backgroundColor = MaterialTheme.colors.surface
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -171,19 +196,23 @@ fun EntriesFinderScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             AnimatedVisibility(visible = state.entries.isNotEmpty()) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colors.surface)
+                ) {
                     items(state.entries.size) { i ->
                         val entry = state.entries[i]
 
+                        if (i == 0) Spacer(modifier = Modifier.height(8.dp))
+
                         EntryItem(entry = entry, modifier = Modifier.clickable {
                             navigator.navigate(
-                                EntryDetailScreenDestination(
-                                    entry = EntryParcelable(entry)
-                                )
+                                EntryDetailScreenDestination(entry = EntryParcelable(entry))
                             )
                         })
 
-                        if (i < state.entries.size - 1) Divider(
+                        if (i != state.entries.lastIndex) Divider(
                             modifier = Modifier.padding(horizontal = 8.dp)
                         )
                     }
