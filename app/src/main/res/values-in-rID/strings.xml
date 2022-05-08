@@ -20,4 +20,7 @@
     <string name="indonesia">Indonesia</string>
     <string name="batak">Batak</string>
     <string name="menu">Menu</string>
+    <string name="download_kamus_batak">Download aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="share_this_app">Bagikan aplikasi ini</string>
+    <string name="dictionary">Kamus</string>
 </resources>

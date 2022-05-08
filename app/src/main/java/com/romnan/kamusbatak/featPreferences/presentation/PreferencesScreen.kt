@@ -55,13 +55,15 @@ fun PreferencesScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.cd_nav_back)
+                            contentDescription = stringResource(id = R.string.cd_nav_back),
+                            tint = MaterialTheme.colors.onPrimary
                         )
                     }
 
                     Text(
                         text = stringResource(R.string.preferences),
-                        style = MaterialTheme.typography.h6
+                        style = MaterialTheme.typography.h6,
+                        color = MaterialTheme.colors.onPrimary
                     )
                 }
             }
@@ -109,7 +111,10 @@ fun PreferencesScreen(
                             state.lastUpdated.isNullOrEmpty() ->
                                 stringResource(R.string.data_never_downloaded)
 
-                            else -> context.getString(R.string.format_last_updated, state.lastUpdated)
+                            else -> context.getString(
+                                R.string.format_last_updated,
+                                state.lastUpdated
+                            )
                         },
                         style = MaterialTheme.typography.caption
                     )
