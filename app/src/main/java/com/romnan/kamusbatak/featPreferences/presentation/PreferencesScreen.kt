@@ -1,5 +1,6 @@
 package com.romnan.kamusbatak.featPreferences.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -56,14 +57,14 @@ fun PreferencesScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = stringResource(id = R.string.cd_nav_back),
-                            tint = MaterialTheme.colors.onPrimary
+                            tint = MaterialTheme.colors.onPrimary,
                         )
                     }
 
                     Text(
                         text = stringResource(R.string.preferences),
                         style = MaterialTheme.typography.h6,
-                        color = MaterialTheme.colors.onPrimary
+                        color = MaterialTheme.colors.onPrimary,
                     )
                 }
             }
@@ -72,6 +73,7 @@ fun PreferencesScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
+                    .background(MaterialTheme.colors.surface)
                     .clickable { viewModel.onEvent(PreferencesEvent.DownloadUpdate) }
                     .padding(16.dp)
                     .fillMaxWidth()
@@ -83,7 +85,8 @@ fun PreferencesScreen(
                         Icon(
                             imageVector = Icons.Default.Sync,
                             contentDescription = stringResource(R.string.update),
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(36.dp),
+                            tint = MaterialTheme.colors.onSurface
                         )
                     }
                 }
@@ -99,11 +102,13 @@ fun PreferencesScreen(
                             else -> stringResource(R.string.update_dictionary_data)
                         },
                         style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onSurface
                     )
 
                     Text(
                         text = stringResource(R.string.update_description),
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onSurface,
                     )
 
                     Text(
@@ -116,7 +121,8 @@ fun PreferencesScreen(
                                 state.lastUpdated
                             )
                         },
-                        style = MaterialTheme.typography.caption
+                        style = MaterialTheme.typography.caption,
+                        color = MaterialTheme.colors.onSurface,
                     )
                 }
             }

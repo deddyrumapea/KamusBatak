@@ -1,6 +1,7 @@
 package com.romnan.kamusbatak.featEntryDetail.presentation
 
 import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -29,7 +30,11 @@ fun EntryDetailScreen(
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(scaffoldState = scaffoldState) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.surface)
+        ) {
             TopAppBar(backgroundColor = MaterialTheme.colors.primary) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -41,18 +46,12 @@ fun EntryDetailScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.cd_nav_back)
+                            contentDescription = stringResource(id = R.string.cd_nav_back),
+                            tint = MaterialTheme.colors.onPrimary
                         )
                     }
 
                     Row {
-                        // TODO: implement favorite feature
-//                        IconButton(onClick = {  }) {
-//                            Icon(
-//                                imageVector = Icons.Default.FavoriteBorder,
-//                                contentDescription = stringResource(R.string.add_to_favorite)
-//                            )
-//                        }
                         IconButton(onClick = {
                             val text = context.getString(
                                 R.string.format_share_message,
@@ -69,7 +68,8 @@ fun EntryDetailScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Share,
-                                contentDescription = stringResource(R.string.cd_share)
+                                contentDescription = stringResource(R.string.cd_share),
+                                tint = MaterialTheme.colors.onPrimary,
                             )
                         }
                     }
@@ -82,7 +82,8 @@ fun EntryDetailScreen(
                 text = entry.word,
                 style = MaterialTheme.typography.h6
                     .copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = MaterialTheme.colors.onSurface,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -90,7 +91,8 @@ fun EntryDetailScreen(
             Text(
                 text = entry.meaning,
                 style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
+                color = MaterialTheme.colors.onSurface,
             )
         }
     }
