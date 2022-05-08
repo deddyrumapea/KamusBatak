@@ -1,5 +1,6 @@
 package com.romnan.kamusbatak.featEntriesFinder.presentation
 
+import android.content.Intent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -13,10 +14,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,10 +36,13 @@ import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.model.EntryParcelable
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
+import com.romnan.kamusbatak.core.util.Constants
 import com.romnan.kamusbatak.destinations.EntryDetailScreenDestination
 import com.romnan.kamusbatak.destinations.PreferencesScreenDestination
 import com.romnan.kamusbatak.featEntriesFinder.presentation.components.EntryItem
+import com.romnan.kamusbatak.featEntriesFinder.presentation.components.NavigationDrawerItem
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
 @RootNavGraph(start = true)
@@ -47,7 +53,10 @@ fun EntriesFinderScreen(
     viewModel: EntriesFinderViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.value
+
     val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
@@ -64,7 +73,47 @@ fun EntriesFinderScreen(
         }
     }
 
-    Scaffold(scaffoldState = scaffoldState) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            Column(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.surface)
+                    .fillMaxSize()
+                    .padding(top = 16.dp, end = 16.dp, bottom = 16.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.app_name),
+                        color = MaterialTheme.colors.onSurface,
+                        style = MaterialTheme.typography.h6,
+                    )
+                }
+
+                Divider(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp))
+
+                NavigationDrawerItem(
+                    icon = Icons.Default.Search,
+                    label = stringResource(R.string.dictionary),
+                    selected = true
+                ) {
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                }
+
+                NavigationDrawerItem(
+                    icon = Icons.Default.Settings,
+                    label = stringResource(id = R.string.preferences)
+                ) {
+                    coroutineScope.launch { scaffoldState.drawerState.close() }
+                    navigator.navigate(PreferencesScreenDestination)
+                }
+            }
+        }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -77,7 +126,7 @@ fun EntriesFinderScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     IconButton(onClick = {
-                        // TODO: implement menu
+                        coroutineScope.launch { scaffoldState.drawerState.open() }
                     }) {
                         Icon(
                             imageVector = Icons.Default.Menu,
@@ -157,9 +206,18 @@ fun EntriesFinderScreen(
                     ) {
                         DropdownMenuItem(onClick = {
                             viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(false))
-                            navigator.navigate(PreferencesScreenDestination())
+
+                            val intent = Intent(Intent.ACTION_SEND).apply {
+                                type = Constants.INTENT_TYPE_PLAIN_TEXT
+                                putExtra(
+                                    Intent.EXTRA_TEXT,
+                                    context.getString(R.string.download_kamus_batak)
+                                )
+                            }
+
+                            context.startActivity(intent)
                         }) {
-                            Text(text = stringResource(id = R.string.preferences))
+                            Text(text = stringResource(R.string.share_this_app))
                         }
                     }
                 }
