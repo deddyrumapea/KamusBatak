@@ -101,7 +101,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
     // Coroutines
-    def coroutines_version = "1.6.0"
+    def coroutines_version = "1.6.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
@@ -143,4 +143,8 @@ dependencies {
     // Accompanist
     def accompanist_version = "0.17.0"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
+    // SQLCipher
+    def sqlcipher_version = "4.5.0"
+    implementation "net.zetetic:android-database-sqlcipher:$sqlcipher_version"
 }
