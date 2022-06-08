@@ -117,3 +117,8 @@
 ###----- BEGIN DataStore -----
 #-keep class androidx.datastore.*.** {*;}
 ###----- END DataStore -----
+
+###----- BEGIN SQLCipher -----
+-keep,includedescriptorclasses class net.sqlcipher.** { *; }
+-keep,includedescriptorclasses interface net.sqlcipher.** { *; }
+###----- END SQLCipher -----

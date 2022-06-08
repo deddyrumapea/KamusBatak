@@ -1,6 +1,6 @@
-package com.romnan.kamusbatak.core.data.remote
+package com.romnan.kamusbatak.application
 
-object CoreApiInfo {
+object SecretValues {
     init {
         System.loadLibrary("native-lib")
     }
@@ -8,4 +8,5 @@ object CoreApiInfo {
     external fun baseUrl(): String
     external fun keyValue(): String
     external fun keyParam(): String
+    external fun dbPassphrase(): String
 }
