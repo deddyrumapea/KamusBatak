@@ -2,11 +2,12 @@ package com.romnan.kamusbatak.featEntriesFinder.data.repository
 
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.data.local.CoreDao
+import com.romnan.kamusbatak.core.data.local.entity.CachedEntryEntity
 import com.romnan.kamusbatak.core.data.remote.CoreApi
 import com.romnan.kamusbatak.core.data.remote.dto.RemoteEntryDto
 import com.romnan.kamusbatak.core.domain.model.Entry
-import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.domain.model.Language
+import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.util.UIText
 import com.romnan.kamusbatak.featEntriesFinder.domain.repository.EntriesFinderRepository
@@ -26,60 +27,54 @@ class EntriesFinderRepositoryImpl(
         srcLang: Language
     ): Flow<Resource<List<Entry>>> = flow {
         if (keyword.isBlank() || !keyword.all { it.isLetterOrDigit() }) {
-            emit(Resource.Success(null))
+            emit(Resource.Success(emptyList()))
             return@flow
         }
 
-        emit(Resource.Loading(data = emptyList()))
+        val localEntries = getLocalEntries(keyword = keyword, srcLang = srcLang)
 
-        val formattedKeyword = when (keyword.length) {
-            in 0..3 -> "$keyword%"
-            else -> "%$keyword%"
-        }.lowercase()
-
-        val localEntries = getLocalEntries(formattedKeyword, srcLang)
-        emit(Resource.Loading(data = localEntries))
-
-        try {
-            val remoteEntries = getRemoteEntries(formattedKeyword, srcLang)
-            coreDao.insertCachedEntries(remoteEntries.map { it.toCachedEntryEntity() })
-        } catch (e: HttpException) {
-            emit(
-                if (offlineSupportRepository.isOfflineFullySupported()) {
-                    Resource.Success(localEntries)
-                } else {
-                    Resource.Error(
-                        uiText = UIText.StringResource(R.string.em_http_exception)
-                    )
-                }
-            )
-        } catch (e: IOException) {
-            emit(
-                if (offlineSupportRepository.isOfflineFullySupported()) {
-                    Resource.Success(localEntries)
-                } else {
-                    Resource.Error(
-                        uiText = UIText.StringResource(R.string.em_io_exception),
-                        data = localEntries
-                    )
-                }
-            )
+        if (offlineSupportRepository.isOfflineFullySupported()) {
+            emit(Resource.Success(data = localEntries))
+            return@flow
+        } else {
+            emit(Resource.Loading(data = localEntries))
         }
 
-        val newEntries = getLocalEntries(formattedKeyword, srcLang)
-        emit(Resource.Success(newEntries))
+        try {
+            val remoteEntries = getRemoteEntries(keyword = keyword, srcLang = srcLang)
+            coreDao.insertCachedEntries(remoteEntries.map { it.toCachedEntryEntity() })
+            val newEntries = getLocalEntries(keyword = keyword, srcLang = srcLang)
+            emit(Resource.Success(newEntries))
+        } catch (e: Exception) {
+            when (e) {
+                is HttpException -> UIText.StringResource(R.string.em_http_exception)
+                is IOException -> UIText.StringResource(R.string.em_io_exception)
+                else -> UIText.StringResource(R.string.em_unknown)
+            }.let { emit(Resource.Error(uiText = it, data = localEntries)) }
+        }
     }
 
     private suspend fun getLocalEntries(
         keyword: String,
         srcLang: Language
     ): List<Entry> {
-        return coreDao
-            .getCachedEntries(
-                keyword = keyword,
-                srcLang = srcLang.codeName
-            )
+        return mutableListOf<CachedEntryEntity>()
+            .apply {
+                addAll(
+                    coreDao.getCachedEntries(
+                        keyword = "$keyword%".lowercase(),
+                        srcLangCodeName = srcLang.codeName
+                    )
+                )
+                addAll(
+                    coreDao.getCachedEntries(
+                        keyword = "%$keyword%".lowercase(),
+                        srcLangCodeName = srcLang.codeName
+                    )
+                )
+            }
             .map { it.toEntry() }
+            .distinct()
     }
 
     private suspend fun getRemoteEntries(
@@ -87,7 +82,7 @@ class EntriesFinderRepositoryImpl(
         srcLang: Language
     ): List<RemoteEntryDto> {
         val params = mapOf(
-            RemoteEntryDto.Field.WORD to "like.$keyword",
+            RemoteEntryDto.Field.WORD to "like.%$keyword%",
             RemoteEntryDto.Field.SRC_LANG to "eq.${srcLang.codeName}"
         )
         return coreApi.getEntries(params = params)
