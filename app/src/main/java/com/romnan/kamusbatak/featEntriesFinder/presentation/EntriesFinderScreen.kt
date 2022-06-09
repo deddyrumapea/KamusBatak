@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -24,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,7 +31,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
-import com.romnan.kamusbatak.core.presentation.model.EntryParcelable
+import com.romnan.kamusbatak.core.presentation.model.toParcelable
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
 import com.romnan.kamusbatak.core.util.Constants
@@ -57,14 +55,12 @@ fun EntriesFinderScreen(
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
-    val focusManager = LocalFocusManager.current
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UIEvent.ShowSnackbar -> {
-                    focusManager.clearFocus() // TODO: find another way to display this
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.uiText.asString(context)
                     )
@@ -255,27 +251,14 @@ fun EntriesFinderScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            AnimatedVisibility(visible = state.entries.isNotEmpty()) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colors.surface)
-                ) {
-                    items(state.entries.size) { i ->
-                        val entry = state.entries[i]
-
-                        if (i == 0) Spacer(modifier = Modifier.height(8.dp))
-
-                        EntryItem(entry = entry, modifier = Modifier.clickable {
-                            navigator.navigate(
-                                EntryDetailScreenDestination(entry = EntryParcelable(entry))
-                            )
-                        })
-
-                        if (i != state.entries.lastIndex) Divider(
-                            modifier = Modifier.padding(horizontal = 8.dp)
-                        )
-                    }
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(viewModel.entries.value.size) { i ->
+                    EntryItem(
+                        entry = viewModel.entries.value[i],
+                        onClick = {
+                            navigator.navigate(EntryDetailScreenDestination(it.toParcelable()))
+                        }
+                    )
                 }
             }
         }
