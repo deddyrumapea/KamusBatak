@@ -9,10 +9,10 @@ data class EntryParcelable(
     val srcLang: String,
     val word: String,
     val meaning: String,
-) : Parcelable {
-    constructor(entry: Entry) : this(
-        srcLang = entry.srcLang,
-        word = entry.word,
-        meaning = entry.meaning
-    )
-}
+) : Parcelable
+
+fun Entry.toParcelable() = EntryParcelable(
+    srcLang = this.srcLang,
+    word = this.word,
+    meaning = this.meaning,
+)
