@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
+import com.romnan.kamusbatak.core.domain.model.Entry
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.util.Constants
@@ -29,6 +30,9 @@ class EntriesFinderViewModel @Inject constructor(
 
     private val _searchQuery = mutableStateOf("")
     val searchQuery: State<String> = _searchQuery
+
+    private val _entries = mutableStateOf(emptyList<Entry>())
+    val entries: State<List<Entry>> = _entries
 
     private val _state = mutableStateOf(EntriesFinderState())
     val state: State<EntriesFinderState> = _state
@@ -75,18 +79,7 @@ class EntriesFinderViewModel @Inject constructor(
         )
     }
 
-    private fun clearEntries() {
-        _state.value = state.value.copy(
-            entries = emptyList()
-        )
-    }
-
     private fun fetchEntries() {
-        if (searchQuery.value.isBlank()) {
-            clearEntries()
-            return
-        }
-
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(Constants.DURATION_SEARCH_DELAY)
@@ -96,22 +89,16 @@ class EntriesFinderViewModel @Inject constructor(
             ).onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _state.value = state.value.copy(
-                            entries = result.data ?: emptyList(),
-                            isLoadingEntries = false
-                        )
+                        _entries.value = result.data ?: emptyList()
+                        _state.value = state.value.copy(isLoadingEntries = false)
                     }
                     is Resource.Loading -> {
-                        _state.value = state.value.copy(
-                            entries = result.data ?: emptyList(),
-                            isLoadingEntries = true
-                        )
+                        _entries.value = result.data ?: emptyList()
+                        _state.value = state.value.copy(isLoadingEntries = true)
                     }
                     is Resource.Error -> {
-                        _state.value = state.value.copy(
-                            entries = result.data ?: emptyList(),
-                            isLoadingEntries = false
-                        )
+                        _entries.value = result.data ?: emptyList()
+                        _state.value = state.value.copy(isLoadingEntries = false)
                         _eventFlow.emit(
                             UIEvent.ShowSnackbar(
                                 result.uiText ?: UIText.StringResource(R.string.em_unknown)
