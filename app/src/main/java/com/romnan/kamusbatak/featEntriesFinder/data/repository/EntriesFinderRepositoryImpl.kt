@@ -36,14 +36,15 @@ class EntriesFinderRepositoryImpl(
         if (offlineSupportRepository.isOfflineFullySupported()) {
             emit(Resource.Success(data = localEntries))
             return@flow
-        } else {
-            emit(Resource.Loading(data = localEntries))
         }
 
         try {
+            emit(Resource.Loading(data = localEntries))
+
             val remoteEntries = getRemoteEntries(keyword = keyword, srcLang = srcLang)
             coreDao.insertCachedEntries(remoteEntries.map { it.toCachedEntryEntity() })
             val newEntries = getLocalEntries(keyword = keyword, srcLang = srcLang)
+
             emit(Resource.Success(newEntries))
         } catch (e: Exception) {
             when (e) {
@@ -60,21 +61,18 @@ class EntriesFinderRepositoryImpl(
     ): List<Entry> {
         return mutableListOf<CachedEntryEntity>()
             .apply {
-                addAll(
-                    coreDao.getCachedEntries(
-                        keyword = "$keyword%".lowercase(),
-                        srcLangCodeName = srcLang.codeName
-                    )
-                )
-                addAll(
-                    coreDao.getCachedEntries(
-                        keyword = "%$keyword%".lowercase(),
-                        srcLangCodeName = srcLang.codeName
-                    )
-                )
+                coreDao.getCachedEntries(
+                    keyword = "$keyword%".lowercase(),
+                    srcLangCodeName = srcLang.codeName
+                ).let { addAll(it) }
+
+                if (keyword.length > 1) coreDao.getCachedEntries(
+                    keyword = "%$keyword%".lowercase(),
+                    srcLangCodeName = srcLang.codeName
+                ).let { addAll(it) }
             }
-            .map { it.toEntry() }
             .distinct()
+            .map { it.toEntry() }
     }
 
     private suspend fun getRemoteEntries(
