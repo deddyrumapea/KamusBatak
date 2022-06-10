@@ -112,7 +112,10 @@ fun PreferencesScreen(
                     )
 
                     Text(
-                        text = state.lastUpdatedUiText.asString(),
+                        text = context.getString(
+                            R.string.format_last_updated,
+                            state.lastUpdatedUiText.asString()
+                        ),
                         style = MaterialTheme.typography.caption,
                         color = MaterialTheme.colors.onSurface,
                     )
