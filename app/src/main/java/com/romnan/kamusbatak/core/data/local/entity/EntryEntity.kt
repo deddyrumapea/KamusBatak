@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.romnan.kamusbatak.core.domain.model.Entry
 
 @Entity
-data class CachedEntryEntity(
+data class EntryEntity(
     @PrimaryKey val id: Int? = null,
     val srcLang: String,
     val word: String,

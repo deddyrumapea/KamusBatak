@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.serialization'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
@@ -140,6 +141,10 @@ dependencies {
     def datastore_version = "1.0.0"
     implementation "androidx.datastore:datastore-preferences:$datastore_version"
 
+    // Kotlin Serialization
+    def serialization_version = "1.3.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version"
+
     // Accompanist
     def accompanist_version = "0.17.0"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
@@ -147,4 +152,8 @@ dependencies {
     // SQLCipher
     def sqlcipher_version = "4.5.0"
     implementation "net.zetetic:android-database-sqlcipher:$sqlcipher_version"
+
+    // Logcat
+    def logcat_version = "0.1"
+    implementation "com.squareup.logcat:logcat:$logcat_version"
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.domain.repository.OfflineSupportRepository
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
-import com.romnan.kamusbatak.core.util.Constants
 import com.romnan.kamusbatak.core.util.Resource
 import com.romnan.kamusbatak.core.util.UIText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +16,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,8 +23,8 @@ class PreferencesViewModel @Inject constructor(
     private val offlineSupportRepository: OfflineSupportRepository
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(OfflineSupportState())
-    val state: State<OfflineSupportState> = _state
+    private val _state = mutableStateOf(OfflineSupportScreenState.defaultValue)
+    val state: State<OfflineSupportScreenState> = _state
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -53,12 +50,8 @@ class PreferencesViewModel @Inject constructor(
     private fun getLastUpdated() {
         getLastUpdatedJob?.cancel()
         getLastUpdatedJob = viewModelScope.launch {
-            offlineSupportRepository.getLastUpdatedAt().onEach { timeInMillis ->
-                timeInMillis?.let {
-                    val sdf = SimpleDateFormat(Constants.PATTERN_DATE, Locale.getDefault())
-                    val date = Date().apply { this.time = timeInMillis }
-                    _state.value = state.value.copy(lastUpdated = sdf.format(date))
-                }
+            offlineSupportRepository.lastUpdatedAt.onEach { timeMillis ->
+                _state.value = state.value.copy(lastUpdatedTimeMillis = timeMillis)
             }.launchIn(this)
         }
     }

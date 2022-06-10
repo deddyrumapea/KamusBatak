@@ -1,15 +1,18 @@
 package com.romnan.kamusbatak.core.data.preferences
 
 import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.dataStore
 
 class CorePreferences(
     appContext: Context
 ) {
-    private val Context.dataStore by preferencesDataStore(CORE_PREF_NAME)
     val dataStore = appContext.dataStore
 
     companion object {
-        private const val CORE_PREF_NAME = "pref_kamus_batak"
+        private const val APP_PREF_FILE_NAME = "kamus_batak_pref.json"
+        private val Context.dataStore by dataStore(
+            fileName = APP_PREF_FILE_NAME,
+            serializer = AppPreferencesSerializer,
+        )
     }
 }

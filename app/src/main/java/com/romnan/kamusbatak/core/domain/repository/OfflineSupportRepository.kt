@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface OfflineSupportRepository {
     fun downloadUpdate(): Flow<SimpleResource>
-    suspend fun isOfflineFullySupported(): Boolean
-    fun getLastUpdatedAt(): Flow<Long?>
+    suspend fun isFullySupported(): Boolean
+    val lastUpdatedAt: Flow<Long?>
 }

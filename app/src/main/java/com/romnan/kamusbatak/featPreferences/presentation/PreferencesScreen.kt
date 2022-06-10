@@ -96,9 +96,8 @@ fun PreferencesScreen(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = when {
-                            state.lastUpdated.isNullOrEmpty() ->
+                            state.lastUpdatedTimeMillis == null ->
                                 stringResource(R.string.download_dictionary_data)
-
                             else -> stringResource(R.string.update_dictionary_data)
                         },
                         style = MaterialTheme.typography.subtitle1,
@@ -112,15 +111,7 @@ fun PreferencesScreen(
                     )
 
                     Text(
-                        text = when {
-                            state.lastUpdated.isNullOrEmpty() ->
-                                stringResource(R.string.data_never_downloaded)
-
-                            else -> context.getString(
-                                R.string.format_last_updated,
-                                state.lastUpdated
-                            )
-                        },
+                        text = state.lastUpdatedUiText.asString(),
                         style = MaterialTheme.typography.caption,
                         color = MaterialTheme.colors.onSurface,
                     )

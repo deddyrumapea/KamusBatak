@@ -1,7 +1,8 @@
 package com.romnan.kamusbatak.core.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.romnan.kamusbatak.core.data.local.entity.CachedEntryEntity
+import com.romnan.kamusbatak.core.data.local.entity.EntryEntity
+import com.romnan.kamusbatak.core.domain.model.Entry
 
 data class RemoteEntryDto(
     @SerializedName(Field.ID) val id: Int?,
@@ -10,12 +11,18 @@ data class RemoteEntryDto(
     @SerializedName(Field.MEANING) val meaning: String?,
     @SerializedName(Field.UPDATED_AT) val updatedAt: String?
 ) {
-    fun toCachedEntryEntity() = CachedEntryEntity(
+    fun toCachedEntryEntity() = EntryEntity(
         id = id,
         srcLang = srcLang ?: "",
         word = word ?: "",
         meaning = meaning ?: "",
         updatedAt = updatedAt ?: ""
+    )
+
+    fun toEntry() = Entry(
+        srcLang = srcLang ?: "",
+        word = word ?: "",
+        meaning = meaning ?: "",
     )
 
     object Field {

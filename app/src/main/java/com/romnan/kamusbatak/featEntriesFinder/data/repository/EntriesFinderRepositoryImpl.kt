@@ -2,7 +2,7 @@ package com.romnan.kamusbatak.featEntriesFinder.data.repository
 
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.data.local.CoreDao
-import com.romnan.kamusbatak.core.data.local.entity.CachedEntryEntity
+import com.romnan.kamusbatak.core.data.local.entity.EntryEntity
 import com.romnan.kamusbatak.core.data.remote.CoreApi
 import com.romnan.kamusbatak.core.data.remote.dto.RemoteEntryDto
 import com.romnan.kamusbatak.core.domain.model.Entry
@@ -33,19 +33,15 @@ class EntriesFinderRepositoryImpl(
 
         val localEntries = getLocalEntries(keyword = keyword, srcLang = srcLang)
 
-        if (offlineSupportRepository.isOfflineFullySupported()) {
+        if (offlineSupportRepository.isFullySupported()) {
             emit(Resource.Success(data = localEntries))
             return@flow
         }
 
         try {
             emit(Resource.Loading(data = localEntries))
-
             val remoteEntries = getRemoteEntries(keyword = keyword, srcLang = srcLang)
-            coreDao.insertCachedEntries(remoteEntries.map { it.toCachedEntryEntity() })
-            val newEntries = getLocalEntries(keyword = keyword, srcLang = srcLang)
-
-            emit(Resource.Success(newEntries))
+            emit(Resource.Success(remoteEntries))
         } catch (e: Exception) {
             when (e) {
                 is HttpException -> UIText.StringResource(R.string.em_http_exception)
@@ -59,14 +55,14 @@ class EntriesFinderRepositoryImpl(
         keyword: String,
         srcLang: Language
     ): List<Entry> {
-        return mutableListOf<CachedEntryEntity>()
+        return mutableListOf<EntryEntity>()
             .apply {
-                coreDao.getCachedEntries(
+                coreDao.getEntries(
                     keyword = "$keyword%".lowercase(),
                     srcLangCodeName = srcLang.codeName
                 ).let { addAll(it) }
 
-                if (keyword.length > 1) coreDao.getCachedEntries(
+                if (keyword.length > 1) coreDao.getEntries(
                     keyword = "%$keyword%".lowercase(),
                     srcLangCodeName = srcLang.codeName
                 ).let { addAll(it) }
@@ -78,11 +74,24 @@ class EntriesFinderRepositoryImpl(
     private suspend fun getRemoteEntries(
         keyword: String,
         srcLang: Language
-    ): List<RemoteEntryDto> {
-        val params = mapOf(
-            RemoteEntryDto.Field.WORD to "like.%$keyword%",
-            RemoteEntryDto.Field.SRC_LANG to "eq.${srcLang.codeName}"
-        )
-        return coreApi.getEntries(params = params)
+    ): List<Entry> {
+        return mutableListOf<RemoteEntryDto>()
+            .apply {
+                coreApi.getEntries(
+                    params = mapOf(
+                        RemoteEntryDto.Field.WORD to "like.$keyword%".lowercase(),
+                        RemoteEntryDto.Field.SRC_LANG to "eq.${srcLang.codeName}"
+                    )
+                ).let { addAll(it) }
+
+                coreApi.getEntries(
+                    params = mapOf(
+                        RemoteEntryDto.Field.WORD to "like.%$keyword%".lowercase(),
+                        RemoteEntryDto.Field.SRC_LANG to "eq.${srcLang.codeName}"
+                    )
+                ).let { addAll(it) }
+            }
+            .distinct()
+            .map { it.toEntry() }
     }
 }

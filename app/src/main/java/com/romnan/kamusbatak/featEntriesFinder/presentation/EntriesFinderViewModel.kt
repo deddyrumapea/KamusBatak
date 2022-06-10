@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import logcat.logcat
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,6 +69,13 @@ class EntriesFinderViewModel @Inject constructor(
         downloadUpdateJob = viewModelScope.launch {
             offlineSupportRepository
                 .downloadUpdate()
+                .onEach { result ->
+                    logcat { "downloadUpdate ${result::class.java.simpleName}" }
+                    if (result is Resource.Error) {
+                        delay(Constants.DURATION_DOWNLOAD_UPDATE_COOLDOWN)
+                        downloadUpdate()
+                    }
+                }
                 .launchIn(this)
         }
     }
