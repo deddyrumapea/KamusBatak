@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
+import com.romnan.kamusbatak.core.presentation.theme.spacing
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
 import kotlinx.coroutines.flow.collectLatest
@@ -75,7 +76,7 @@ fun PreferencesScreen(
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
                     .clickable { viewModel.onEvent(PreferencesEvent.DownloadUpdate) }
-                    .padding(16.dp)
+                    .padding(MaterialTheme.spacing.medium)
                     .fillMaxWidth()
             ) {
                 Column {
@@ -91,7 +92,7 @@ fun PreferencesScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
@@ -118,7 +119,7 @@ fun PreferencesScreen(
                 }
             }
 
-            Divider(modifier = Modifier.padding(horizontal = 16.dp))
+            Divider(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium))
         }
     }
 }

@@ -32,6 +32,7 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.model.toParcelable
+import com.romnan.kamusbatak.core.presentation.theme.spacing
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
 import com.romnan.kamusbatak.core.util.Constants
@@ -76,12 +77,16 @@ fun EntriesFinderScreen(
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
                     .fillMaxSize()
-                    .padding(top = 16.dp, end = 16.dp, bottom = 16.dp)
+                    .padding(
+                        top = MaterialTheme.spacing.medium,
+                        end = MaterialTheme.spacing.medium,
+                        bottom = MaterialTheme.spacing.medium
+                    )
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp)
+                        .padding(start = MaterialTheme.spacing.medium)
                 ) {
                     Text(
                         text = stringResource(id = R.string.app_name),
@@ -90,7 +95,13 @@ fun EntriesFinderScreen(
                     )
                 }
 
-                Divider(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp))
+                Divider(
+                    modifier = Modifier.padding(
+                        start = MaterialTheme.spacing.medium,
+                        top = MaterialTheme.spacing.medium,
+                        bottom = MaterialTheme.spacing.medium,
+                    )
+                )
 
                 NavigationDrawerItem(
                     icon = Icons.Default.Search,
@@ -219,7 +230,7 @@ fun EntriesFinderScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
             val bottomCorRad by animateDpAsState(if (state.isLoadingEntries) 0.dp else 8.dp)
             TextField(
@@ -238,18 +249,18 @@ fun EntriesFinderScreen(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = MaterialTheme.spacing.small)
             )
 
             AnimatedVisibility(visible = state.isLoadingEntries) {
                 LinearProgressIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp)
+                        .padding(horizontal = MaterialTheme.spacing.small)
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(viewModel.entries.value.size) { i ->

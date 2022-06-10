@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.model.EntryParcelable
+import com.romnan.kamusbatak.core.presentation.theme.spacing
 import com.romnan.kamusbatak.core.util.Constants
 
 @Destination
@@ -76,22 +76,22 @@ fun EntryDetailScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
             Text(
                 text = entry.word,
                 style = MaterialTheme.typography.h6
                     .copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
                 color = MaterialTheme.colors.onSurface,
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
             Text(
                 text = entry.meaning,
                 style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
                 color = MaterialTheme.colors.onSurface,
             )
         }
