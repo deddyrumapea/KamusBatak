@@ -80,6 +80,7 @@ fun NavigationDrawerContent(
                     selected = currentDestination == item.direction,
                     onClick = {
                         scope.launch { drawerState.close() }
+                        navController.popBackStack()
                         navController.navigateTo(item.direction) { launchSingleTop = true }
                     },
                 )
