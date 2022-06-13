@@ -3,6 +3,7 @@ package com.romnan.kamusbatak.featEntryDetail.presentation
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
@@ -54,26 +56,32 @@ fun EntryDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(scaffoldPadding)
-                .background(MaterialTheme.colors.surface)
         ) {
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.medium)
+                    .background(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colors.surface,
+                    )
+                    .padding(MaterialTheme.spacing.medium)
+            ) {
+                Text(
+                    text = entry.word,
+                    style = MaterialTheme.typography.h6,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colors.onSurface,
+                )
 
-            Text(
-                text = entry.word,
-                style = MaterialTheme.typography.h6
-                    .copy(fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
-                color = MaterialTheme.colors.onSurface,
-            )
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-
-            Text(
-                text = entry.meaning,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
-                color = MaterialTheme.colors.onSurface,
-            )
+                Text(
+                    text = entry.meaning,
+                    style = MaterialTheme.typography.body1,
+                    color = MaterialTheme.colors.onSurface,
+                )
+            }
         }
     }
 }

@@ -77,7 +77,7 @@ fun NavigationDrawerContent(
                 NavigationDrawerItem(
                     icon = item.icon,
                     label = item.label.asString(),
-                    selected = currentDestination == item.direction,
+                    isSelected = currentDestination == item.direction,
                     onClick = {
                         scope.launch { drawerState.close() }
                         if (item == DrawerItem.EntriesFinder) navController.popBackStack()

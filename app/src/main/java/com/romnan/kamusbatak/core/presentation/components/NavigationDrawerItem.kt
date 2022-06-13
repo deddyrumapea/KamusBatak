@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
+import com.romnan.kamusbatak.core.presentation.theme.spacing
 
 @Composable
 fun NavigationDrawerItem(
     modifier: Modifier = Modifier,
-    selected: Boolean = false,
+    isSelected: Boolean = false,
     icon: ImageVector,
     label: String,
     onClick: () -> Unit
@@ -26,22 +26,26 @@ fun NavigationDrawerItem(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(topEndPercent = 100, bottomEndPercent = 100))
             .background(
-                if (selected) MaterialTheme.colors.secondaryVariant
+                if (isSelected) MaterialTheme.colors.secondaryVariant
                 else MaterialTheme.colors.surface
             )
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(MaterialTheme.spacing.medium)
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = label,
-            tint = if (selected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface
+            contentDescription = null,
+            tint = if (isSelected) MaterialTheme.colors.onSecondary
+            else MaterialTheme.colors.onSurface
         )
-        Spacer(modifier = Modifier.width(16.dp))
+
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+
         Text(
             text = label,
-            color = if (selected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-            style = MaterialTheme.typography.subtitle1
+            color = if (isSelected) MaterialTheme.colors.onSecondary
+            else MaterialTheme.colors.onSurface,
+            style = MaterialTheme.typography.subtitle1,
         )
     }
 }
