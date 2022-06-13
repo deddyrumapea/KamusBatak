@@ -9,7 +9,15 @@ data class EntryParcelable(
     val srcLang: String,
     val word: String,
     val meaning: String,
-) : Parcelable
+) : Parcelable {
+    companion object {
+        val defaultValue = EntryParcelable(
+            srcLang = "",
+            word = "",
+            meaning = "",
+        )
+    }
+}
 
 fun Entry.toParcelable() = EntryParcelable(
     srcLang = this.srcLang,

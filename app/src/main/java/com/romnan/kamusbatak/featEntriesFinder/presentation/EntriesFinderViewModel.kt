@@ -35,35 +35,38 @@ class EntriesFinderViewModel @Inject constructor(
     private val _entries = mutableStateOf(emptyList<Entry>())
     val entries: State<List<Entry>> = _entries
 
-    private val _state = mutableStateOf(EntriesFinderState())
+    private val _state = mutableStateOf(EntriesFinderState.defaultValue)
     val state: State<EntriesFinderState> = _state
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var searchJob: Job? = null
-    private var downloadUpdateJob: Job? = null
-
     init {
         downloadUpdate()
     }
 
-    fun onEvent(event: EntriesFinderEvent) {
-        when (event) {
-            is EntriesFinderEvent.QueryChange -> {
-                _searchQuery.value = event.query
-                fetchEntries()
-            }
-
-            is EntriesFinderEvent.LanguagesSwap -> {
-                swapLanguage()
-                fetchEntries()
-            }
-            is EntriesFinderEvent.SetShowOptionsMenu -> _state.value =
-                state.value.copy(isOptionsMenuShown = event.show)
-        }
+    fun onSwapLanguages() {
+        _state.value = state.value.copy(
+            sourceLanguage = state.value.targetLanguage,
+            targetLanguage = state.value.sourceLanguage
+        )
+        fetchEntries()
     }
 
+    fun onQueryChange(value: String) {
+        _searchQuery.value = value
+        fetchEntries()
+    }
+
+    fun onOpenOptionsMenu() {
+        _state.value = state.value.copy(isOptionsMenuVisible = true)
+    }
+
+    fun onCloseOptionsMenu() {
+        _state.value = state.value.copy(isOptionsMenuVisible = false)
+    }
+
+    private var downloadUpdateJob: Job? = null
     private fun downloadUpdate() {
         downloadUpdateJob?.cancel()
         downloadUpdateJob = viewModelScope.launch {
@@ -80,20 +83,14 @@ class EntriesFinderViewModel @Inject constructor(
         }
     }
 
-    private fun swapLanguage() {
-        _state.value = state.value.copy(
-            sourceLanguage = state.value.targetLanguage,
-            targetLanguage = state.value.sourceLanguage
-        )
-    }
-
+    private var fetchEntriesJob: Job? = null
     private fun fetchEntries() {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
+        fetchEntriesJob?.cancel()
+        fetchEntriesJob = viewModelScope.launch {
             delay(Constants.DURATION_SEARCH_DELAY)
             repository.getEntries(
                 keyword = searchQuery.value,
-                srcLang = state.value.sourceLanguage
+                srcLang = state.value.sourceLanguage,
             ).onEach { result ->
                 when (result) {
                     is Resource.Success -> {

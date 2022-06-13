@@ -1,30 +1,23 @@
 package com.romnan.kamusbatak.featEntriesFinder.presentation
 
 import android.content.Intent
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
@@ -37,26 +30,24 @@ import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
 import com.romnan.kamusbatak.core.util.Constants
 import com.romnan.kamusbatak.destinations.EntryDetailScreenDestination
-import com.romnan.kamusbatak.destinations.PreferencesScreenDestination
+import com.romnan.kamusbatak.featEntriesFinder.presentation.components.EntriesFinderTopBar
 import com.romnan.kamusbatak.featEntriesFinder.presentation.components.EntryItem
-import com.romnan.kamusbatak.featEntriesFinder.presentation.components.NavigationDrawerItem
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalAnimationApi::class)
 @RootNavGraph(start = true)
 @Destination
 @Composable
 fun EntriesFinderScreen(
-    navigator: DestinationsNavigator,
     viewModel: EntriesFinderViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator,
+    parentScaffoldState: ScaffoldState,
 ) {
     val state = viewModel.state.value
+    val context = LocalContext.current
 
     val scaffoldState = rememberScaffoldState()
-    val coroutineScope = rememberCoroutineScope()
-
-    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -72,164 +63,33 @@ fun EntriesFinderScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        drawerContent = {
-            Column(
-                modifier = Modifier
-                    .background(MaterialTheme.colors.surface)
-                    .fillMaxSize()
-                    .padding(
-                        top = MaterialTheme.spacing.medium,
-                        end = MaterialTheme.spacing.medium,
-                        bottom = MaterialTheme.spacing.medium
-                    )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = MaterialTheme.spacing.medium)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        color = MaterialTheme.colors.onSurface,
-                        style = MaterialTheme.typography.h6,
-                    )
+        topBar = {
+            EntriesFinderTopBar(
+                targetLangName = state.targetLanguage.displayName.asString(),
+                sourceLangName = state.sourceLanguage.displayName.asString(),
+                isOptionsMenuVisible = state.isOptionsMenuVisible,
+                onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } },
+                onOpenOptionsMenu = { viewModel.onOpenOptionsMenu() },
+                onCloseOptionsMenu = { viewModel.onCloseOptionsMenu() },
+                onSwapClick = { viewModel.onSwapLanguages() },
+                onShareAppClick = {
+                    viewModel.onCloseOptionsMenu()
+                    val shareText = context.getString(R.string.download_kamus_batak)
+                    Intent(Intent.ACTION_SEND).let { intent ->
+                        intent.type = Constants.INTENT_TYPE_PLAIN_TEXT
+                        intent.putExtra(Intent.EXTRA_TEXT, shareText)
+                        context.startActivity(intent)
+                    }
                 }
-
-                Divider(
-                    modifier = Modifier.padding(
-                        start = MaterialTheme.spacing.medium,
-                        top = MaterialTheme.spacing.medium,
-                        bottom = MaterialTheme.spacing.medium,
-                    )
-                )
-
-                NavigationDrawerItem(
-                    icon = Icons.Default.Search,
-                    label = stringResource(R.string.dictionary),
-                    selected = true
-                ) {
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                }
-
-                NavigationDrawerItem(
-                    icon = Icons.Default.Settings,
-                    label = stringResource(id = R.string.preferences)
-                ) {
-                    coroutineScope.launch { scaffoldState.drawerState.close() }
-                    navigator.navigate(PreferencesScreenDestination)
-                }
-            }
-        }
-    ) {
+            )
+        },
+    ) { scaffoldPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(scaffoldPadding)
                 .background(MaterialTheme.colors.background)
         ) {
-            TopAppBar(backgroundColor = MaterialTheme.colors.surface) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = {
-                        coroutineScope.launch { scaffoldState.drawerState.open() }
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = stringResource(R.string.menu),
-                            tint = MaterialTheme.colors.onSurface
-                        )
-                    }
-
-                    AnimatedContent(
-                        targetState = state.targetLanguage.displayName,
-                        modifier = Modifier.weight(1f),
-                        transitionSpec = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left
-                            ) with slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Right
-                            )
-                        }
-                    ) {
-                        Text(
-                            text = state.sourceLanguage.displayName.asString(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.h6,
-                            color = MaterialTheme.colors.onSurface
-                        )
-                    }
-
-                    IconButton(
-                        onClick = { viewModel.onEvent(EntriesFinderEvent.LanguagesSwap) },
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colors.primary, shape = CircleShape)
-                            .size(36.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.SwapHoriz,
-                            contentDescription = stringResource(id = R.string.cd_swap_languages),
-                            tint = MaterialTheme.colors.onPrimary,
-                        )
-                    }
-
-                    AnimatedContent(
-                        targetState = state.targetLanguage.displayName,
-                        modifier = Modifier.weight(1f),
-                        transitionSpec = {
-                            slideIntoContainer(
-                                towards = AnimatedContentScope.SlideDirection.Right
-                            ) with slideOutOfContainer(
-                                towards = AnimatedContentScope.SlideDirection.Left
-                            )
-                        }
-                    ) {
-                        Text(
-                            text = state.targetLanguage.displayName.asString(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.h6,
-                            color = MaterialTheme.colors.onSurface
-                        )
-                    }
-
-                    IconButton(onClick = {
-                        viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(true))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.cd_options),
-                            tint = MaterialTheme.colors.onSurface
-                        )
-                    }
-                }
-
-                Box {
-                    DropdownMenu(
-                        expanded = state.isOptionsMenuShown,
-                        onDismissRequest = {
-                            viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(false))
-                        }
-                    ) {
-                        DropdownMenuItem(onClick = {
-                            viewModel.onEvent(EntriesFinderEvent.SetShowOptionsMenu(false))
-
-                            val intent = Intent(Intent.ACTION_SEND).apply {
-                                type = Constants.INTENT_TYPE_PLAIN_TEXT
-                                putExtra(
-                                    Intent.EXTRA_TEXT,
-                                    context.getString(R.string.download_kamus_batak)
-                                )
-                            }
-
-                            context.startActivity(intent)
-                        }) {
-                            Text(text = stringResource(R.string.share_this_app))
-                        }
-                    }
-                }
-            }
-
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
             val bottomCorRad by animateDpAsState(if (state.isLoadingEntries) 0.dp else 8.dp)
@@ -237,15 +97,13 @@ fun EntriesFinderScreen(
                 singleLine = true,
                 value = viewModel.searchQuery.value,
                 placeholder = { Text(text = stringResource(R.string.ph_enter_words_here)) },
-                onValueChange = { viewModel.onEvent(EntriesFinderEvent.QueryChange(it)) },
-                trailingIcon = {
-                    Icon(Icons.Default.Search, stringResource(R.string.ph_enter_words_here))
-                },
+                onValueChange = { viewModel.onQueryChange(it) },
+                trailingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                 shape = RoundedCornerShape(8.dp, 8.dp, bottomCorRad, bottomCorRad),
                 colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    backgroundColor = MaterialTheme.colors.surface
+                    backgroundColor = MaterialTheme.colors.surface,
                 ),
                 modifier = Modifier
                     .fillMaxWidth()

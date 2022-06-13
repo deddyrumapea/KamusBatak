@@ -5,10 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,17 +21,22 @@ import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.core.presentation.theme.spacing
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
+import com.romnan.kamusbatak.featPreferences.presentation.component.PreferencesTopBar
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @Destination
 @Composable
 fun PreferencesScreen(
+    viewModel: PreferencesViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
-    viewModel: PreferencesViewModel = hiltViewModel()
+    parentScaffoldState: ScaffoldState,
 ) {
     val state = viewModel.state.value
     val context = LocalContext.current
+
     val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest { event ->
@@ -45,31 +50,21 @@ fun PreferencesScreen(
         }
     }
 
-    Scaffold(scaffoldState = scaffoldState) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            TopAppBar(backgroundColor = MaterialTheme.colors.primary) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(
-                        onClick = { navigator.popBackStack() }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.cd_nav_back),
-                            tint = MaterialTheme.colors.onPrimary,
-                        )
-                    }
-
-                    Text(
-                        text = stringResource(R.string.preferences),
-                        style = MaterialTheme.typography.h6,
-                        color = MaterialTheme.colors.onPrimary,
-                    )
-                }
-            }
-
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            PreferencesTopBar(onBackClick = {
+                // TODO: Change into menu
+                scope.launch { parentScaffoldState.drawerState.open() }
+//                navigator.navigateUp()
+            })
+        }
+    ) { scaffoldPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(scaffoldPadding)
+        ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
