@@ -30,11 +30,12 @@ class OfflineSupportRepositoryImpl(
         try {
             val latestEntryUpdatedAt = coreDao.getLatestEntryUpdatedAt()
             val params = when {
-                latestEntryUpdatedAt.isNullOrBlank() -> emptyMap()
-                else -> mapOf(RemoteEntryDto.Field.UPDATED_AT to "gt.$latestEntryUpdatedAt")
+                isFullySupported() && !latestEntryUpdatedAt.isNullOrBlank() ->
+                    mapOf(RemoteEntryDto.Field.UPDATED_AT to "gt.$latestEntryUpdatedAt")
+                else -> emptyMap()
             }
             val remoteEntries = coreApi.getEntries(params = params)
-            coreDao.insertEntries(remoteEntries.map { it.toCachedEntryEntity() })
+            coreDao.insertEntries(remoteEntries.map { it.toEntryEntity() })
             setLastUpdatedAt(System.currentTimeMillis())
             logcat { "downloadUpdate: ${remoteEntries.size} new entries inserted to local cache" }
 

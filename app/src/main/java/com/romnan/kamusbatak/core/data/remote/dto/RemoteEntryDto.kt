@@ -11,7 +11,7 @@ data class RemoteEntryDto(
     @SerializedName(Field.MEANING) val meaning: String?,
     @SerializedName(Field.UPDATED_AT) val updatedAt: String?
 ) {
-    fun toCachedEntryEntity() = EntryEntity(
+    fun toEntryEntity() = EntryEntity(
         id = id,
         srcLang = srcLang ?: "",
         word = word ?: "",
