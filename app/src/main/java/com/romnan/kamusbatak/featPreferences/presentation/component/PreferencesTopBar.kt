@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,20 +14,20 @@ import com.romnan.kamusbatak.R
 @Composable
 fun PreferencesTopBar(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit,
+    onOpenDrawer: () -> Unit,
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primary,
-        modifier  = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick = onBackClick) {
+            IconButton(onClick = onOpenDrawer) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(id = R.string.cd_nav_back),
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = stringResource(R.string.menu),
                     tint = MaterialTheme.colors.onPrimary,
                 )
             }

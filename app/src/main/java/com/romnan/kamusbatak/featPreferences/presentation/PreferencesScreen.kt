@@ -53,11 +53,9 @@ fun PreferencesScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            PreferencesTopBar(onBackClick = {
-                // TODO: Change into menu
-                scope.launch { parentScaffoldState.drawerState.open() }
-//                navigator.navigateUp()
-            })
+            PreferencesTopBar(
+                onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } }
+            )
         }
     ) { scaffoldPadding ->
         Column(
