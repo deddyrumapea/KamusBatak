@@ -11,7 +11,7 @@ interface CoreDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertEntries(cachedEntries: List<EntryEntity>)
 
-    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLangCodeName AND word LIKE :keyword ORDER BY word ASC")
+    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLangCodeName AND (word LIKE :keyword || '%' OR word LIKE '%' || :keyword || '%') ORDER BY CASE WHEN word LIKE :keyword || '%' THEN 1 ELSE 2 END, word")
     suspend fun getEntries(
         keyword: String,
         srcLangCodeName: String

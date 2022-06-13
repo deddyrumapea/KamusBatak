@@ -31,7 +31,9 @@ class EntriesFinderRepositoryImpl(
             return@flow
         }
 
-        val localEntries = getLocalEntries(keyword = keyword, srcLang = srcLang)
+        val localEntries = coreDao
+            .getEntries(keyword = keyword, srcLangCodeName = srcLang.codeName)
+            .map { it.toEntry() }
 
         if (offlineSupportRepository.isFullySupported()) {
             emit(Resource.Success(data = localEntries))
@@ -49,26 +51,6 @@ class EntriesFinderRepositoryImpl(
                 else -> UIText.StringResource(R.string.em_unknown)
             }.let { emit(Resource.Error(uiText = it, data = localEntries)) }
         }
-    }
-
-    private suspend fun getLocalEntries(
-        keyword: String,
-        srcLang: Language
-    ): List<Entry> {
-        return mutableListOf<EntryEntity>()
-            .apply {
-                coreDao.getEntries(
-                    keyword = "$keyword%".lowercase(),
-                    srcLangCodeName = srcLang.codeName
-                ).let { addAll(it) }
-
-                if (keyword.length > 1) coreDao.getEntries(
-                    keyword = "%$keyword%".lowercase(),
-                    srcLangCodeName = srcLang.codeName
-                ).let { addAll(it) }
-            }
-            .distinct()
-            .map { it.toEntry() }
     }
 
     private suspend fun getRemoteEntries(
