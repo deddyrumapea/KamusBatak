@@ -33,16 +33,12 @@ class PreferencesViewModel @Inject constructor(
     private var getLastUpdatedJob: Job? = null
 
     init {
-        downloadUpdate()
         getLastUpdated()
     }
 
     fun onEvent(event: PreferencesEvent) {
         when (event) {
-            is PreferencesEvent.DownloadUpdate -> {
-                downloadUpdate()
-                getLastUpdated()
-            }
+            is PreferencesEvent.DownloadUpdate -> downloadUpdate()
         }
     }
 
