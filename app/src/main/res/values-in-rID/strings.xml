@@ -23,4 +23,6 @@
     <string name="download_kamus_batak">Download aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="share_this_app">Bagikan aplikasi ini</string>
     <string name="dictionary">Kamus</string>
+    <string name="add_bookmark">Simpan ke Markah Buku</string>
+    <string name="remove_bookmark">Hapus Markah Buku</string>
 </resources>

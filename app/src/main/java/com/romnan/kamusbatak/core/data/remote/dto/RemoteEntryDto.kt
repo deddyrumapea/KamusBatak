@@ -16,13 +16,8 @@ data class RemoteEntryDto(
         srcLang = srcLang ?: "",
         word = word ?: "",
         meaning = meaning ?: "",
-        updatedAt = updatedAt ?: ""
-    )
-
-    fun toEntry() = Entry(
-        srcLang = srcLang ?: "",
-        word = word ?: "",
-        meaning = meaning ?: "",
+        updatedAt = updatedAt ?: "",
+        isBookmarked = false,
     )
 
     object Field {

@@ -24,7 +24,6 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
-import com.romnan.kamusbatak.core.presentation.model.toParcelable
 import com.romnan.kamusbatak.core.presentation.theme.spacing
 import com.romnan.kamusbatak.core.presentation.util.UIEvent
 import com.romnan.kamusbatak.core.presentation.util.asString
@@ -124,9 +123,7 @@ fun EntriesFinderScreen(
                 items(viewModel.entries.value.size) { i ->
                     EntryItem(
                         entry = viewModel.entries.value[i],
-                        onClick = {
-                            navigator.navigate(EntryDetailScreenDestination(it.toParcelable()))
-                        }
+                        onClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
                     )
                 }
             }

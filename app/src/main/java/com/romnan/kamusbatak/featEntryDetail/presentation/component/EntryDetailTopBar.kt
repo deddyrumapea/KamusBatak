@@ -10,6 +10,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,8 +22,10 @@ import com.romnan.kamusbatak.R
 @Composable
 fun EntryDetailTopBar(
     modifier: Modifier = Modifier,
+    isBookmarked: Boolean,
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
+    onToggleBookmark: () -> Unit,
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primary,
@@ -41,6 +45,19 @@ fun EntryDetailTopBar(
             }
 
             Spacer(modifier = Modifier.weight(1f))
+
+            IconButton(onClick = onToggleBookmark) {
+                Icon(
+                    imageVector =
+                    if (isBookmarked) Icons.Default.Bookmark
+                    else Icons.Default.BookmarkBorder,
+                    contentDescription = stringResource(
+                        if (isBookmarked) R.string.remove_bookmark
+                        else R.string.add_bookmark
+                    ),
+                    tint = MaterialTheme.colors.onPrimary,
+                )
+            }
 
             IconButton(onClick = onShareClick) {
                 Icon(

@@ -1,7 +1,8 @@
 package com.romnan.kamusbatak.core.domain.model
 
 data class Entry(
-    val srcLang: String,
+    val id: Int?,
     val word: String,
     val meaning: String,
+    val isBookmarked: Boolean,
 )

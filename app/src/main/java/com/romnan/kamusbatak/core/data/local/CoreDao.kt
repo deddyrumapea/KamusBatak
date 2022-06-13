@@ -19,4 +19,10 @@ interface CoreDao {
 
     @Query("SELECT updatedAt FROM entryentity ORDER BY updatedAt DESC LIMIT 1")
     suspend fun getLatestEntryUpdatedAt(): String?
+
+    @Query("UPDATE entryentity SET isBookmarked = NOT isBookmarked WHERE id = :id")
+    suspend fun toggleBookmarkEntry(id: Int)
+
+    @Query("SELECT * FROM entryentity WHERE id = :id")
+    suspend fun getEntry(id: Int): EntryEntity?
 }
