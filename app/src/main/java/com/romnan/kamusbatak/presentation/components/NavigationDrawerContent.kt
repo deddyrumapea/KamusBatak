@@ -8,6 +8,7 @@ import androidx.compose.material.DrawerState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CollectionsBookmark
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
@@ -19,15 +20,16 @@ import androidx.navigation.NavController
 import com.ramcosta.composedestinations.navigation.navigateTo
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.romnan.kamusbatak.R
-import com.romnan.kamusbatak.presentation.theme.spacing
-import com.romnan.kamusbatak.presentation.util.asString
 import com.romnan.kamusbatak.domain.util.UIText
 import com.romnan.kamusbatak.presentation.NavGraphs
 import com.romnan.kamusbatak.presentation.appCurrentDestinationAsState
+import com.romnan.kamusbatak.presentation.destinations.BookmarksScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.Destination
 import com.romnan.kamusbatak.presentation.destinations.EntriesFinderScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.PreferencesScreenDestination
 import com.romnan.kamusbatak.presentation.startAppDestination
+import com.romnan.kamusbatak.presentation.theme.spacing
+import com.romnan.kamusbatak.presentation.util.asString
 import kotlinx.coroutines.launch
 
 @Composable
@@ -98,6 +100,11 @@ private enum class DrawerItem(
         direction = EntriesFinderScreenDestination,
         icon = Icons.Default.Search,
         label = UIText.StringResource(R.string.dictionary),
+    ),
+    Bookmarks(
+        direction = BookmarksScreenDestination,
+        icon = Icons.Default.CollectionsBookmark,
+        label = UIText.StringResource(R.string.bookmarks),
     ),
     Preferences(
         direction = PreferencesScreenDestination,

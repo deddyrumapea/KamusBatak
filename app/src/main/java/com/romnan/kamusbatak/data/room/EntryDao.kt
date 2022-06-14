@@ -25,4 +25,9 @@ interface EntryDao {
 
     @Query("SELECT * FROM entryentity WHERE id = :id")
     suspend fun findById(id: Int): EntryEntity?
+
+    @Query("SELECT * FROM entryentity WHERE isBookmarked AND srcLang = :srcLangCodeName")
+    suspend fun findBookmarked(
+        srcLangCodeName: String,
+    ): List<EntryEntity>
 }

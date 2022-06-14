@@ -85,6 +85,16 @@ class DictionaryRepositoryImpl(
         )
     }
 
+    override fun getBookmarkedEntries(
+        srcLang: Language,
+    ): Flow<Resource<List<Entry>>> = flow {
+        emit(Resource.Loading())
+        val entries = entryDao
+            .findBookmarked(srcLangCodeName = srcLang.codeName)
+            .map { it.toEntry() }
+        emit(Resource.Success(entries))
+    }
+
     override fun toggleBookmarkEntry(
         id: Int,
     ): Flow<Resource<Entry>> = flow {

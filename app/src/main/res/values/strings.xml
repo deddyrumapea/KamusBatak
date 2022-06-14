@@ -24,4 +24,5 @@
     <string name="dictionary">Dictionary</string>
     <string name="add_bookmark">Add Bookmark</string>
     <string name="remove_bookmark">Remove Bookmark</string>
+    <string name="bookmarks">Bookmarks</string>
 </resources>

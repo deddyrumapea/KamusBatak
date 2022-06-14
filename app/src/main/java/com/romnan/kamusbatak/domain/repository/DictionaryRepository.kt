@@ -18,6 +18,10 @@ interface DictionaryRepository {
         id: Int,
     ): Flow<Resource<Entry>>
 
+    fun getBookmarkedEntries(
+        srcLang: Language,
+    ): Flow<Resource<List<Entry>>>
+
     fun toggleBookmarkEntry(
         id: Int,
     ): Flow<Resource<Entry>>

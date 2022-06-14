@@ -13,7 +13,9 @@ import androidx.compose.ui.Modifier
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
 import com.ramcosta.composedestinations.rememberNavHostEngine
+import com.romnan.kamusbatak.presentation.bookmarks.BookmarksScreen
 import com.romnan.kamusbatak.presentation.components.NavigationDrawerContent
+import com.romnan.kamusbatak.presentation.destinations.BookmarksScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.EntriesFinderScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.PreferencesScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.EntriesFinderScreen
@@ -60,6 +62,13 @@ class MainActivity : ComponentActivity() {
 
                         composable(PreferencesScreenDestination) {
                             PreferencesScreen(
+                                navigator = navController.asNavigator(),
+                                parentScaffoldState = scaffoldState,
+                            )
+                        }
+
+                        composable(BookmarksScreenDestination) {
+                            BookmarksScreen(
                                 navigator = navController.asNavigator(),
                                 parentScaffoldState = scaffoldState,
                             )

@@ -25,4 +25,5 @@
     <string name="dictionary">Kamus</string>
     <string name="add_bookmark">Simpan ke Markah Buku</string>
     <string name="remove_bookmark">Hapus Markah Buku</string>
+    <string name="bookmarks">Markah Buku</string>
 </resources>

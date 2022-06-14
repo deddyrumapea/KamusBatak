@@ -156,4 +156,9 @@ dependencies {
     // Logcat
     def logcat_version = "0.1"
     implementation "com.squareup.logcat:logcat:$logcat_version"
+
+    // Accompanist-Pager
+    def pager_version = "0.13.0"
+    implementation "com.google.accompanist:accompanist-pager:$pager_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$pager_version"
 }
