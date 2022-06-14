@@ -1,9 +1,9 @@
-package com.romnan.kamusbatak.data.preferences
+package com.romnan.kamusbatak.data.datastore
 
 import android.content.Context
 import androidx.datastore.dataStore
 
-class CorePreferences(
+class AppPreferencesManager(
     appContext: Context
 ) {
     val dataStore = appContext.dataStore

@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.data.preferences
+package com.romnan.kamusbatak.data.datastore
 
 import androidx.datastore.core.Serializer
 import com.romnan.kamusbatak.domain.model.AppPreferences

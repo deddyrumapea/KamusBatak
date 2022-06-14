@@ -1,16 +1,16 @@
-package com.romnan.kamusbatak.data.local
+package com.romnan.kamusbatak.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.romnan.kamusbatak.data.local.entity.EntryEntity
+import com.romnan.kamusbatak.data.room.entity.EntryEntity
 
 @Database(
     entities = [EntryEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false,
 )
-abstract class CoreDatabase : RoomDatabase() {
-    abstract val dao: CoreDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract val entryDao: EntryDao
 
     companion object {
         const val NAME = "db_kamus_batak"

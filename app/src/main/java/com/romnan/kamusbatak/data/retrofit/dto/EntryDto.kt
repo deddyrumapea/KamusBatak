@@ -1,9 +1,9 @@
-package com.romnan.kamusbatak.data.remote.dto
+package com.romnan.kamusbatak.data.retrofit.dto
 
 import com.google.gson.annotations.SerializedName
-import com.romnan.kamusbatak.data.local.entity.EntryEntity
+import com.romnan.kamusbatak.data.room.entity.EntryEntity
 
-data class RemoteEntryDto(
+data class EntryDto(
     @SerializedName(Field.ID) val id: Int?,
     @SerializedName(Field.SRC_LANG) val srcLang: String?,
     @SerializedName(Field.WORD) val word: String?,

@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.model.Entry
-import com.romnan.kamusbatak.domain.repository.OfflineSupportRepository
-import com.romnan.kamusbatak.presentation.util.UIEvent
+import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import com.romnan.kamusbatak.domain.util.Constants
 import com.romnan.kamusbatak.domain.util.Resource
 import com.romnan.kamusbatak.domain.util.UIText
-import com.romnan.kamusbatak.domain.repository.EntriesFinderRepository
+import com.romnan.kamusbatak.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -25,8 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EntriesFinderViewModel @Inject constructor(
-    private val repository: EntriesFinderRepository,
-    private val offlineSupportRepository: OfflineSupportRepository
+    private val dictionaryRepository: DictionaryRepository,
 ) : ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -35,14 +33,14 @@ class EntriesFinderViewModel @Inject constructor(
     private val _entries = mutableStateOf(emptyList<Entry>())
     val entries: State<List<Entry>> = _entries
 
-    private val _state = mutableStateOf(EntriesFinderState.defaultValue)
-    val state: State<EntriesFinderState> = _state
+    private val _state = mutableStateOf(EntriesFinderScreenState.defaultValue)
+    val state: State<EntriesFinderScreenState> = _state
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     init {
-        downloadUpdate()
+        updateLocalDb()
     }
 
     fun onSwapLanguages() {
@@ -66,17 +64,17 @@ class EntriesFinderViewModel @Inject constructor(
         _state.value = state.value.copy(isOptionsMenuVisible = false)
     }
 
-    private var downloadUpdateJob: Job? = null
-    private fun downloadUpdate() {
-        downloadUpdateJob?.cancel()
-        downloadUpdateJob = viewModelScope.launch {
-            offlineSupportRepository
-                .downloadUpdate()
+    private var updateLocalDbJob: Job? = null
+    private fun updateLocalDb() {
+        updateLocalDbJob?.cancel()
+        updateLocalDbJob = viewModelScope.launch {
+            dictionaryRepository
+                .updateLocalDb()
                 .onEach { result ->
                     logcat { "downloadUpdate ${result::class.java.simpleName}" }
                     if (result is Resource.Error) {
                         delay(Constants.DURATION_DOWNLOAD_UPDATE_COOLDOWN)
-                        downloadUpdate()
+                        updateLocalDb()
                     }
                 }
                 .launchIn(this)
@@ -88,7 +86,7 @@ class EntriesFinderViewModel @Inject constructor(
         fetchEntriesJob?.cancel()
         fetchEntriesJob = viewModelScope.launch {
             delay(Constants.DURATION_SEARCH_DELAY)
-            repository.getEntries(
+            dictionaryRepository.getEntries(
                 keyword = searchQuery.value,
                 srcLang = state.value.sourceLanguage,
             ).onEach { result ->

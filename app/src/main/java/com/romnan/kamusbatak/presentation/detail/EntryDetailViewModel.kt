@@ -4,9 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.romnan.kamusbatak.presentation.util.UIEvent
+import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import com.romnan.kamusbatak.domain.util.Resource
-import com.romnan.kamusbatak.domain.repository.EntryDetailRepository
+import com.romnan.kamusbatak.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EntryDetailViewModel @Inject constructor(
-    private val repository: EntryDetailRepository,
+    private val dictionaryRepository: DictionaryRepository,
 ) : ViewModel() {
     private val _state = mutableStateOf(EntryDetailScreenState.defaultValue)
     val state: State<EntryDetailScreenState> = _state
@@ -33,7 +33,7 @@ class EntryDetailViewModel @Inject constructor(
         if (entryId == null) return
         setEntryIdJob?.cancel()
         setEntryIdJob = viewModelScope.launch {
-            repository.getEntry(id = entryId).onEach { result ->
+            dictionaryRepository.getEntry(id = entryId).onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         _state.value = state.value.copy(isLoading = false)
@@ -60,7 +60,7 @@ class EntryDetailViewModel @Inject constructor(
         val id = state.value.entry.id ?: return
         onToggleBookmarkJob?.cancel()
         onToggleBookmarkJob = viewModelScope.launch {
-            repository.toggleBookmarkEntry(id = id).onEach { result ->
+            dictionaryRepository.toggleBookmarkEntry(id = id).onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         _state.value = state.value.copy(isLoading = false)

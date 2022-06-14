@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
-import com.romnan.kamusbatak.domain.repository.OfflineSupportRepository
-import com.romnan.kamusbatak.presentation.util.UIEvent
+import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import com.romnan.kamusbatak.domain.util.Resource
 import com.romnan.kamusbatak.domain.util.UIText
+import com.romnan.kamusbatak.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,42 +20,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PreferencesViewModel @Inject constructor(
-    private val offlineSupportRepository: OfflineSupportRepository
+    private val dictionaryRepository: DictionaryRepository,
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(OfflineSupportScreenState.defaultValue)
-    val state: State<OfflineSupportScreenState> = _state
+    private val _state = mutableStateOf(PreferencesScreenState.defaultValue)
+    val state: State<PreferencesScreenState> = _state
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
-
-    private var downloadUpdateJob: Job? = null
-    private var getLastUpdatedJob: Job? = null
 
     init {
         getLastUpdated()
     }
 
-    fun onEvent(event: PreferencesEvent) {
-        when (event) {
-            is PreferencesEvent.DownloadUpdate -> downloadUpdate()
-        }
-    }
-
-
+    private var getLastUpdatedJob: Job? = null
     private fun getLastUpdated() {
         getLastUpdatedJob?.cancel()
         getLastUpdatedJob = viewModelScope.launch {
-            offlineSupportRepository.lastUpdatedAt.onEach { timeMillis ->
+            dictionaryRepository.localDbLastUpdatedAt.onEach { timeMillis ->
                 _state.value = state.value.copy(lastUpdatedTimeMillis = timeMillis)
             }.launchIn(this)
         }
     }
 
-    private fun downloadUpdate() {
-        downloadUpdateJob?.cancel()
-        downloadUpdateJob = viewModelScope.launch {
-            offlineSupportRepository.downloadUpdate().onEach { result ->
+    private var onUpdateLocalDbJob: Job? = null
+    fun onUpdateLocalDb() {
+        onUpdateLocalDbJob?.cancel()
+        onUpdateLocalDbJob = viewModelScope.launch {
+            dictionaryRepository.updateLocalDb().onEach { result ->
                 when (result) {
                     is Resource.Success -> _state.value = state.value.copy(isUpdating = false)
                     is Resource.Loading -> _state.value = state.value.copy(isUpdating = true)

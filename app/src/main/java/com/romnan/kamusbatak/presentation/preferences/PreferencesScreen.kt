@@ -18,10 +18,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
+import com.romnan.kamusbatak.presentation.preferences.component.PreferencesTopBar
 import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
-import com.romnan.kamusbatak.presentation.preferences.component.PreferencesTopBar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -68,7 +68,7 @@ fun PreferencesScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
-                    .clickable { viewModel.onEvent(PreferencesEvent.DownloadUpdate) }
+                    .clickable { viewModel.onUpdateLocalDb() }
                     .padding(MaterialTheme.spacing.medium)
                     .fillMaxWidth()
             ) {

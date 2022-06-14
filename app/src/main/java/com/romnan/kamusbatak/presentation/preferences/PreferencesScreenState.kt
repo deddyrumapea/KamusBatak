@@ -6,7 +6,7 @@ import com.romnan.kamusbatak.domain.util.UIText
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class OfflineSupportScreenState(
+data class PreferencesScreenState(
     val isUpdating: Boolean,
     val lastUpdatedTimeMillis: Long?,
 ) {
@@ -21,7 +21,7 @@ data class OfflineSupportScreenState(
         }
 
     companion object {
-        val defaultValue = OfflineSupportScreenState(
+        val defaultValue = PreferencesScreenState(
             isUpdating = false,
             lastUpdatedTimeMillis = null,
         )

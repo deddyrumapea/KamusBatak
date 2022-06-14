@@ -4,15 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.romnan.kamusbatak.application.SecretValues
-import com.romnan.kamusbatak.data.local.CoreDatabase
-import com.romnan.kamusbatak.data.preferences.CorePreferences
-import com.romnan.kamusbatak.data.remote.CoreApi
-import com.romnan.kamusbatak.data.repository.EntriesFinderRepositoryImpl
-import com.romnan.kamusbatak.data.repository.EntryDetailRepositoryImpl
-import com.romnan.kamusbatak.data.repository.OfflineSupportRepositoryImpl
-import com.romnan.kamusbatak.domain.repository.EntriesFinderRepository
-import com.romnan.kamusbatak.domain.repository.EntryDetailRepository
-import com.romnan.kamusbatak.domain.repository.OfflineSupportRepository
+import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
+import com.romnan.kamusbatak.data.repository.DictionaryRepositoryImpl
+import com.romnan.kamusbatak.data.retrofit.EntryApi
+import com.romnan.kamusbatak.data.room.AppDatabase
+import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,13 +28,7 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideCoreApi(coreRetrofit: Retrofit): CoreApi {
-        return coreRetrofit.create(CoreApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideCoreDatabase(app: Application): CoreDatabase {
+    fun provideAppDatabase(app: Application): AppDatabase {
         val passphrase: ByteArray = SQLiteDatabase.getBytes(
             SecretValues.dbPassphrase().toCharArray()
         )
@@ -47,8 +37,8 @@ object AppModule {
         return Room
             .databaseBuilder(
                 app,
-                CoreDatabase::class.java,
-                CoreDatabase.NAME
+                AppDatabase::class.java,
+                AppDatabase.NAME
             )
             .openHelperFactory(supportFactory)
             .fallbackToDestructiveMigration()
@@ -57,7 +47,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCoreRetrofit(): Retrofit {
+    fun provideAppRetrofit(): Retrofit {
         val interceptor = Interceptor { chain ->
             val request = chain
                 .request()
@@ -83,43 +73,29 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCorePreferences(
+    fun provideAppPreferencesManager(
         @ApplicationContext appContext: Context
-    ): CorePreferences {
-        return CorePreferences(appContext)
+    ): AppPreferencesManager {
+        return AppPreferencesManager(appContext)
     }
 
     @Provides
     @Singleton
-    fun provideOfflineSupportRepository(
-        coreApi: CoreApi,
-        coreDb: CoreDatabase,
-        corePref: CorePreferences
-    ): OfflineSupportRepository {
-        return OfflineSupportRepositoryImpl(
-            coreApi = coreApi,
-            coreDao = coreDb.dao,
-            corePref = corePref
-        )
+    fun provideEntryApi(appRetrofit: Retrofit): EntryApi {
+        return appRetrofit.create(EntryApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideEntriesFinderRepository(
-        coreDb: CoreDatabase,
-        api: CoreApi,
-        offlineSupportRepository: OfflineSupportRepository
-    ): EntriesFinderRepository {
-        return EntriesFinderRepositoryImpl(api, coreDb.dao, offlineSupportRepository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideEntryDetailRepository(
-        coreDb: CoreDatabase,
-    ): EntryDetailRepository {
-        return EntryDetailRepositoryImpl(
-            coreDao = coreDb.dao,
+    fun provideDictionaryRepository(
+        entryApi: EntryApi,
+        appDatabase: AppDatabase,
+        appPreferencesManager: AppPreferencesManager
+    ): DictionaryRepository {
+        return DictionaryRepositoryImpl(
+            entryApi = entryApi,
+            entryDao = appDatabase.entryDao,
+            appPreferencesManager = appPreferencesManager,
         )
     }
 }
