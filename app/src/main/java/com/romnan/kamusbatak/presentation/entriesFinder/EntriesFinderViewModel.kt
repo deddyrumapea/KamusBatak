@@ -2,6 +2,8 @@ package com.romnan.kamusbatak.presentation.entriesFinder
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
@@ -27,8 +29,8 @@ class EntriesFinderViewModel @Inject constructor(
     private val dictionaryRepository: DictionaryRepository,
 ) : ViewModel() {
 
-    private val _searchQuery = mutableStateOf("")
-    val searchQuery: State<String> = _searchQuery
+    private val _searchQuery = mutableStateOf(TextFieldValue())
+    val searchQuery: State<TextFieldValue> = _searchQuery
 
     private val _entries = mutableStateOf(emptyList<Entry>())
     val entries: State<List<Entry>> = _entries
@@ -51,9 +53,16 @@ class EntriesFinderViewModel @Inject constructor(
         fetchEntries()
     }
 
-    fun onQueryChange(value: String) {
-        _searchQuery.value = value
-        fetchEntries()
+    fun onQueryChange(newValue: TextFieldValue) {
+        val oldValue = searchQuery.value
+        _searchQuery.value = newValue
+        if (oldValue.text != newValue.text) fetchEntries()
+    }
+
+    fun onRefocusSearchQuery() {
+        _searchQuery.value = searchQuery.value.copy(
+            selection = TextRange(index = searchQuery.value.text.length)
+        )
     }
 
     fun onOpenOptionsMenu() {
@@ -87,7 +96,7 @@ class EntriesFinderViewModel @Inject constructor(
         fetchEntriesJob = viewModelScope.launch {
             delay(Constants.DURATION_SEARCH_DELAY)
             dictionaryRepository.getEntries(
-                keyword = searchQuery.value,
+                keyword = searchQuery.value.text,
                 srcLang = state.value.sourceLanguage,
             ).onEach { result ->
                 when (result) {

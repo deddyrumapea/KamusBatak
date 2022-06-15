@@ -46,10 +46,11 @@ fun EntriesFinderScreen(
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
-    val focusRequester = remember { FocusRequester() }
+    val searchQueryFocusRequester = remember { FocusRequester() }
 
     LaunchedEffect(key1 = true) {
-        focusRequester.requestFocus()
+        searchQueryFocusRequester.requestFocus()
+        viewModel.onRefocusSearchQuery()
 
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
@@ -109,7 +110,7 @@ fun EntriesFinderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.spacing.small)
-                    .focusRequester(focusRequester)
+                    .focusRequester(searchQueryFocusRequester)
             )
 
             AnimatedVisibility(visible = state.isLoadingEntries) {
