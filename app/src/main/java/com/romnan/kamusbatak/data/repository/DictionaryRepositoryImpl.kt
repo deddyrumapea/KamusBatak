@@ -7,7 +7,6 @@ import com.romnan.kamusbatak.data.retrofit.dto.EntryDto
 import com.romnan.kamusbatak.data.room.EntryDao
 import com.romnan.kamusbatak.domain.model.Entry
 import com.romnan.kamusbatak.domain.model.Language
-import com.romnan.kamusbatak.domain.model.LocalDictionary
 import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import com.romnan.kamusbatak.domain.util.Resource
 import com.romnan.kamusbatak.domain.util.SimpleResource
@@ -27,7 +26,7 @@ class DictionaryRepositoryImpl(
 ) : DictionaryRepository {
 
     override val localDbLastUpdatedAt: Flow<Long?>
-        get() = appPreferencesManager.dataStore.data.map { it.localDictionary.lastUpdated }
+        get() = appPreferencesManager.dataStore.data.map { it.localDbLastUpdatedAt }
 
     override fun getEntries(
         keyword: String,
@@ -141,7 +140,7 @@ class DictionaryRepositoryImpl(
 
     private suspend fun setLocalDbLastUpdatedAt(currentTimeMillis: Long) {
         appPreferencesManager.dataStore.updateData {
-            it.copy(localDictionary = LocalDictionary(lastUpdated = currentTimeMillis))
+            it.copy(localDbLastUpdatedAt = currentTimeMillis)
         }
     }
 

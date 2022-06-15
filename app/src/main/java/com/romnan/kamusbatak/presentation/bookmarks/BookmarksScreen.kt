@@ -70,6 +70,8 @@ fun BookmarksScreen(
                     )
                 }
             }
+
+            // TODO: no data to show
         }
     )
 

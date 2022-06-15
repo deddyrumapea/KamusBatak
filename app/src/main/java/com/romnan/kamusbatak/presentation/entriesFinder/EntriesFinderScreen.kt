@@ -10,11 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -24,13 +23,13 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
-import com.romnan.kamusbatak.presentation.theme.spacing
-import com.romnan.kamusbatak.presentation.util.UIEvent
-import com.romnan.kamusbatak.presentation.util.asString
 import com.romnan.kamusbatak.domain.util.Constants
 import com.romnan.kamusbatak.presentation.destinations.EntryDetailScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.components.EntriesFinderTopBar
 import com.romnan.kamusbatak.presentation.entriesFinder.components.EntryItem
+import com.romnan.kamusbatak.presentation.theme.spacing
+import com.romnan.kamusbatak.presentation.util.UIEvent
+import com.romnan.kamusbatak.presentation.util.asString
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -47,8 +46,11 @@ fun EntriesFinderScreen(
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(key1 = true) {
+        focusRequester.requestFocus()
+
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
                 is UIEvent.ShowSnackbar -> {
@@ -107,6 +109,7 @@ fun EntriesFinderScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.spacing.small)
+                    .focusRequester(focusRequester)
             )
 
             AnimatedVisibility(visible = state.isLoadingEntries) {

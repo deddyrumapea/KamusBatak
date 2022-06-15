@@ -25,4 +25,10 @@
     <string name="add_bookmark">Add Bookmark</string>
     <string name="remove_bookmark">Remove Bookmark</string>
     <string name="bookmarks">Bookmarks</string>
+    <string name="theme_mode">Theme Mode</string>
+    <string name="choose_theme">Choose theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="downloading_dictionary_data">Downloading dictionary data…</string>
 </resources>

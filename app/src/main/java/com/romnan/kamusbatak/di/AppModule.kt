@@ -6,9 +6,11 @@ import androidx.room.Room
 import com.romnan.kamusbatak.application.SecretValues
 import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
 import com.romnan.kamusbatak.data.repository.DictionaryRepositoryImpl
+import com.romnan.kamusbatak.data.repository.PreferencesRepositoryImpl
 import com.romnan.kamusbatak.data.retrofit.EntryApi
 import com.romnan.kamusbatak.data.room.AppDatabase
 import com.romnan.kamusbatak.domain.repository.DictionaryRepository
+import com.romnan.kamusbatak.domain.repository.PreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -95,6 +97,16 @@ object AppModule {
         return DictionaryRepositoryImpl(
             entryApi = entryApi,
             entryDao = appDatabase.entryDao,
+            appPreferencesManager = appPreferencesManager,
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun providePreferencesRepository(
+        appPreferencesManager: AppPreferencesManager
+    ): PreferencesRepository {
+        return PreferencesRepositoryImpl(
             appPreferencesManager = appPreferencesManager,
         )
     }

@@ -26,4 +26,10 @@
     <string name="add_bookmark">Simpan ke Markah Buku</string>
     <string name="remove_bookmark">Hapus Markah Buku</string>
     <string name="bookmarks">Markah Buku</string>
+    <string name="theme_mode">Mode Tema</string>
+    <string name="choose_theme">Pilih tema</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Terang</string>
+    <string name="theme_dark">Gelap</string>
+    <string name="downloading_dictionary_data">Mengunduh data kamus…</string>
 </resources>
