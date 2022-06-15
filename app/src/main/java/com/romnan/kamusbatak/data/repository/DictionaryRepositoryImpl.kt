@@ -105,7 +105,7 @@ class DictionaryRepositoryImpl(
 
         when {
             newEntryEntity == null -> emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
-            newEntryEntity.isBookmarked == oldEntryEntity?.isBookmarked -> {
+            newEntryEntity.bookmarkedAt == oldEntryEntity?.bookmarkedAt -> {
                 emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
             }
             else -> emit(Resource.Success(newEntryEntity.toEntry()))

@@ -11,12 +11,12 @@ data class EntryEntity(
     val word: String,
     val meaning: String,
     val updatedAt: String,
-    val isBookmarked: Boolean,
+    val bookmarkedAt: String? = null,
 ) {
     fun toEntry() = Entry(
         id = id,
         word = word,
         meaning = meaning,
-        isBookmarked = isBookmarked,
+        isBookmarked = !bookmarkedAt.isNullOrBlank(),
     )
 }

@@ -16,7 +16,7 @@ data class EntryDto(
         word = word ?: "",
         meaning = meaning ?: "",
         updatedAt = updatedAt ?: "",
-        isBookmarked = false,
+        bookmarkedAt = null,
     )
 
     object Field {

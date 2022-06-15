@@ -20,13 +20,13 @@ interface EntryDao {
     @Query("SELECT updatedAt FROM entryentity ORDER BY updatedAt DESC LIMIT 1")
     suspend fun getLatestEntryUpdatedAt(): String?
 
-    @Query("UPDATE entryentity SET isBookmarked = NOT isBookmarked WHERE id = :id")
+    @Query("UPDATE entryentity SET bookmarkedAt = CASE WHEN bookmarkedAt IS NULL THEN CURRENT_TIMESTAMP ELSE NULL END WHERE id = :id")
     suspend fun toggleBookmark(id: Int)
 
     @Query("SELECT * FROM entryentity WHERE id = :id")
     suspend fun findById(id: Int): EntryEntity?
 
-    @Query("SELECT * FROM entryentity WHERE isBookmarked AND srcLang = :srcLangCodeName")
+    @Query("SELECT * FROM entryentity WHERE bookmarkedAt IS NOT NULL AND srcLang = :srcLangCodeName ORDER BY bookmarkedAt DESC")
     suspend fun findBookmarked(
         srcLangCodeName: String,
     ): List<EntryEntity>
