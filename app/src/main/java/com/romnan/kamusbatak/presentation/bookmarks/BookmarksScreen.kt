@@ -2,9 +2,7 @@ package com.romnan.kamusbatak.presentation.bookmarks
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -26,10 +24,10 @@ import com.google.accompanist.pager.rememberPagerState
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.domain.model.Language
+import com.romnan.kamusbatak.presentation.bookmarks.component.BookmarksTabContent
 import com.romnan.kamusbatak.presentation.bookmarks.component.BookmarksTopBar
 import com.romnan.kamusbatak.presentation.bookmarks.model.TabItem
 import com.romnan.kamusbatak.presentation.destinations.EntryDetailScreenDestination
-import com.romnan.kamusbatak.presentation.entriesFinder.components.EntryItem
 import com.romnan.kamusbatak.presentation.util.OnLifecycleEvent
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
@@ -52,26 +50,16 @@ fun BookmarksScreen(
 
     val tabItems = listOf(
         TabItem(title = Language.Btk.displayName.asString()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(state.btkEntries.size) { i ->
-                    EntryItem(
-                        entry = state.btkEntries[i],
-                        onClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
-                    )
-                }
-            }
+            BookmarksTabContent(
+                entries = state.btkEntries,
+                onItemClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
+            )
         },
         TabItem(title = Language.Ind.displayName.asString()) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                items(state.indEntries.size) { i ->
-                    EntryItem(
-                        entry = state.indEntries[i],
-                        onClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
-                    )
-                }
-            }
-
-            // TODO: no data to show
+            BookmarksTabContent(
+                entries = state.indEntries,
+                onItemClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
+            )
         }
     )
 
@@ -115,12 +103,7 @@ fun BookmarksScreen(
                         color = MaterialTheme.colors.primary,
                         modifier = Modifier
                             .pagerTabIndicatorOffset(pagerState, tabPositions)
-                            .clip(
-                                RoundedCornerShape(
-                                    topStartPercent = 100,
-                                    topEndPercent = 100
-                                )
-                            )
+                            .clip(RoundedCornerShape(topStartPercent = 100, topEndPercent = 100))
                     )
                 }
             ) {
@@ -132,7 +115,7 @@ fun BookmarksScreen(
                                 text = tabItem.title,
                                 style = MaterialTheme.typography.subtitle1,
                                 color =
-                                if (isSelected) MaterialTheme.colors.primary
+                                if (isSelected) MaterialTheme.colors.primaryVariant
                                 else Color.Unspecified,
                                 fontWeight =
                                 if (isSelected) FontWeight.SemiBold
