@@ -26,11 +26,12 @@ private val LightColorPalette = lightColors(
 )
 
 private val DarkColorPalette = darkColors(
-    primary = Red900,
-    primaryVariant = Color.White,
+    primary = Red700,
+    primaryVariant = Red400,
     onPrimary = Color.White,
 
-    secondary = Teal700,
+    secondary = Teal800,
+    secondaryVariant= Teal600,
     onSecondary = Color.White,
 
     background = Color.Black,
@@ -48,7 +49,7 @@ fun KamusBatakTheme(
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
         if (darkTheme) Color.Black
-        else DarkColorPalette.primary
+        else LightColorPalette.primary
     )
 
     CompositionLocalProvider(LocalSpacing provides Spacing()) {
