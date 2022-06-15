@@ -30,7 +30,10 @@ fun NavigationDrawerItem(
                 else MaterialTheme.colors.surface
             )
             .clickable { onClick() }
-            .padding(MaterialTheme.spacing.medium)
+            .padding(
+                vertical = MaterialTheme.spacing.medium,
+                horizontal = MaterialTheme.spacing.large,
+            )
     ) {
         Icon(
             imageVector = icon,
