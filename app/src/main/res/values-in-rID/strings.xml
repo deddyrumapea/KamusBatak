@@ -9,7 +9,6 @@
     <string name="cd_options">Pilihan</string>
     <string name="preferences">Pengaturan</string>
     <string name="format_last_updated">Terakhir diperbarui: %1$s</string>
-    <string name="update">Perbarui</string>
     <string name="update_dictionary_data">Perbarui data kamus</string>
     <string name="update_description">Unduh pembaruan untuk dukungan offline</string>
     <string name="data_never_downloaded">Data belum pernah diunduh</string>

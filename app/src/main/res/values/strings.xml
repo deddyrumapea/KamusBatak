@@ -9,7 +9,6 @@
     <string name="cd_options">Options</string>
     <string name="preferences">Preferences</string>
     <string name="format_last_updated">Last updated: %1$s</string>
-    <string name="update">Update</string>
     <string name="update_dictionary_data">Update dictionary data</string>
     <string name="update_description">Download updates for offline support</string>
     <string name="data_never_downloaded">Data have never been downloaded</string>
