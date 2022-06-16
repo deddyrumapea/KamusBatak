@@ -21,9 +21,9 @@
     <string name="download_kamus_batak">Download Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="share_this_app">Share this app</string>
     <string name="dictionary">Dictionary</string>
-    <string name="add_bookmark">Add Bookmark</string>
-    <string name="remove_bookmark">Remove Bookmark</string>
-    <string name="bookmarks">Bookmarks</string>
+    <string name="save_entry">Save Entry</string>
+    <string name="unsave_entry">Unsave Entry</string>
+    <string name="saved_entries">Saved</string>
     <string name="theme_mode">Theme Mode</string>
     <string name="choose_theme">Choose theme</string>
     <string name="theme_system">System</string>

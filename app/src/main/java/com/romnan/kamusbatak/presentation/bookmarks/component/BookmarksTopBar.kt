@@ -36,7 +36,7 @@ fun BookmarksTopBar(
             }
 
             Text(
-                text = stringResource(id = R.string.bookmarks),
+                text = stringResource(id = R.string.saved_entries),
                 style = MaterialTheme.typography.h6,
                 color = MaterialTheme.colors.onSurface,
             )

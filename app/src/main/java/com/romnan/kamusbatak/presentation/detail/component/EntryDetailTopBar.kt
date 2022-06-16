@@ -52,8 +52,8 @@ fun EntryDetailTopBar(
                     if (isBookmarked) Icons.Default.Bookmark
                     else Icons.Default.BookmarkBorder,
                     contentDescription = stringResource(
-                        if (isBookmarked) R.string.remove_bookmark
-                        else R.string.add_bookmark
+                        if (isBookmarked) R.string.unsave_entry
+                        else R.string.save_entry
                     ),
                     tint = MaterialTheme.colors.onPrimary,
                 )

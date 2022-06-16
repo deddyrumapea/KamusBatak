@@ -104,7 +104,7 @@ private enum class DrawerItem(
     Bookmarks(
         direction = BookmarksScreenDestination,
         icon = Icons.Default.CollectionsBookmark,
-        label = UIText.StringResource(R.string.bookmarks),
+        label = UIText.StringResource(R.string.saved_entries),
     ),
     Preferences(
         direction = PreferencesScreenDestination,
