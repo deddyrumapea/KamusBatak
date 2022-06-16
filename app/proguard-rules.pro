@@ -159,8 +159,3 @@
 #    static <1>$$serializer INSTANCE;
 #}
 ###----- END Kotlin Serialization -----
-
-###----- BEGIN SQLCipher -----
--keep,includedescriptorclasses class net.sqlcipher.** { *; }
--keep,includedescriptorclasses interface net.sqlcipher.** { *; }
-###----- END SQLCipher -----

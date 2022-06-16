@@ -149,10 +149,6 @@ dependencies {
     def accompanist_version = "0.17.0"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
-    // SQLCipher
-    def sqlcipher_version = "4.5.0"
-    implementation "net.zetetic:android-database-sqlcipher:$sqlcipher_version"
-
     // Logcat
     def logcat_version = "0.1"
     implementation "com.squareup.logcat:logcat:$logcat_version"

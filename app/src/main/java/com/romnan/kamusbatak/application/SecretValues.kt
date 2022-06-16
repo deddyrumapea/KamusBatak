@@ -8,5 +8,4 @@ object SecretValues {
     external fun baseUrl(): String
     external fun keyValue(): String
     external fun keyParam(): String
-    external fun dbPassphrase(): String
 }

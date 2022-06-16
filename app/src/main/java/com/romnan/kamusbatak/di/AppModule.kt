@@ -16,8 +16,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import net.sqlcipher.database.SQLiteDatabase
-import net.sqlcipher.database.SupportFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -31,18 +29,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAppDatabase(app: Application): AppDatabase {
-        val passphrase: ByteArray = SQLiteDatabase.getBytes(
-            SecretValues.dbPassphrase().toCharArray()
-        )
-        val supportFactory = SupportFactory(passphrase)
-
         return Room
             .databaseBuilder(
                 app,
                 AppDatabase::class.java,
                 AppDatabase.NAME
             )
-            .openHelperFactory(supportFactory)
             .fallbackToDestructiveMigration()
             .build()
     }
