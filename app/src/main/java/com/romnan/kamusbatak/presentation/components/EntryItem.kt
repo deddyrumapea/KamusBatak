@@ -1,4 +1,4 @@
-package com.romnan.kamusbatak.presentation.entriesFinder.components
+package com.romnan.kamusbatak.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

@@ -3,7 +3,6 @@ package com.romnan.kamusbatak.presentation.bookmarks.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.model.Entry
-import com.romnan.kamusbatak.presentation.entriesFinder.components.EntryItem
+import com.romnan.kamusbatak.presentation.components.EntryItem
 
 @Composable
 fun BookmarksTabContent(

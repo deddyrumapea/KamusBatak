@@ -26,7 +26,7 @@ import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.util.Constants
 import com.romnan.kamusbatak.presentation.destinations.EntryDetailScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.components.EntriesFinderTopBar
-import com.romnan.kamusbatak.presentation.entriesFinder.components.EntryItem
+import com.romnan.kamusbatak.presentation.components.EntryItem
 import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
