@@ -9,7 +9,6 @@
     <string name="cd_options">Pilihan</string>
     <string name="preferences">Pengaturan</string>
     <string name="format_last_updated">Terakhir diperbarui: %1$s</string>
-    <string name="update">Perbarui</string>
     <string name="update_dictionary_data">Perbarui data kamus</string>
     <string name="update_description">Unduh pembaruan untuk dukungan offline</string>
     <string name="data_never_downloaded">Data belum pernah diunduh</string>
@@ -23,4 +22,14 @@
     <string name="download_kamus_batak">Download aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="share_this_app">Bagikan aplikasi ini</string>
     <string name="dictionary">Kamus</string>
+    <string name="save_entry">Simpan Entri</string>
+    <string name="unsave_entry">Batal Simpan Entri</string>
+    <string name="saved_entries">Tersimpan</string>
+    <string name="theme_mode">Mode Tema</string>
+    <string name="choose_theme">Pilih tema</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Terang</string>
+    <string name="theme_dark">Gelap</string>
+    <string name="downloading_dictionary_data">Mengunduh data kamus…</string>
+    <string name="no_entries">Tidak ada entri</string>
 </resources>

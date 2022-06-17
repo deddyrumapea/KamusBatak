@@ -9,7 +9,6 @@
     <string name="cd_options">Options</string>
     <string name="preferences">Preferences</string>
     <string name="format_last_updated">Last updated: %1$s</string>
-    <string name="update">Update</string>
     <string name="update_dictionary_data">Update dictionary data</string>
     <string name="update_description">Download updates for offline support</string>
     <string name="data_never_downloaded">Data have never been downloaded</string>
@@ -22,4 +21,14 @@
     <string name="download_kamus_batak">Download Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="share_this_app">Share this app</string>
     <string name="dictionary">Dictionary</string>
+    <string name="save_entry">Save Entry</string>
+    <string name="unsave_entry">Unsave Entry</string>
+    <string name="saved_entries">Saved</string>
+    <string name="theme_mode">Theme Mode</string>
+    <string name="choose_theme">Choose theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="downloading_dictionary_data">Downloading dictionary data…</string>
+    <string name="no_entries">No entries</string>
 </resources>
