@@ -24,14 +24,16 @@ import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.util.Constants
+import com.romnan.kamusbatak.presentation.components.EntryItem
 import com.romnan.kamusbatak.presentation.destinations.EntryDetailScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.components.EntriesFinderTopBar
-import com.romnan.kamusbatak.presentation.components.EntryItem
 import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import logcat.asLog
+import logcat.logcat
 
 @RootNavGraph(start = true)
 @Destination
@@ -47,21 +49,6 @@ fun EntriesFinderScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val searchQueryFocusRequester = remember { FocusRequester() }
-
-    LaunchedEffect(key1 = true) {
-        searchQueryFocusRequester.requestFocus()
-        viewModel.onRefocusSearchQuery()
-
-        viewModel.eventFlow.collectLatest { event ->
-            when (event) {
-                is UIEvent.ShowSnackbar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.uiText.asString(context)
-                    )
-                }
-            }
-        }
-    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -128,6 +115,26 @@ fun EntriesFinderScreen(
                     EntryItem(
                         entry = viewModel.entries.value[i],
                         onClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
+                    )
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        try {
+            searchQueryFocusRequester.requestFocus()
+        } catch (e: Exception) {
+            logcat { e.asLog() }
+        } finally {
+            viewModel.onRefocusSearchQuery()
+        }
+
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UIEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
                     )
                 }
             }
