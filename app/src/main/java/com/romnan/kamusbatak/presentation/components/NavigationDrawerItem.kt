@@ -16,9 +16,9 @@ import com.romnan.kamusbatak.presentation.theme.spacing
 @Composable
 fun NavigationDrawerItem(
     modifier: Modifier = Modifier,
-    isSelected: Boolean = false,
-    icon: ImageVector,
-    label: String,
+    isSelected: @Composable () -> Boolean = { false },
+    icon: () -> ImageVector,
+    label: @Composable () -> String,
     onClick: () -> Unit
 ) {
     Row(
@@ -26,27 +26,27 @@ fun NavigationDrawerItem(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(topEndPercent = 100, bottomEndPercent = 100))
             .background(
-                if (isSelected) MaterialTheme.colors.secondaryVariant
+                if (isSelected()) MaterialTheme.colors.secondaryVariant
                 else MaterialTheme.colors.surface
             )
             .clickable { onClick() }
             .padding(
                 vertical = MaterialTheme.spacing.medium,
                 horizontal = MaterialTheme.spacing.large,
-            )
+            ),
     ) {
         Icon(
-            imageVector = icon,
+            imageVector = icon(),
             contentDescription = null,
-            tint = if (isSelected) MaterialTheme.colors.onSecondary
+            tint = if (isSelected()) MaterialTheme.colors.onSecondary
             else MaterialTheme.colors.onSurface
         )
 
         Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
 
         Text(
-            text = label,
-            color = if (isSelected) MaterialTheme.colors.onSecondary
+            text = label(),
+            color = if (isSelected()) MaterialTheme.colors.onSecondary
             else MaterialTheme.colors.onSurface,
             style = MaterialTheme.typography.subtitle1,
         )

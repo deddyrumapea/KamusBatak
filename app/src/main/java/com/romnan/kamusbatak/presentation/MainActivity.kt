@@ -12,11 +12,15 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.manualcomposablecalls.composable
+import com.ramcosta.composedestinations.navigation.navigateTo
 import com.ramcosta.composedestinations.rememberNavHostEngine
+import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.romnan.kamusbatak.domain.model.ThemeMode
 import com.romnan.kamusbatak.presentation.bookmarks.BookmarksScreen
 import com.romnan.kamusbatak.presentation.components.NavigationDrawerContent
@@ -28,6 +32,7 @@ import com.romnan.kamusbatak.presentation.preferences.PreferencesScreen
 import com.romnan.kamusbatak.presentation.theme.KamusBatakTheme
 import com.romnan.kamusbatak.presentation.util.asNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -42,6 +47,7 @@ class MainActivity : ComponentActivity() {
             val engine = rememberNavHostEngine()
             val navController = engine.rememberNavController()
             val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
 
             val themeMode = viewModel.themeMode.collectAsState().value
 
@@ -58,8 +64,20 @@ class MainActivity : ComponentActivity() {
                     drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
                     drawerContent = {
                         NavigationDrawerContent(
-                            navController = navController,
-                            drawerState = scaffoldState.drawerState,
+                            currentDestination = {
+                                navController.appCurrentDestinationAsState().value
+                                    ?: NavGraphs.root.startAppDestination
+                            },
+                            onItemClick = { direction: DirectionDestinationSpec ->
+                                navController.navigateTo(direction) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                                scope.launch { scaffoldState.drawerState.close() }
+                            },
                         )
                     },
                     modifier = Modifier
