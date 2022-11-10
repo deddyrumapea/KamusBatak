@@ -161,4 +161,7 @@ dependencies {
     // SplashScreen
     def splash_screen_version = "1.0.0"
     implementation "androidx.core:core-splashscreen:$splash_screen_version"
+
+    // Konfetti
+    implementation 'nl.dionsegijn:konfetti-compose:2.0.2'
 }

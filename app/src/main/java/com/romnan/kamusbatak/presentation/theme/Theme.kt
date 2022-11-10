@@ -15,14 +15,17 @@ private val LightColorPalette = lightColors(
     onPrimary = Color.White,
 
     secondary = Blue600,
-    secondaryVariant = Blue200,
-    onSecondary = Color.Black,
+    secondaryVariant = Green600,
+    onSecondary = Color.White,
 
     background = BlueGray50,
     onBackground = Color.Black,
 
     surface = Color.White,
     onSurface = Color.Black,
+
+    error = Red600,
+    onError = Color.White,
 )
 
 private val DarkColorPalette = darkColors(
@@ -31,20 +34,22 @@ private val DarkColorPalette = darkColors(
     onPrimary = Color.White,
 
     secondary = Blue600,
-    secondaryVariant = Blue200,
+    secondaryVariant = Green600,
     onSecondary = Color.White,
 
     background = Color.Black,
     onBackground = Color.White,
 
     surface = AlmostBlack,
-    onSurface = Color.White
+    onSurface = Color.White,
+
+    error = Red600,
+    onError = Color.White,
 )
 
 @Composable
 fun KamusBatakTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(

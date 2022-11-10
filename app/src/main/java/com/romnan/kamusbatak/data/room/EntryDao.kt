@@ -30,4 +30,10 @@ interface EntryDao {
     suspend fun findBookmarked(
         srcLangCodeName: String,
     ): List<EntryEntity>
+
+    @Query("SELECT * FROM entryentity WHERE srcLang =:srcLangCodeName ORDER BY RANDOM() LIMIT :count")
+    suspend fun getRandomEntries(
+        count: Int,
+        srcLangCodeName: String,
+    ): List<EntryEntity>
 }

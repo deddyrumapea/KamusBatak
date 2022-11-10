@@ -26,7 +26,7 @@ fun NavigationDrawerItem(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(topEndPercent = 100, bottomEndPercent = 100))
             .background(
-                if (isSelected()) MaterialTheme.colors.secondaryVariant
+                if (isSelected()) MaterialTheme.colors.secondary
                 else MaterialTheme.colors.surface
             )
             .clickable { onClick() }

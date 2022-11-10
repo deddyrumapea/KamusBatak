@@ -44,7 +44,7 @@ fun EntryDetailScreen(
                 onBackClick = { navigator.navigateUp() },
                 onShareClick = {
                     val shareText = context.getString(
-                        R.string.format_share_message,
+                        R.string.format_share_entry_message,
                         state.entry.word,
                         state.entry.meaning
                     )

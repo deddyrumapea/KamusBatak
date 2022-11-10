@@ -5,9 +5,13 @@ import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
 import com.romnan.kamusbatak.data.retrofit.EntryApi
 import com.romnan.kamusbatak.data.retrofit.dto.EntryDto
 import com.romnan.kamusbatak.data.room.EntryDao
+import com.romnan.kamusbatak.data.room.entity.EntryEntity
 import com.romnan.kamusbatak.domain.model.Entry
 import com.romnan.kamusbatak.domain.model.Language
+import com.romnan.kamusbatak.domain.model.QuizGame
+import com.romnan.kamusbatak.domain.model.QuizItem
 import com.romnan.kamusbatak.domain.repository.DictionaryRepository
+import com.romnan.kamusbatak.domain.util.Constants.QUIZ_ITEM_OPTIONS_SIZE
 import com.romnan.kamusbatak.domain.util.Resource
 import com.romnan.kamusbatak.domain.util.SimpleResource
 import com.romnan.kamusbatak.domain.util.UIText
@@ -15,9 +19,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import logcat.asLog
 import logcat.logcat
 import retrofit2.HttpException
 import java.io.IOException
+import kotlin.random.Random
 
 class DictionaryRepositoryImpl(
     private val entryApi: EntryApi,
@@ -37,9 +43,9 @@ class DictionaryRepositoryImpl(
             return@flow
         }
 
-        val localEntries = entryDao
-            .findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
-            .map { it.toEntry() }
+        val localEntries =
+            entryDao.findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
+                .map { it.toEntry() }
 
         if (isFullOfflineSupported()) {
             emit(Resource.Success(data = localEntries))
@@ -57,9 +63,9 @@ class DictionaryRepositoryImpl(
             )
 
             entryDao.insert(remoteEntries.map { it.toEntryEntity() })
-            val cachedEntries = entryDao
-                .findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
-                .map { it.toEntry() }
+            val cachedEntries =
+                entryDao.findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
+                    .map { it.toEntry() }
 
             emit(Resource.Success(cachedEntries))
         } catch (e: Exception) {
@@ -88,10 +94,41 @@ class DictionaryRepositoryImpl(
         srcLang: Language,
     ): Flow<Resource<List<Entry>>> = flow {
         emit(Resource.Loading())
-        val entries = entryDao
-            .findBookmarked(srcLangCodeName = srcLang.codeName)
-            .map { it.toEntry() }
+        val entries =
+            entryDao.findBookmarked(srcLangCodeName = srcLang.codeName).map { it.toEntry() }
         emit(Resource.Success(entries))
+    }
+
+    override fun getQuizItem(
+        quizGameName: String,
+    ): Flow<Resource<QuizItem>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val quizGame = QuizGame.valueOf(quizGameName)
+            val result: QuizItem = when (quizGame) {
+                QuizGame.VocabMix -> entryDao.getRandomEntries(
+                    count = QUIZ_ITEM_OPTIONS_SIZE,
+                    srcLangCodeName = if (Random.nextBoolean()) Language.Ind.codeName
+                    else Language.Btk.codeName,
+                ).let { createQuizItem(it) }
+
+                QuizGame.VocabIndBtk -> entryDao.getRandomEntries(
+                    count = QUIZ_ITEM_OPTIONS_SIZE,
+                    srcLangCodeName = Language.Ind.codeName,
+                ).let { createQuizItem(it) }
+
+                QuizGame.VocabBtkInd -> entryDao.getRandomEntries(
+                    count = QUIZ_ITEM_OPTIONS_SIZE,
+                    srcLangCodeName = Language.Btk.codeName,
+                ).let { createQuizItem(it) }
+            }
+
+            emit(Resource.Success(result))
+        } catch (e: Exception) {
+            logcat { e.asLog() }
+            emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
+        }
     }
 
     override fun toggleBookmarkEntry(
@@ -118,8 +155,7 @@ class DictionaryRepositoryImpl(
         try {
             val latestEntryUpdatedAt = entryDao.getLatestEntryUpdatedAt()
             val params = when {
-                isFullOfflineSupported() && !latestEntryUpdatedAt.isNullOrBlank() ->
-                    mapOf(EntryDto.Field.UPDATED_AT to "gt.$latestEntryUpdatedAt")
+                isFullOfflineSupported() && !latestEntryUpdatedAt.isNullOrBlank() -> mapOf(EntryDto.Field.UPDATED_AT to "gt.$latestEntryUpdatedAt")
                 else -> emptyMap()
             }
             val remoteEntries = entryApi.getEntries(params = params)
@@ -147,4 +183,26 @@ class DictionaryRepositoryImpl(
     private suspend fun isFullOfflineSupported(): Boolean {
         return localDbLastUpdatedAt.firstOrNull() != null
     }
+}
+
+private fun createQuizItem(entries: List<EntryEntity>): QuizItem {
+    val firstEntry = entries[0]
+
+    var answerKeyIdx = 0
+
+    val options: List<String> = mutableMapOf<String, Boolean>().apply {
+        putAll(entries.slice(1..entries.lastIndex).map { it.meaning to false }) // Add false options
+        put(firstEntry.meaning, true) // Add true option
+    }.toList().shuffled().mapIndexed { index, pair ->
+        if (pair.second) answerKeyIdx = index // Mark answerkey index
+        pair.first // Map to its meaning
+    }.map {
+        it.split(";".toRegex()).first() // Get the first meaning of the word
+    }
+
+    return QuizItem(
+        question = firstEntry.word,
+        options = options,
+        answerKeyIdx = answerKeyIdx,
+    )
 }

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CollectionsBookmark
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,10 +18,7 @@ import androidx.compose.ui.res.stringResource
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.util.UIText
-import com.romnan.kamusbatak.presentation.destinations.BookmarksScreenDestination
-import com.romnan.kamusbatak.presentation.destinations.Destination
-import com.romnan.kamusbatak.presentation.destinations.EntriesFinderScreenDestination
-import com.romnan.kamusbatak.presentation.destinations.PreferencesScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.*
 import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.asString
 
@@ -82,6 +80,11 @@ private enum class DrawerItem(
         direction = EntriesFinderScreenDestination,
         icon = Icons.Default.Search,
         label = UIText.StringResource(R.string.dictionary),
+    ),
+    QuizGames(
+        direction = QuizGamesScreenDestination,
+        icon = Icons.Default.SportsEsports,
+        label = UIText.StringResource(R.string.quiz_games),
     ),
     Bookmarks(
         direction = BookmarksScreenDestination,

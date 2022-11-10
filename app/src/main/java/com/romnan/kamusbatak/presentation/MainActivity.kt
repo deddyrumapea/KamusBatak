@@ -27,8 +27,10 @@ import com.romnan.kamusbatak.presentation.components.NavigationDrawerContent
 import com.romnan.kamusbatak.presentation.destinations.BookmarksScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.EntriesFinderScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.PreferencesScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.QuizGamesScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.EntriesFinderScreen
 import com.romnan.kamusbatak.presentation.preferences.PreferencesScreen
+import com.romnan.kamusbatak.presentation.quizGame.QuizGamesScreen
 import com.romnan.kamusbatak.presentation.theme.KamusBatakTheme
 import com.romnan.kamusbatak.presentation.util.asNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -92,6 +94,13 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(EntriesFinderScreenDestination) {
                             EntriesFinderScreen(
+                                navigator = navController.asNavigator(),
+                                parentScaffoldState = scaffoldState,
+                            )
+                        }
+
+                        composable(QuizGamesScreenDestination) {
+                            QuizGamesScreen(
                                 navigator = navController.asNavigator(),
                                 parentScaffoldState = scaffoldState,
                             )
