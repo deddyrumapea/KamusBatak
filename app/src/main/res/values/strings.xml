@@ -48,4 +48,11 @@
     <string name="quit_game">Quit Game</string>
     <string name="format_share_quiz_results">Hey, I got %1$d score on %2$s quiz game. Download the Kamus Batak app to take the quiz and see if you can beat me: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="format_share_quiz_playing">"Hey, please help me find the closest meaning of this word: %1$s\nOptions: "</string>
+    <string name="partuturan">Partuturan</string>
+    <string name="umpasa">Umpasa</string>
+    <string name="see_meaning">See meaning</string>
+    <string name="umpasa_cat_all">All</string>
+    <string name="umpasa_cat_wedding">Wedding</string>
+    <string name="umpasa_cat_funeral">Funeral</string>
+    <string name="format_umpasas_list_title">%1$s Umpasa</string>
 </resources>

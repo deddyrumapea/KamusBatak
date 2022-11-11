@@ -24,14 +24,13 @@ import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.romnan.kamusbatak.domain.model.ThemeMode
 import com.romnan.kamusbatak.presentation.bookmarks.BookmarksScreen
 import com.romnan.kamusbatak.presentation.components.NavigationDrawerContent
-import com.romnan.kamusbatak.presentation.destinations.BookmarksScreenDestination
-import com.romnan.kamusbatak.presentation.destinations.EntriesFinderScreenDestination
-import com.romnan.kamusbatak.presentation.destinations.PreferencesScreenDestination
-import com.romnan.kamusbatak.presentation.destinations.QuizGamesScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.*
 import com.romnan.kamusbatak.presentation.entriesFinder.EntriesFinderScreen
+import com.romnan.kamusbatak.presentation.partuturan.PartuturanScreen
 import com.romnan.kamusbatak.presentation.preferences.PreferencesScreen
 import com.romnan.kamusbatak.presentation.quizGame.QuizGamesScreen
 import com.romnan.kamusbatak.presentation.theme.KamusBatakTheme
+import com.romnan.kamusbatak.presentation.umpasa.UmpasaCategoryScreen
 import com.romnan.kamusbatak.presentation.util.asNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -115,6 +114,20 @@ class MainActivity : ComponentActivity() {
 
                         composable(BookmarksScreenDestination) {
                             BookmarksScreen(
+                                navigator = navController.asNavigator(),
+                                parentScaffoldState = scaffoldState,
+                            )
+                        }
+
+                        composable(PartuturanScreenDestination) {
+                            PartuturanScreen(
+                                navigator = navController.asNavigator(),
+                                parentScaffoldState = scaffoldState,
+                            )
+                        }
+
+                        composable(UmpasaCategoryScreenDestination) {
+                            UmpasaCategoryScreen(
                                 navigator = navController.asNavigator(),
                                 parentScaffoldState = scaffoldState,
                             )

@@ -5,10 +5,14 @@ import android.content.Context
 import androidx.room.Room
 import com.romnan.kamusbatak.application.SecretValues
 import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
+import com.romnan.kamusbatak.data.local.LocalCulturalContentApi
+import com.romnan.kamusbatak.data.repository.CulturalContentRepositoryImpl
 import com.romnan.kamusbatak.data.repository.DictionaryRepositoryImpl
 import com.romnan.kamusbatak.data.repository.PreferencesRepositoryImpl
+import com.romnan.kamusbatak.data.retrofit.CulturalContentApi
 import com.romnan.kamusbatak.data.retrofit.EntryApi
 import com.romnan.kamusbatak.data.room.AppDatabase
+import com.romnan.kamusbatak.domain.repository.CulturalContentRepository
 import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import com.romnan.kamusbatak.domain.repository.PreferencesRepository
 import dagger.Module
@@ -29,40 +33,25 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAppDatabase(app: Application): AppDatabase {
-        return Room
-            .databaseBuilder(
-                app,
-                AppDatabase::class.java,
-                AppDatabase.NAME
-            )
-            .fallbackToDestructiveMigration()
-            .build()
+        return Room.databaseBuilder(
+            app, AppDatabase::class.java, AppDatabase.NAME
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides
     @Singleton
     fun provideAppRetrofit(): Retrofit {
         val interceptor = Interceptor { chain ->
-            val request = chain
-                .request()
-                .newBuilder()
-                .addHeader(
-                    SecretValues.keyParam(),
-                    SecretValues.keyValue()
-                )
-                .build()
+            val request = chain.request().newBuilder().addHeader(
+                SecretValues.keyParam(), SecretValues.keyValue()
+            ).build()
             chain.proceed(request)
         }
 
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .build()
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
-        return Retrofit.Builder()
-            .baseUrl(SecretValues.baseUrl())
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        return Retrofit.Builder().baseUrl(SecretValues.baseUrl()).client(client)
+            .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
     @Provides
@@ -82,9 +71,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDictionaryRepository(
-        entryApi: EntryApi,
-        appDatabase: AppDatabase,
-        appPreferencesManager: AppPreferencesManager
+        entryApi: EntryApi, appDatabase: AppDatabase, appPreferencesManager: AppPreferencesManager
     ): DictionaryRepository {
         return DictionaryRepositoryImpl(
             entryApi = entryApi,
@@ -101,5 +88,21 @@ object AppModule {
         return PreferencesRepositoryImpl(
             appPreferencesManager = appPreferencesManager,
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCulturalContentRepository(
+        culturalContentApi: CulturalContentApi
+    ): CulturalContentRepository {
+        return CulturalContentRepositoryImpl(
+            culturalContentApi = culturalContentApi
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCulturalContentApi(): CulturalContentApi {
+        return LocalCulturalContentApi()
     }
 }

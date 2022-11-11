@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import com.romnan.kamusbatak.presentation.theme.spacing
 
 @Composable
@@ -49,6 +50,7 @@ fun NavigationDrawerItem(
             color = if (isSelected()) MaterialTheme.colors.onSecondary
             else MaterialTheme.colors.onSurface,
             style = MaterialTheme.typography.subtitle1,
+            fontWeight = if (isSelected()) FontWeight.SemiBold else FontWeight.Medium,
         )
     }
 }

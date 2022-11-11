@@ -7,10 +7,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CollectionsBookmark
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.SportsEsports
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -90,6 +87,16 @@ private enum class DrawerItem(
         direction = BookmarksScreenDestination,
         icon = Icons.Default.CollectionsBookmark,
         label = UIText.StringResource(R.string.saved_entries),
+    ),
+    Partuturan(
+        direction = PartuturanScreenDestination,
+        icon = Icons.Default.Group,
+        label = UIText.StringResource(R.string.partuturan),
+    ),
+    Umpasa(
+        direction = UmpasaCategoryScreenDestination,
+        icon = Icons.Default.SpeakerNotes,
+        label = UIText.StringResource(R.string.umpasa),
     ),
     Preferences(
         direction = PreferencesScreenDestination,
