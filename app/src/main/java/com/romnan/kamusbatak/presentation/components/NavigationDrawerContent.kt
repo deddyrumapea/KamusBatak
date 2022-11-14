@@ -93,11 +93,6 @@ private enum class DrawerItem(
         icon = Icons.Default.Group,
         label = UIText.StringResource(R.string.partuturan),
     ),
-    Umpasa(
-        direction = UmpasaCategoryScreenDestination,
-        icon = Icons.Default.SpeakerNotes,
-        label = UIText.StringResource(R.string.umpasa),
-    ),
     Preferences(
         direction = PreferencesScreenDestination,
         icon = Icons.Default.Settings,

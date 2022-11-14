@@ -30,7 +30,6 @@ import com.romnan.kamusbatak.presentation.partuturan.PartuturanScreen
 import com.romnan.kamusbatak.presentation.preferences.PreferencesScreen
 import com.romnan.kamusbatak.presentation.quizGame.QuizGamesScreen
 import com.romnan.kamusbatak.presentation.theme.KamusBatakTheme
-import com.romnan.kamusbatak.presentation.umpasa.UmpasaCategoryScreen
 import com.romnan.kamusbatak.presentation.util.asNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -121,13 +120,6 @@ class MainActivity : ComponentActivity() {
 
                         composable(PartuturanScreenDestination) {
                             PartuturanScreen(
-                                navigator = navController.asNavigator(),
-                                parentScaffoldState = scaffoldState,
-                            )
-                        }
-
-                        composable(UmpasaCategoryScreenDestination) {
-                            UmpasaCategoryScreen(
                                 navigator = navController.asNavigator(),
                                 parentScaffoldState = scaffoldState,
                             )

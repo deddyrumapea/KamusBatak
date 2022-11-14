@@ -2,9 +2,6 @@ package com.romnan.kamusbatak.data.local
 
 import com.romnan.kamusbatak.data.retrofit.CulturalContentApi
 import com.romnan.kamusbatak.domain.model.Partuturan
-import com.romnan.kamusbatak.domain.model.Umpasa
-import com.romnan.kamusbatak.domain.model.UmpasaCategory
-import kotlin.random.Random
 
 class LocalCulturalContentApi : CulturalContentApi {
     private val partuturans = listOf(
@@ -271,22 +268,7 @@ class LocalCulturalContentApi : CulturalContentApi {
         ),
     )
 
-    private val umpasas = (1..100).map {
-        Umpasa(
-            category = if (Random.nextBoolean()) UmpasaCategory.FUNERAL else UmpasaCategory.WEDDING,
-            content = "$it content lorem ipsum dolor sit amet",
-            meaning = "$it meaning lorem ipsum dolor",
-        )
-    }
-
     override suspend fun getPartuturans(): List<Partuturan> {
         return partuturans.sortedBy { it.title }
-    }
-
-    override suspend fun getUmpasas(
-        category: UmpasaCategory,
-    ): List<Umpasa> {
-        return if (category == UmpasaCategory.ALL) umpasas
-        else umpasas.filter { it.category === category }
     }
 }

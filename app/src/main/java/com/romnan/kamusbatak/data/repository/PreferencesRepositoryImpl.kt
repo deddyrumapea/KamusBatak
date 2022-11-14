@@ -24,4 +24,10 @@ class PreferencesRepositoryImpl(
             it.copy(themeModeName = themeMode.name)
         }
     }
+
+    override suspend fun setDailyNotification(
+        timeInMillis: Long?,
+    ) {
+        TODO("Not yet implemented")
+    }
 }
