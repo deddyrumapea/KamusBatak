@@ -15,50 +15,49 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
-import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.domain.util.Constants
 import com.romnan.kamusbatak.presentation.detail.component.EntryDetailTopBar
+import com.romnan.kamusbatak.presentation.theme.spacing
 
-@Destination
+@Destination(
+    route = Destination.ROOT_NAV_GRAPH_ROUTE,
+    deepLinks = [DeepLink(uriPattern = "app://com.romnan.kamusbatak/detail/{entryId}")],
+)
 @Composable
 fun EntryDetailScreen(
-    viewModel: EntryDetailViewModel = hiltViewModel(),
+    entryId: Int,
     navigator: DestinationsNavigator,
-    entryId: Int?,
+    viewModel: EntryDetailViewModel = hiltViewModel(),
 ) {
-    remember { viewModel.setEntryId(entryId) }
+    remember { viewModel.onReceiveEntryId(entryId) }
 
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
 
     val state = viewModel.state.value
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            EntryDetailTopBar(
-                isBookmarked = state.entry.isBookmarked,
-                onBackClick = { navigator.navigateUp() },
-                onShareClick = {
-                    val shareText = context.getString(
-                        R.string.format_share_entry_message,
-                        state.entry.word,
-                        state.entry.meaning
-                    )
+    Scaffold(scaffoldState = scaffoldState, topBar = {
+        EntryDetailTopBar(
+            isBookmarked = state.entry.isBookmarked,
+            onBackClick = { navigator.navigateUp() },
+            onShareClick = {
+                val shareText = context.getString(
+                    R.string.format_share_entry_message, state.entry.word, state.entry.meaning
+                )
 
-                    Intent(Intent.ACTION_SEND).let { intent ->
-                        intent.type = Constants.INTENT_TYPE_PLAIN_TEXT
-                        intent.putExtra(Intent.EXTRA_TEXT, shareText)
-                        context.startActivity(intent)
-                    }
-                },
-                onToggleBookmark = { viewModel.onToggleBookmark() },
-            )
-        }
-    ) { scaffoldPadding ->
+                Intent(Intent.ACTION_SEND).let { intent ->
+                    intent.type = Constants.INTENT_TYPE_PLAIN_TEXT
+                    intent.putExtra(Intent.EXTRA_TEXT, shareText)
+                    context.startActivity(intent)
+                }
+            },
+            onToggleBookmark = { viewModel.onToggleBookmark() },
+        )
+    }) { scaffoldPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

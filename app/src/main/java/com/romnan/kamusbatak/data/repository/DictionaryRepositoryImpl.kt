@@ -131,6 +131,17 @@ class DictionaryRepositoryImpl(
         }
     }
 
+    override suspend fun getRandomEntry(): Entry? {
+        return try {
+            entryDao.getRandomEntries(
+                count = 1,
+                srcLangCodeName = Language.Btk.codeName,
+            ).first().toEntry()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     override fun toggleBookmarkEntry(
         id: Int,
     ): Flow<Resource<Entry>> = flow {

@@ -13,11 +13,9 @@ import com.romnan.kamusbatak.domain.util.UIText
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +26,11 @@ class PreferencesViewModel @Inject constructor(
 
     private val _state = mutableStateOf(PreferencesScreenState.defaultValue)
     val state: State<PreferencesScreenState> = _state
+
+    val dailyWordSettings: StateFlow<DailyWordSettingsPresentation> =
+        preferencesRepository.dailyWordTime.map { DailyWordSettingsPresentation(it) }.stateIn(
+            viewModelScope, SharingStarted.Lazily, DailyWordSettingsPresentation.defaultValue
+        )
 
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -90,5 +93,26 @@ class PreferencesViewModel @Inject constructor(
 
     fun onThemeModeDialogVisibilityChange(visible: Boolean) {
         _state.value = state.value.copy(isThemeModeDialogVisible = visible)
+    }
+
+    private var onDailyWordTimePickedJob: Job? = null
+    fun onDailyWordTimePicked(hourOfDay: Int, minute: Int) {
+        onDailyWordTimePickedJob?.cancel()
+        onDailyWordTimePickedJob = viewModelScope.launch {
+            val timeInMillis = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, hourOfDay)
+                set(Calendar.MINUTE, minute)
+            }.timeInMillis
+
+            preferencesRepository.setDailyWordTime(timeInMillis = timeInMillis)
+        }
+    }
+
+    private var onTurnOffDailyWordJob: Job? = null
+    fun onTurnOffDailyWord() {
+        onTurnOffDailyWordJob?.cancel()
+        onTurnOffDailyWordJob = viewModelScope.launch {
+            preferencesRepository.setDailyWordTime(timeInMillis = null)
+        }
     }
 }

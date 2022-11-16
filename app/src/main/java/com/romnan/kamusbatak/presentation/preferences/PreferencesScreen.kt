@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,8 +26,10 @@ import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.model.ThemeMode
 import com.romnan.kamusbatak.domain.util.Constants
 import com.romnan.kamusbatak.domain.util.UIText
-import com.romnan.kamusbatak.presentation.preferences.component.PreferencesItem
+import com.romnan.kamusbatak.presentation.preferences.component.BasicPreference
 import com.romnan.kamusbatak.presentation.preferences.component.PreferencesTopBar
+import com.romnan.kamusbatak.presentation.preferences.component.SwitchPreference
+import com.romnan.kamusbatak.presentation.preferences.component.TimePickerDialog
 import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
@@ -61,14 +64,9 @@ fun PreferencesScreen(
         }
     }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            PreferencesTopBar(
-                onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } }
-            )
-        }
-    ) { scaffoldPadding ->
+    Scaffold(scaffoldState = scaffoldState, topBar = {
+        PreferencesTopBar(onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } })
+    }) { scaffoldPadding ->
         Column(
             modifier = Modifier
                 .padding(scaffoldPadding)
@@ -76,9 +74,39 @@ fun PreferencesScreen(
                 .fillMaxWidth()
                 .verticalScroll(scrollState)
         ) {
-            PreferencesItem(
-                imageVector =
-                if (state.isUpdatingLocalDb) Icons.Default.Downloading
+            val dailyNotif = viewModel.dailyWordSettings.collectAsState()
+            SwitchPreference(
+                icon = {
+                    if (dailyNotif.value.isActivated) Icons.Filled.NotificationsActive
+                    else Icons.Filled.Notifications
+                },
+                title = { stringResource(R.string.pref_title_daily_notif) },
+                description = { dailyNotif.value.readableTime?.asString() },
+                checked = { dailyNotif.value.isActivated },
+                onClick = {
+                    if (!dailyNotif.value.isActivated) TimePickerDialog(
+                        context = context,
+                        initHourOfDay = dailyNotif.value.calendar[Calendar.HOUR_OF_DAY],
+                        initMinute = dailyNotif.value.calendar[Calendar.MINUTE],
+                        onPicked = { hourOfDay: Int, minute: Int ->
+                            viewModel.onDailyWordTimePicked(hourOfDay = hourOfDay, minute = minute)
+                        },
+                    ).show() else viewModel.onTurnOffDailyWord()
+                },
+                onCheckedChange = {
+                    if (!dailyNotif.value.isActivated) TimePickerDialog(
+                        context = context,
+                        initHourOfDay = dailyNotif.value.calendar[Calendar.HOUR_OF_DAY],
+                        initMinute = dailyNotif.value.calendar[Calendar.MINUTE],
+                        onPicked = { hourOfDay: Int, minute: Int ->
+                            viewModel.onDailyWordTimePicked(hourOfDay = hourOfDay, minute = minute)
+                        },
+                    ).show() else viewModel.onTurnOffDailyWord()
+                },
+            )
+
+            BasicPreference(
+                imageVector = if (state.isUpdatingLocalDb) Icons.Default.Downloading
                 else Icons.Default.Sync,
 
                 title = when {
@@ -86,29 +114,25 @@ fun PreferencesScreen(
                     state.localDbLastUpdatedAt != null -> stringResource(R.string.update_dictionary_data)
                     else -> stringResource(R.string.download_dictionary_data)
                 },
-                description = stringResource(R.string.update_description)
-                    .plus("\n")
-                    .plus(
-                        context.getString(
-                            R.string.format_last_updated,
-                            when (state.localDbLastUpdatedAt) {
-                                null -> UIText.StringResource(R.string.data_never_downloaded)
-                                else -> {
-                                    val date = SimpleDateFormat(
-                                        Constants.PATTERN_DATE,
-                                        Locale.getDefault()
-                                    ).format(Date().apply {
-                                        this.time = state.localDbLastUpdatedAt
-                                    })
-                                    UIText.DynamicString(date)
-                                }
-                            }.asString()
-                        )
-                    ),
+                description = stringResource(R.string.update_description).plus("\n").plus(
+                    context.getString(
+                        R.string.format_last_updated, when (state.localDbLastUpdatedAt) {
+                            null -> UIText.StringResource(R.string.data_never_downloaded)
+                            else -> {
+                                val date = SimpleDateFormat(
+                                    Constants.PATTERN_DATE, Locale.getDefault()
+                                ).format(Date().apply {
+                                    this.time = state.localDbLastUpdatedAt
+                                })
+                                UIText.DynamicString(date)
+                            }
+                        }.asString()
+                    )
+                ),
                 onClick = { viewModel.onUpdateLocalDb() },
             )
 
-            PreferencesItem(
+            BasicPreference(
                 imageVector = when (state.currentThemeMode) {
                     ThemeMode.System -> Icons.Default.BrightnessMedium
                     ThemeMode.Light -> Icons.Default.LightMode
@@ -119,9 +143,11 @@ fun PreferencesScreen(
                 onClick = { viewModel.onThemeModeDialogVisibilityChange(visible = true) },
             )
 
-            if (state.isThemeModeDialogVisible) Dialog(
-                onDismissRequest = { viewModel.onThemeModeDialogVisibilityChange(visible = false) }
-            ) {
+            if (state.isThemeModeDialogVisible) Dialog(onDismissRequest = {
+                viewModel.onThemeModeDialogVisibilityChange(
+                    visible = false
+                )
+            }) {
                 Column(
                     Modifier
                         .background(
@@ -141,14 +167,12 @@ fun PreferencesScreen(
                     Divider(modifier = Modifier.padding(vertical = MaterialTheme.spacing.medium))
 
                     ThemeMode.values().forEach { themeMode ->
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                        Row(verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Start,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable { viewModel.onThemeModeChosen(themeMode = themeMode) }
-                                .padding(horizontal = MaterialTheme.spacing.medium)
-                        ) {
+                                .padding(horizontal = MaterialTheme.spacing.medium)) {
                             RadioButton(
                                 selected = themeMode == state.currentThemeMode,
                                 onClick = { viewModel.onThemeModeChosen(themeMode = themeMode) },

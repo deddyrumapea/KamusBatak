@@ -53,8 +53,7 @@ fun EntriesFinderScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            EntriesFinderTopBar(
-                targetLangName = state.targetLanguage.displayName.asString(),
+            EntriesFinderTopBar(targetLangName = state.targetLanguage.displayName.asString(),
                 sourceLangName = state.sourceLanguage.displayName.asString(),
                 isOptionsMenuVisible = state.isOptionsMenuVisible,
                 onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } },
@@ -69,8 +68,7 @@ fun EntriesFinderScreen(
                         intent.putExtra(Intent.EXTRA_TEXT, shareText)
                         context.startActivity(intent)
                     }
-                }
-            )
+                })
         },
     ) { scaffoldPadding ->
         Column(
@@ -112,10 +110,9 @@ fun EntriesFinderScreen(
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(viewModel.entries.value.size) { i ->
-                    EntryItem(
-                        entry = viewModel.entries.value[i],
-                        onClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
-                    )
+                    EntryItem(entry = viewModel.entries.value[i], onClick = {
+                        if (it.id != null) navigator.navigate(EntryDetailScreenDestination(entryId = it.id))
+                    })
                 }
             }
         }

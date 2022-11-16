@@ -27,6 +27,8 @@ interface DictionaryRepository {
         quizGameName: String,
     ): Flow<Resource<QuizItem>>
 
+    suspend fun getRandomEntry(): Entry?
+
     fun toggleBookmarkEntry(
         id: Int,
     ): Flow<Resource<Entry>>

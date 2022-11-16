@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.romnan.kamusbatak.presentation.theme.spacing
 
 @Composable
-fun PreferencesItem(
+fun BasicPreference(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     title: String,

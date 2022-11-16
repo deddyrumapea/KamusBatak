@@ -8,13 +8,13 @@ import kotlinx.serialization.Serializable
 data class AppPreferences(
     val localDbLastUpdatedAt: Long?,
     val themeModeName: String,
-    val dailyNotifTimeInMillis: Long?,
+    val dailyWordTimeInMillis: Long?,
 ) {
     companion object {
         val defaultValue = AppPreferences(
             localDbLastUpdatedAt = null,
             themeModeName = ThemeMode.System.name,
-            dailyNotifTimeInMillis = null,
+            dailyWordTimeInMillis = null,
         )
     }
 }

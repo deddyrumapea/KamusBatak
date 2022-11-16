@@ -28,9 +28,8 @@ class EntryDetailViewModel @Inject constructor(
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var setEntryIdJob: Job? = null
-    fun setEntryId(entryId: Int?) {
+    fun onReceiveEntryId(entryId: Int) {
         logcat { "setEntryId: $entryId" }
-        if (entryId == null) return
         setEntryIdJob?.cancel()
         setEntryIdJob = viewModelScope.launch {
             dictionaryRepository.getEntry(id = entryId).onEach { result ->

@@ -48,20 +48,15 @@ fun BookmarksScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    val tabItems = listOf(
-        TabItem(title = Language.Btk.displayName.asString()) {
-            BookmarksTabContent(
-                entries = state.btkEntries,
-                onItemClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
-            )
-        },
-        TabItem(title = Language.Ind.displayName.asString()) {
-            BookmarksTabContent(
-                entries = state.indEntries,
-                onItemClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
-            )
-        }
-    )
+    val tabItems = listOf(TabItem(title = Language.Btk.displayName.asString()) {
+        BookmarksTabContent(entries = state.btkEntries, onItemClick = {
+            if (it.id != null) navigator.navigate(EntryDetailScreenDestination(entryId = it.id))
+        })
+    }, TabItem(title = Language.Ind.displayName.asString()) {
+        BookmarksTabContent(entries = state.indEntries, onItemClick = {
+            if (it.id != null) navigator.navigate(EntryDetailScreenDestination(entryId = it.id))
+        })
+    })
 
     val pagerState = rememberPagerState(pageCount = tabItems.size)
 
@@ -81,21 +76,15 @@ fun BookmarksScreen(
         }
     }
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            BookmarksTopBar(
-                onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } }
-            )
-        }
-    ) { scaffoldPadding ->
+    Scaffold(scaffoldState = scaffoldState, topBar = {
+        BookmarksTopBar(onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } })
+    }) { scaffoldPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(scaffoldPadding)
         ) {
-            TabRow(
-                selectedTabIndex = pagerState.currentPage,
+            TabRow(selectedTabIndex = pagerState.currentPage,
                 backgroundColor = MaterialTheme.colors.surface,
                 indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
@@ -105,26 +94,21 @@ fun BookmarksScreen(
                             .pagerTabIndicatorOffset(pagerState, tabPositions)
                             .clip(RoundedCornerShape(topStartPercent = 100, topEndPercent = 100))
                     )
-                }
-            ) {
+                }) {
                 tabItems.forEachIndexed { index: Int, tabItem: TabItem ->
                     val isSelected = pagerState.currentPage == index
-                    Tab(
-                        text = {
-                            Text(
-                                text = tabItem.title,
-                                style = MaterialTheme.typography.subtitle1,
-                                color =
-                                if (isSelected) MaterialTheme.colors.primaryVariant
-                                else Color.Unspecified,
-                                fontWeight =
-                                if (isSelected) FontWeight.SemiBold
-                                else FontWeight.Normal,
-                            )
-                        },
+                    Tab(text = {
+                        Text(
+                            text = tabItem.title,
+                            style = MaterialTheme.typography.subtitle1,
+                            color = if (isSelected) MaterialTheme.colors.primaryVariant
+                            else Color.Unspecified,
+                            fontWeight = if (isSelected) FontWeight.SemiBold
+                            else FontWeight.Normal,
+                        )
+                    },
                         selected = isSelected,
-                        onClick = { scope.launch { pagerState.animateScrollToPage(index) } }
-                    )
+                        onClick = { scope.launch { pagerState.animateScrollToPage(index) } })
                 }
             }
 

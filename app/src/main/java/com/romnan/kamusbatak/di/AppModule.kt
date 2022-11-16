@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import com.romnan.kamusbatak.application.SecretValues
 import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
+import com.romnan.kamusbatak.data.helper.NotificationHelperImpl
 import com.romnan.kamusbatak.data.local.LocalCulturalContentApi
 import com.romnan.kamusbatak.data.repository.CulturalContentRepositoryImpl
 import com.romnan.kamusbatak.data.repository.DictionaryRepositoryImpl
@@ -12,6 +13,7 @@ import com.romnan.kamusbatak.data.repository.PreferencesRepositoryImpl
 import com.romnan.kamusbatak.data.retrofit.CulturalContentApi
 import com.romnan.kamusbatak.data.retrofit.EntryApi
 import com.romnan.kamusbatak.data.room.AppDatabase
+import com.romnan.kamusbatak.domain.helper.NotificationHelper
 import com.romnan.kamusbatak.domain.repository.CulturalContentRepository
 import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import com.romnan.kamusbatak.domain.repository.PreferencesRepository
@@ -83,10 +85,12 @@ object AppModule {
     @Provides
     @Singleton
     fun providePreferencesRepository(
-        appPreferencesManager: AppPreferencesManager
+        appPreferencesManager: AppPreferencesManager,
+        @ApplicationContext appContext: Context,
     ): PreferencesRepository {
         return PreferencesRepositoryImpl(
             appPreferencesManager = appPreferencesManager,
+            appContext = appContext,
         )
     }
 
@@ -104,5 +108,17 @@ object AppModule {
     @Singleton
     fun provideCulturalContentApi(): CulturalContentApi {
         return LocalCulturalContentApi()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationHelper(
+        @ApplicationContext appContext: Context,
+        dictionaryRepository: DictionaryRepository,
+    ): NotificationHelper {
+        return NotificationHelperImpl(
+            appContext = appContext,
+            dictionaryRepository = dictionaryRepository,
+        )
     }
 }
