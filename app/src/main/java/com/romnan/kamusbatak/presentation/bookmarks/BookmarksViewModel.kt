@@ -36,7 +36,7 @@ class BookmarksViewModel @Inject constructor(
     fun getBookmarkedEntries() {
         getBookmarkedEntriesJob?.cancel()
         getBookmarkedEntriesJob = viewModelScope.launch {
-            dictionaryRepository.getBookmarkedEntries(Language.Ind).onEach { result ->
+            dictionaryRepository.getBookmarkedEntries(Language.IND).onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         result.uiText?.let { _eventFlow.send(UIEvent.ShowSnackbar(it)) }
@@ -54,7 +54,7 @@ class BookmarksViewModel @Inject constructor(
                 }
             }.launchIn(this)
 
-            dictionaryRepository.getBookmarkedEntries(Language.Btk).onEach { result ->
+            dictionaryRepository.getBookmarkedEntries(Language.BTK).onEach { result ->
                 when (result) {
                     is Resource.Error -> {
                         result.uiText?.let { _eventFlow.send(UIEvent.ShowSnackbar(it)) }

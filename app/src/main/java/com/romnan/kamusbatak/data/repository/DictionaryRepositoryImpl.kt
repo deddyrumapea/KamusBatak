@@ -109,18 +109,18 @@ class DictionaryRepositoryImpl(
             val result: QuizItem = when (quizGame) {
                 QuizGame.VocabMix -> entryDao.getRandomEntries(
                     count = QUIZ_ITEM_OPTIONS_SIZE,
-                    srcLangCodeName = if (Random.nextBoolean()) Language.Ind.codeName
-                    else Language.Btk.codeName,
+                    srcLangCodeName = if (Random.nextBoolean()) Language.IND.codeName
+                    else Language.BTK.codeName,
                 ).let { createQuizItem(it) }
 
                 QuizGame.VocabIndBtk -> entryDao.getRandomEntries(
                     count = QUIZ_ITEM_OPTIONS_SIZE,
-                    srcLangCodeName = Language.Ind.codeName,
+                    srcLangCodeName = Language.IND.codeName,
                 ).let { createQuizItem(it) }
 
                 QuizGame.VocabBtkInd -> entryDao.getRandomEntries(
                     count = QUIZ_ITEM_OPTIONS_SIZE,
-                    srcLangCodeName = Language.Btk.codeName,
+                    srcLangCodeName = Language.BTK.codeName,
                 ).let { createQuizItem(it) }
             }
 
@@ -135,7 +135,7 @@ class DictionaryRepositoryImpl(
         return try {
             entryDao.getRandomEntries(
                 count = 1,
-                srcLangCodeName = Language.Btk.codeName,
+                srcLangCodeName = Language.BTK.codeName,
             ).first().toEntry()
         } catch (e: Exception) {
             null
@@ -194,26 +194,28 @@ class DictionaryRepositoryImpl(
     private suspend fun isFullOfflineSupported(): Boolean {
         return localDbLastUpdatedAt.firstOrNull() != null
     }
-}
 
-private fun createQuizItem(entries: List<EntryEntity>): QuizItem {
-    val firstEntry = entries[0]
+    private fun createQuizItem(entries: List<EntryEntity>): QuizItem {
+        val firstEntry = entries[0]
 
-    var answerKeyIdx = 0
+        var answerKeyIdx = 0
 
-    val options: List<String> = mutableMapOf<String, Boolean>().apply {
-        putAll(entries.slice(1..entries.lastIndex).map { it.meaning to false }) // Add false options
-        put(firstEntry.meaning, true) // Add true option
-    }.toList().shuffled().mapIndexed { index, pair ->
-        if (pair.second) answerKeyIdx = index // Mark answerkey index
-        pair.first // Map to its meaning
-    }.map {
-        it.split(";".toRegex()).first() // Get the first meaning of the word
+        val options: List<String> = mutableMapOf<String, Boolean>().apply {
+            putAll(
+                entries.slice(1..entries.lastIndex)
+                    .map { it.meaning to false }) // Add false options
+            put(firstEntry.meaning, true) // Add true option
+        }.toList().shuffled().mapIndexed { index, pair ->
+            if (pair.second) answerKeyIdx = index // Mark answerkey index
+            pair.first // Map to its meaning
+        }.map {
+            it.split(";".toRegex()).first() // Get the first meaning of the word
+        }
+
+        return QuizItem(
+            question = firstEntry.word,
+            options = options,
+            answerKeyIdx = answerKeyIdx,
+        )
     }
-
-    return QuizItem(
-        question = firstEntry.word,
-        options = options,
-        answerKeyIdx = answerKeyIdx,
-    )
 }

@@ -48,11 +48,11 @@ fun BookmarksScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    val tabItems = listOf(TabItem(title = Language.Btk.displayName.asString()) {
+    val tabItems = listOf(TabItem(title = Language.BTK.displayName.asString()) {
         BookmarksTabContent(entries = state.btkEntries, onItemClick = {
             if (it.id != null) navigator.navigate(EntryDetailScreenDestination(entryId = it.id))
         })
-    }, TabItem(title = Language.Ind.displayName.asString()) {
+    }, TabItem(title = Language.IND.displayName.asString()) {
         BookmarksTabContent(entries = state.indEntries, onItemClick = {
             if (it.id != null) navigator.navigate(EntryDetailScreenDestination(entryId = it.id))
         })
