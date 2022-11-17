@@ -208,7 +208,7 @@ fun QuizPlayingScreen(
                                 val alphabet = ('A'..'Z').toList()
                                 viewModel.currQuizItem.options.indices.forEach { i ->
                                     QuizOptionItem(
-                                        char = { alphabet[i] },
+                                        char = { alphabet[i % alphabet.size] },
                                         text = { viewModel.currQuizItem.options[i] },
                                         isSelected = { i == viewModel.selectedOptionIdx },
                                         isCorrect = { i == viewModel.currQuizItem.correctOptionIdx },
