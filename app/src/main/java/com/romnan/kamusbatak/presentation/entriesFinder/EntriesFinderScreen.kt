@@ -26,6 +26,7 @@ import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.util.Constants
 import com.romnan.kamusbatak.presentation.components.EntryItem
 import com.romnan.kamusbatak.presentation.destinations.EntryDetailScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.SuggestionsScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.components.EntriesFinderTopBar
 import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.UIEvent
@@ -53,7 +54,8 @@ fun EntriesFinderScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            EntriesFinderTopBar(targetLangName = state.targetLanguage.displayName.asString(),
+            EntriesFinderTopBar(
+                targetLangName = state.targetLanguage.displayName.asString(),
                 sourceLangName = state.sourceLanguage.displayName.asString(),
                 isOptionsMenuVisible = state.isOptionsMenuVisible,
                 onOpenDrawer = { scope.launch { parentScaffoldState.drawerState.open() } },
@@ -68,7 +70,12 @@ fun EntriesFinderScreen(
                         intent.putExtra(Intent.EXTRA_TEXT, shareText)
                         context.startActivity(intent)
                     }
-                })
+                },
+                onSendSuggestionsClick = {
+                    viewModel.onCloseOptionsMenu()
+                    navigator.navigate(SuggestionsScreenDestination(entryId = null))
+                },
+            )
         },
     ) { scaffoldPadding ->
         Column(

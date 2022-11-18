@@ -6,10 +6,7 @@ import com.romnan.kamusbatak.data.retrofit.EntryApi
 import com.romnan.kamusbatak.data.retrofit.dto.EntryDto
 import com.romnan.kamusbatak.data.room.EntryDao
 import com.romnan.kamusbatak.data.room.entity.EntryEntity
-import com.romnan.kamusbatak.domain.model.Entry
-import com.romnan.kamusbatak.domain.model.Language
-import com.romnan.kamusbatak.domain.model.QuizGame
-import com.romnan.kamusbatak.domain.model.QuizItem
+import com.romnan.kamusbatak.domain.model.*
 import com.romnan.kamusbatak.domain.repository.DictionaryRepository
 import com.romnan.kamusbatak.domain.util.Constants.QUIZ_ITEM_OPTIONS_SIZE
 import com.romnan.kamusbatak.domain.util.Resource
@@ -69,6 +66,7 @@ class DictionaryRepositoryImpl(
 
             emit(Resource.Success(cachedEntries))
         } catch (e: Exception) {
+            logcat { e.asLog() }
             when (e) {
                 is HttpException -> UIText.StringResource(R.string.em_http_exception)
                 is IOException -> UIText.StringResource(R.string.em_io_exception)
@@ -160,6 +158,70 @@ class DictionaryRepositoryImpl(
         }
     }
 
+    override fun postSuggestion(
+        suggestion: Suggestion,
+    ): Flow<SimpleResource> = flow {
+        emit(Resource.Loading())
+
+        try {
+            when (suggestion) {
+                is Suggestion.NewEntry -> {
+                    when {
+                        suggestion.word.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_word_blank)))
+                            return@flow
+                        }
+
+                        suggestion.meaning.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_meaning_blank)))
+                            return@flow
+                        }
+                    }
+
+                    entryApi.postNewEntrySuggestion(
+                        srcLang = suggestion.srcLang.codeName,
+                        word = suggestion.word,
+                        meaning = suggestion.meaning,
+                    )
+                }
+
+                is Suggestion.OldEntry -> {
+                    when {
+                        suggestion.word.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_word_blank)))
+                            return@flow
+                        }
+
+                        suggestion.meaning.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_meaning_blank)))
+                            return@flow
+                        }
+
+                        suggestion.word == suggestion.oldWord && suggestion.meaning == suggestion.oldMeaning -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_no_diff_entry)))
+                            return@flow
+                        }
+                    }
+
+                    entryApi.postOldEntrySuggestion(
+                        entryId = suggestion.entryId,
+                        word = suggestion.word,
+                        meaning = suggestion.meaning,
+                    )
+                }
+            }
+
+            emit(Resource.Success(Unit))
+        } catch (e: Exception) {
+            logcat { e.asLog() }
+            when (e) {
+                is HttpException -> UIText.StringResource(R.string.em_http_exception)
+                is IOException -> UIText.StringResource(R.string.em_io_exception)
+                else -> UIText.StringResource(R.string.em_unknown)
+            }.let { emit(Resource.Error(uiText = it)) }
+        }
+    }
+
     override fun updateLocalDb(): Flow<SimpleResource> = flow {
         emit(Resource.Loading())
 
@@ -176,7 +238,7 @@ class DictionaryRepositoryImpl(
 
             emit(Resource.Success(Unit))
         } catch (e: Exception) {
-            logcat { "downloadUpdate: ${e::class.java.simpleName}" }
+            logcat { e.asLog() }
             when (e) {
                 is HttpException -> UIText.StringResource(R.string.em_http_exception)
                 is IOException -> UIText.StringResource(R.string.em_io_exception)
@@ -213,6 +275,7 @@ class DictionaryRepositoryImpl(
         }
 
         return QuizItem(
+            entryId = firstEntry.id,
             question = firstEntry.word,
             options = options,
             answerKeyIdx = answerKeyIdx,

@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
@@ -25,9 +26,11 @@ import com.romnan.kamusbatak.domain.model.QuizGame
 import com.romnan.kamusbatak.presentation.components.RoundedEndsButton
 import com.romnan.kamusbatak.presentation.destinations.QuizGamesScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.QuizResultScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.SuggestionsScreenDestination
 import com.romnan.kamusbatak.presentation.quizGame.component.AnswerSheetContent
 import com.romnan.kamusbatak.presentation.quizGame.component.QuizOptionItem
 import com.romnan.kamusbatak.presentation.theme.spacing
+import com.romnan.kamusbatak.presentation.util.OnLifecycleEvent
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
 import kotlinx.coroutines.flow.collectLatest
@@ -85,6 +88,9 @@ fun QuizPlayingScreen(
                             popUpTo(QuizGamesScreenDestination.route) { saveState = false }
                         }
                     }
+                },
+                onClickReport = {
+                    navigator.navigate(SuggestionsScreenDestination(viewModel.currQuizItem.entryId))
                 },
             )
         },

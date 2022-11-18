@@ -55,6 +55,7 @@ class QuizPlayingViewModel @Inject constructor(
     val eventFlow = _eventFlow.receiveAsFlow()
 
     fun onReceivedQuizGameName(value: String) {
+        if (quizGameName != null) return
         quizGameName = value
         getNextQuizItem()
     }

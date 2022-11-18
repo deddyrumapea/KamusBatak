@@ -3,6 +3,7 @@ package com.romnan.kamusbatak.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import com.romnan.kamusbatak.BuildConfig
 import com.romnan.kamusbatak.application.SecretValues
 import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
 import com.romnan.kamusbatak.data.helper.NotificationHelperImpl
@@ -24,6 +25,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -44,16 +46,28 @@ object AppModule {
     @Singleton
     fun provideAppRetrofit(): Retrofit {
         val interceptor = Interceptor { chain ->
-            val request = chain.request().newBuilder().addHeader(
-                SecretValues.keyParam(), SecretValues.keyValue()
-            ).build()
+            val request = chain.request()
+                .newBuilder()
+                .addHeader(SecretValues.keyParam(), SecretValues.keyValue())
+                .build()
+
             chain.proceed(request)
         }
 
-        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .apply {
+                if (BuildConfig.DEBUG) addInterceptor(
+                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                )
+            }
+            .build()
 
-        return Retrofit.Builder().baseUrl(SecretValues.baseUrl()).client(client)
-            .addConverterFactory(GsonConverterFactory.create()).build()
+        return Retrofit.Builder()
+            .baseUrl(SecretValues.baseUrl())
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
     @Provides

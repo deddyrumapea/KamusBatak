@@ -54,4 +54,16 @@
     <string name="pref_title_daily_notif">Notifikasi Kata Hari Ini</string>
     <string name="notif_title_word_of_the_day">Kata Hari Ini: %1$s</string>
     <string name="em_dictionary_data_needed">Data kamus dibutuhkan untuk fitur ini</string>
+    <string name="suggestions">Saran</string>
+    <string name="submitting">Mengirim…</string>
+    <string name="submit">Kirim</string>
+    <string name="sm_suggestions">Saran Anda sudah berhasil dikirim</string>
+    <string name="send_suggestions">Kirim saran</string>
+    <string name="word">Kata</string>
+    <string name="meaning">Arti</string>
+    <string name="em_word_blank">Kata tidak boleh kosong</string>
+    <string name="em_meaning_blank">Arti tidak boleh kosong</string>
+    <string name="source_language">Bahasa asal</string>
+    <string name="em_no_diff_entry">Tidak ada perbedaan dengan entri yang telah ada</string>
+    <string name="cd_report_answer">Laporkan jawaban</string>
 </resources>

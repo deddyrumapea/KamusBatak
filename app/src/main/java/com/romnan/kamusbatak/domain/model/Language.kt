@@ -7,13 +7,13 @@ enum class Language(
     val displayName: UIText,
     val codeName: String,
 ) {
-    IND(
-        displayName = UIText.StringResource(R.string.indonesia),
-        codeName = "ind",
-    ),
-
     BTK(
         displayName = UIText.StringResource(R.string.batak),
         codeName = "btk",
+    ),
+
+    IND(
+        displayName = UIText.StringResource(R.string.indonesia),
+        codeName = "ind",
     ),
 }

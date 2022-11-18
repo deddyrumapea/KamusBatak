@@ -54,4 +54,16 @@
     <string name="pref_title_daily_notif">Word of The Day Notifications</string>
     <string name="notif_title_word_of_the_day">Word of The Day: %1$s</string>
     <string name="em_dictionary_data_needed">Dictionary data is needed for this feature</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="submit">Submit</string>
+    <string name="submitting">Submitting…</string>
+    <string name="sm_suggestions">Your suggestions are successfully sent</string>
+    <string name="send_suggestions">Send suggestions</string>
+    <string name="word">Word</string>
+    <string name="meaning">Meaning</string>
+    <string name="em_word_blank">Word can not be blank</string>
+    <string name="em_meaning_blank">Meaning can not be blank</string>
+    <string name="source_language">Source language</string>
+    <string name="em_no_diff_entry">There\'s no difference with existing entry</string>
+    <string name="cd_report_answer">Report answer</string>
 </resources>
