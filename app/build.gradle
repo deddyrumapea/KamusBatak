@@ -77,6 +77,12 @@ android {
         }
     }
 
+    bundle {
+        storeArchive {
+            enable = false
+        }
+    }
+
     ndkVersion '23.1.7779620'
 }
 dependencies {
