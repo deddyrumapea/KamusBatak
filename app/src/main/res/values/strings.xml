@@ -66,4 +66,5 @@
     <string name="source_language">Source language</string>
     <string name="em_no_diff_entry">There\'s no difference with existing entry</string>
     <string name="cd_report_answer">Report answer</string>
+    <string name="submit_suggestion">Submit Suggestion</string>
 </resources>

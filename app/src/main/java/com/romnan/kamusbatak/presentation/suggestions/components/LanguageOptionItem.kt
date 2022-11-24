@@ -31,13 +31,9 @@ fun LanguageOptionItem(
                     width = 1.dp,
                     color = MaterialTheme.colors.secondary,
                     shape = RoundedCornerShape(8.dp),
-                ) else Modifier
+                ) else Modifier.background(MaterialTheme.colors.secondary)
             )
-            .background(
-                if (isSelected()) MaterialTheme.colors.secondary
-                else MaterialTheme.colors.surface
-            )
-            .padding(MaterialTheme.spacing.small)
+            .padding(MaterialTheme.spacing.small),
     ) {
         Text(
             text = languageName(),

@@ -115,16 +115,22 @@ fun SuggestionsScreen(
                         }
 
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
+
+                        Divider()
+
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
                     }
 
                     TextField(
                         value = viewModel.word,
                         onValueChange = { viewModel.onChangeWord(it) },
+                        label = { Text(text = stringResource(R.string.word)) },
                         placeholder = { Text(text = stringResource(R.string.word)) },
                         shape = RoundedCornerShape(8.dp),
                         colors = TextFieldDefaults.textFieldColors(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
+                            focusedLabelColor = MaterialTheme.colors.secondary,
                         ),
                         enabled = !viewModel.isLoadingSubmit,
                         modifier = Modifier.fillMaxWidth(),
@@ -135,13 +141,13 @@ fun SuggestionsScreen(
                     TextField(
                         value = viewModel.meaning,
                         onValueChange = { viewModel.onChangeMeaning(it) },
+                        label = { Text(text = stringResource(R.string.meaning)) },
                         placeholder = { Text(text = stringResource(R.string.meaning)) },
                         shape = RoundedCornerShape(8.dp),
                         colors = TextFieldDefaults.textFieldColors(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
-                            disabledIndicatorColor = Color.Transparent,
-                            errorIndicatorColor = Color.Transparent,
+                            focusedLabelColor = MaterialTheme.colors.secondary,
                         ),
                         enabled = !viewModel.isLoadingSubmit,
                         modifier = Modifier.fillMaxWidth(),
@@ -157,7 +163,7 @@ fun SuggestionsScreen(
                         Text(
                             text = stringResource(
                                 if (viewModel.isLoadingSubmit) R.string.submitting
-                                else R.string.submit
+                                else R.string.submit_suggestion
                             ),
                             fontWeight = FontWeight.SemiBold,
                         )
