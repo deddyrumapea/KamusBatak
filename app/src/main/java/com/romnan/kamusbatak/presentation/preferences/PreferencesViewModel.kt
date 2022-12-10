@@ -115,4 +115,12 @@ class PreferencesViewModel @Inject constructor(
             preferencesRepository.setDailyWordTime(timeInMillis = null)
         }
     }
+
+    private var onClickAppVersionJob: Job? = null
+    fun onClickAppVersion() {
+        onClickAppVersionJob?.cancel()
+        onClickAppVersionJob = viewModelScope.launch {
+            _eventFlow.emit(UIEvent.ShowSnackbar(UIText.StringResource(R.string.about)))
+        }
+    }
 }
