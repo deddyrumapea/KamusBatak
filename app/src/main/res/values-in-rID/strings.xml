@@ -67,4 +67,6 @@
     <string name="em_no_diff_entry">Tidak ada perbedaan dengan entri yang telah ada</string>
     <string name="cd_report_answer">Laporkan jawaban</string>
     <string name="submit_suggestion">Kirim Saran</string>
+    <string name="app_version">Versi aplikasi</string>
+    <string name="about">Aplikasi Kamus Batak\nDikembangkan oleh Deddy Romnan Rumapea</string>
 </resources>

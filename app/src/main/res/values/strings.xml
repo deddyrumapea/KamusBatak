@@ -67,4 +67,6 @@
     <string name="em_no_diff_entry">There\'s no difference with existing entry</string>
     <string name="cd_report_answer">Report answer</string>
     <string name="submit_suggestion">Submit Suggestion</string>
+    <string name="app_version">App version</string>
+    <string name="about">Kamus Batak App\nDeveloped by Deddy Romnan Rumapea</string>
 </resources>

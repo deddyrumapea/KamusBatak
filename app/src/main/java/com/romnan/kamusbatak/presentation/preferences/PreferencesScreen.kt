@@ -143,11 +143,16 @@ fun PreferencesScreen(
                 onClick = { viewModel.onThemeModeDialogVisibilityChange(visible = true) },
             )
 
-            if (state.isThemeModeDialogVisible) Dialog(onDismissRequest = {
-                viewModel.onThemeModeDialogVisibilityChange(
-                    visible = false
-                )
-            }) {
+            BasicPreference(
+                imageVector = Icons.Default.Info,
+                title = stringResource(R.string.app_version),
+                description = state.appVersion,
+                onClick = { viewModel.onClickAppVersion() },
+            )
+
+            if (state.isThemeModeDialogVisible) Dialog(
+                onDismissRequest = { viewModel.onThemeModeDialogVisibilityChange(visible = false) },
+            ) {
                 Column(
                     Modifier
                         .background(
