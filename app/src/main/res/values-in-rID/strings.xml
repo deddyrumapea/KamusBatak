@@ -47,7 +47,7 @@
     <string name="correct_answer_is">Jawaban yang benar:</string>
     <string name="quiz_results">Hasil Kuis</string>
     <string name="quit_game">Keluar Permainan</string>
-    <string name="format_share_quiz_results">Hei, saya mendapat nilai %1$d di permainan kuis %2$s. Unduh aplikasi Kamus Batak untuk memainkan kuisnya dan kita lihat siapa yang punya skor lebih tinggi: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="format_share_quiz_results">Hei, saya mendapat nilai %1$d di permainan kuis %2$s.\nUnduh aplikasi Kamus Batak untuk memainkan kuisnya dan kita lihat siapa yang punya skor lebih tinggi: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="see_meaning">Lihat arti</string>
     <string name="notif_channel_name_daily_notif">Notifikasi Kata Harian</string>
     <string name="notif_channel_desc_daily_notif">Notifikasi yang mengirimkan kata Batak Toba dan artinya.</string>

@@ -4,7 +4,7 @@
     <string name="cd_swap_languages">Swap languages</string>
     <string name="cd_nav_back">Back</string>
     <string name="cd_share">Share</string>
-    <string name="format_share_entry_message">%1$s %2$s  Download Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="format_share_entry_message">%1$s\n%2$s\n\nDownload Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="download_dictionary_data">Download dictionary data</string>
     <string name="cd_options">Options</string>
     <string name="preferences">Preferences</string>
@@ -46,7 +46,7 @@
     <string name="quiz_results">Quiz Results</string>
     <string name="congrats_finishing_quiz">Congrats on finishing the quiz! Your score is:</string>
     <string name="quit_game">Quit Game</string>
-    <string name="format_share_quiz_results">Hey, I got %1$d score on %2$s quiz game. Download the Kamus Batak app to take the quiz and see if you can beat me: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="format_share_quiz_results">Hey, I got %1$d score on %2$s quiz game.\nDownload the Kamus Batak app to take the quiz and see if you can beat me: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="partuturan" translatable="false">Partuturan</string>
     <string name="see_meaning">See meaning</string>
     <string name="notif_channel_name_daily_notif">Daily Word Notification</string>
