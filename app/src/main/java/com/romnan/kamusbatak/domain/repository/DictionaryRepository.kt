@@ -2,6 +2,8 @@ package com.romnan.kamusbatak.domain.repository
 
 import com.romnan.kamusbatak.domain.model.Entry
 import com.romnan.kamusbatak.domain.model.Language
+import com.romnan.kamusbatak.domain.model.QuizItem
+import com.romnan.kamusbatak.domain.model.Suggestion
 import com.romnan.kamusbatak.domain.util.Resource
 import com.romnan.kamusbatak.domain.util.SimpleResource
 import kotlinx.coroutines.flow.Flow
@@ -22,9 +24,19 @@ interface DictionaryRepository {
         srcLang: Language,
     ): Flow<Resource<List<Entry>>>
 
+    fun getQuizItem(
+        quizGameName: String,
+    ): Flow<Resource<QuizItem>>
+
+    suspend fun getRandomEntry(): Entry?
+
     fun toggleBookmarkEntry(
         id: Int,
     ): Flow<Resource<Entry>>
+
+    fun postSuggestion(
+        suggestion: Suggestion,
+    ): Flow<SimpleResource>
 
     fun updateLocalDb(): Flow<SimpleResource>
 }

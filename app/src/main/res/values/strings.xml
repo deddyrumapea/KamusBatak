@@ -4,7 +4,7 @@
     <string name="cd_swap_languages">Swap languages</string>
     <string name="cd_nav_back">Back</string>
     <string name="cd_share">Share</string>
-    <string name="format_share_message">%1$s\n%2$s\n\nDownload Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="format_share_entry_message">%1$s %2$s  Download Kamus Batak app: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="download_dictionary_data">Download dictionary data</string>
     <string name="cd_options">Options</string>
     <string name="preferences">Preferences</string>
@@ -31,4 +31,40 @@
     <string name="theme_dark">Dark</string>
     <string name="downloading_dictionary_data">Downloading dictionary data…</string>
     <string name="no_entries">No entries</string>
+    <string name="quiz_games">Quiz Games</string>
+    <string name="quiz_ind_btk">Indonesian to Batak Toba Vocabulary</string>
+    <string name="quiz_btk_ind">Batak to Indonesian Vocabulary</string>
+    <string name="quiz_mix">Mixed Vocabulary</string>
+    <string name="playing_quiz">Playing Quiz</string>
+    <string name="check">Check</string>
+    <string name="next">Next</string>
+    <string name="quiz_direction">Choose the closest translation of the following word.</string>
+    <string name="em_option_not_selected">You have to select an option first</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect">Incorrect</string>
+    <string name="correct_answer_is">Correct answer:</string>
+    <string name="quiz_results">Quiz Results</string>
+    <string name="congrats_finishing_quiz">Congrats on finishing the quiz! Your score is:</string>
+    <string name="quit_game">Quit Game</string>
+    <string name="format_share_quiz_results">Hey, I got %1$d score on %2$s quiz game. Download the Kamus Batak app to take the quiz and see if you can beat me: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="partuturan" translatable="false">Partuturan</string>
+    <string name="see_meaning">See meaning</string>
+    <string name="notif_channel_name_daily_notif">Daily Word Notification</string>
+    <string name="notif_channel_desc_daily_notif">Notification that will send you daily Batak Toba word and meaning</string>
+    <string name="pref_title_daily_notif">Word of The Day Notifications</string>
+    <string name="notif_title_word_of_the_day">Word of The Day: %1$s</string>
+    <string name="em_dictionary_data_needed">Dictionary data is needed for this feature</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="submit">Submit</string>
+    <string name="submitting">Submitting…</string>
+    <string name="sm_suggestions">Your suggestions are successfully sent</string>
+    <string name="send_suggestions">Send suggestions</string>
+    <string name="word">Word</string>
+    <string name="meaning">Meaning</string>
+    <string name="em_word_blank">Word can not be blank</string>
+    <string name="em_meaning_blank">Meaning can not be blank</string>
+    <string name="source_language">Source language</string>
+    <string name="em_no_diff_entry">There\'s no difference with existing entry</string>
+    <string name="cd_report_answer">Report answer</string>
+    <string name="submit_suggestion">Submit Suggestion</string>
 </resources>

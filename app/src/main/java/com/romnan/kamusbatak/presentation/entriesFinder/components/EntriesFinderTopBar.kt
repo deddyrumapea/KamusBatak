@@ -32,6 +32,7 @@ fun EntriesFinderTopBar(
     onCloseOptionsMenu: () -> Unit,
     onSwapClick: () -> Unit,
     onShareAppClick: () -> Unit,
+    onSendSuggestionsClick: () -> Unit,
 ) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.surface,
@@ -117,6 +118,10 @@ fun EntriesFinderTopBar(
             ) {
                 DropdownMenuItem(onClick = onShareAppClick) {
                     Text(text = stringResource(R.string.share_this_app))
+                }
+
+                DropdownMenuItem(onClick = onSendSuggestionsClick) {
+                    Text(text = stringResource(R.string.send_suggestions))
                 }
             }
         }

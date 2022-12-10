@@ -26,6 +26,7 @@ import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.util.Constants
 import com.romnan.kamusbatak.presentation.components.EntryItem
 import com.romnan.kamusbatak.presentation.destinations.EntryDetailScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.SuggestionsScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.components.EntriesFinderTopBar
 import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.UIEvent
@@ -69,7 +70,11 @@ fun EntriesFinderScreen(
                         intent.putExtra(Intent.EXTRA_TEXT, shareText)
                         context.startActivity(intent)
                     }
-                }
+                },
+                onSendSuggestionsClick = {
+                    viewModel.onCloseOptionsMenu()
+                    navigator.navigate(SuggestionsScreenDestination(entryId = null))
+                },
             )
         },
     ) { scaffoldPadding ->
@@ -112,10 +117,9 @@ fun EntriesFinderScreen(
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(viewModel.entries.value.size) { i ->
-                    EntryItem(
-                        entry = viewModel.entries.value[i],
-                        onClick = { navigator.navigate(EntryDetailScreenDestination(entryId = it.id)) }
-                    )
+                    EntryItem(entry = viewModel.entries.value[i], onClick = {
+                        if (it.id != null) navigator.navigate(EntryDetailScreenDestination(entryId = it.id))
+                    })
                 }
             }
         }

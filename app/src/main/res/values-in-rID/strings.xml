@@ -15,7 +15,7 @@
     <string name="em_io_exception">Tidak dapat menjangkau server. Mohon periksa koneksi internet.</string>
     <string name="em_http_exception">Terjadi error</string>
     <string name="em_unknown">Error tidak diketahui</string>
-    <string name="format_share_message">%1$s\n%2$s\n\nUnduh aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="format_share_entry_message">%1$s\n%2$s\n\nUnduh aplikasi Kamus Batak: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
     <string name="indonesia">Indonesia</string>
     <string name="batak">Batak</string>
     <string name="menu">Menu</string>
@@ -32,4 +32,39 @@
     <string name="theme_dark">Gelap</string>
     <string name="downloading_dictionary_data">Mengunduh data kamus…</string>
     <string name="no_entries">Tidak ada entri</string>
+    <string name="quiz_games">Permainan Kuis</string>
+    <string name="quiz_ind_btk">Kosakata Bahasa Indonesia ke Batak Toba</string>
+    <string name="quiz_btk_ind">Kosakata Bahasa Batak Toba ke Indonesia</string>
+    <string name="quiz_mix">Kosakata Campuran</string>
+    <string name="playing_quiz">Memainkan Kuis</string>
+    <string name="check">Periksa</string>
+    <string name="next">Selanjutnya</string>
+    <string name="quiz_direction">Pilihlah terjemahan paling dekat dari kata berikut.</string>
+    <string name="congrats_finishing_quiz">Selamat telah menyelesaikan kuisnya! Skor Anda adalah:</string>
+    <string name="em_option_not_selected">Anda harus memilih pilihan jawaban lebih dulu</string>
+    <string name="correct">Benar!</string>
+    <string name="incorrect">Salah</string>
+    <string name="correct_answer_is">Jawaban yang benar:</string>
+    <string name="quiz_results">Hasil Kuis</string>
+    <string name="quit_game">Keluar Permainan</string>
+    <string name="format_share_quiz_results">Hei, saya mendapat nilai %1$d di permainan kuis %2$s. Unduh aplikasi Kamus Batak untuk memainkan kuisnya dan kita lihat siapa yang punya skor lebih tinggi: https://play.google.com/store/apps/details?id=com.romnan.kamusbatak</string>
+    <string name="see_meaning">Lihat arti</string>
+    <string name="notif_channel_name_daily_notif">Notifikasi Kata Harian</string>
+    <string name="notif_channel_desc_daily_notif">Notifikasi yang mengirimkan kata Batak Toba dan artinya.</string>
+    <string name="pref_title_daily_notif">Notifikasi Kata Hari Ini</string>
+    <string name="notif_title_word_of_the_day">Kata Hari Ini: %1$s</string>
+    <string name="em_dictionary_data_needed">Data kamus dibutuhkan untuk fitur ini</string>
+    <string name="suggestions">Saran</string>
+    <string name="submitting">Mengirim…</string>
+    <string name="submit">Kirim</string>
+    <string name="sm_suggestions">Saran Anda sudah berhasil dikirim</string>
+    <string name="send_suggestions">Kirim saran</string>
+    <string name="word">Kata</string>
+    <string name="meaning">Arti</string>
+    <string name="em_word_blank">Kata tidak boleh kosong</string>
+    <string name="em_meaning_blank">Arti tidak boleh kosong</string>
+    <string name="source_language">Bahasa asal</string>
+    <string name="em_no_diff_entry">Tidak ada perbedaan dengan entri yang telah ada</string>
+    <string name="cd_report_answer">Laporkan jawaban</string>
+    <string name="submit_suggestion">Kirim Saran</string>
 </resources>

@@ -26,8 +26,8 @@ android {
         applicationId "com.romnan.kamusbatak"
         minSdk 21
         targetSdk 31
-        versionCode 20220702
-        versionName "2022.07.02"
+        versionCode 20221130
+        versionName "2022.11.30"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -74,6 +74,12 @@ android {
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
+        }
+    }
+
+    bundle {
+        storeArchive {
+            enable = false
         }
     }
 
@@ -159,6 +165,9 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:$pager_version"
 
     // SplashScreen
-    def splash_screen_version = "1.0.0-rc01"
+    def splash_screen_version = "1.0.0"
     implementation "androidx.core:core-splashscreen:$splash_screen_version"
+
+    // Konfetti
+    implementation 'nl.dionsegijn:konfetti-compose:2.0.2'
 }

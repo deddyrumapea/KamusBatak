@@ -11,8 +11,8 @@ data class EntriesFinderScreenState(
     companion object {
         val defaultValue = EntriesFinderScreenState(
             isLoadingEntries = false,
-            sourceLanguage = Language.Btk,
-            targetLanguage = Language.Ind,
+            sourceLanguage = Language.BTK,
+            targetLanguage = Language.IND,
             isOptionsMenuVisible = false,
         )
     }

@@ -5,9 +5,10 @@ import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
 import com.romnan.kamusbatak.data.retrofit.EntryApi
 import com.romnan.kamusbatak.data.retrofit.dto.EntryDto
 import com.romnan.kamusbatak.data.room.EntryDao
-import com.romnan.kamusbatak.domain.model.Entry
-import com.romnan.kamusbatak.domain.model.Language
+import com.romnan.kamusbatak.data.room.entity.EntryEntity
+import com.romnan.kamusbatak.domain.model.*
 import com.romnan.kamusbatak.domain.repository.DictionaryRepository
+import com.romnan.kamusbatak.domain.util.Constants.QUIZ_ITEM_OPTIONS_SIZE
 import com.romnan.kamusbatak.domain.util.Resource
 import com.romnan.kamusbatak.domain.util.SimpleResource
 import com.romnan.kamusbatak.domain.util.UIText
@@ -15,9 +16,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import logcat.asLog
 import logcat.logcat
 import retrofit2.HttpException
 import java.io.IOException
+import kotlin.random.Random
 
 class DictionaryRepositoryImpl(
     private val entryApi: EntryApi,
@@ -37,9 +40,9 @@ class DictionaryRepositoryImpl(
             return@flow
         }
 
-        val localEntries = entryDao
-            .findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
-            .map { it.toEntry() }
+        val localEntries =
+            entryDao.findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
+                .map { it.toEntry() }
 
         if (isFullOfflineSupported()) {
             emit(Resource.Success(data = localEntries))
@@ -57,12 +60,13 @@ class DictionaryRepositoryImpl(
             )
 
             entryDao.insert(remoteEntries.map { it.toEntryEntity() })
-            val cachedEntries = entryDao
-                .findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
-                .map { it.toEntry() }
+            val cachedEntries =
+                entryDao.findByKeyword(keyword = keyword, srcLangCodeName = srcLang.codeName)
+                    .map { it.toEntry() }
 
             emit(Resource.Success(cachedEntries))
         } catch (e: Exception) {
+            logcat { e.asLog() }
             when (e) {
                 is HttpException -> UIText.StringResource(R.string.em_http_exception)
                 is IOException -> UIText.StringResource(R.string.em_io_exception)
@@ -88,10 +92,52 @@ class DictionaryRepositoryImpl(
         srcLang: Language,
     ): Flow<Resource<List<Entry>>> = flow {
         emit(Resource.Loading())
-        val entries = entryDao
-            .findBookmarked(srcLangCodeName = srcLang.codeName)
-            .map { it.toEntry() }
+        val entries =
+            entryDao.findBookmarked(srcLangCodeName = srcLang.codeName).map { it.toEntry() }
         emit(Resource.Success(entries))
+    }
+
+    override fun getQuizItem(
+        quizGameName: String,
+    ): Flow<Resource<QuizItem>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val quizGame = QuizGame.valueOf(quizGameName)
+            val result: QuizItem = when (quizGame) {
+                QuizGame.VocabMix -> entryDao.getRandomEntries(
+                    count = QUIZ_ITEM_OPTIONS_SIZE,
+                    srcLangCodeName = if (Random.nextBoolean()) Language.IND.codeName
+                    else Language.BTK.codeName,
+                ).let { createQuizItem(it) }
+
+                QuizGame.VocabIndBtk -> entryDao.getRandomEntries(
+                    count = QUIZ_ITEM_OPTIONS_SIZE,
+                    srcLangCodeName = Language.IND.codeName,
+                ).let { createQuizItem(it) }
+
+                QuizGame.VocabBtkInd -> entryDao.getRandomEntries(
+                    count = QUIZ_ITEM_OPTIONS_SIZE,
+                    srcLangCodeName = Language.BTK.codeName,
+                ).let { createQuizItem(it) }
+            }
+
+            emit(Resource.Success(result))
+        } catch (e: Exception) {
+            logcat { e.asLog() }
+            emit(Resource.Error(UIText.StringResource(R.string.em_unknown)))
+        }
+    }
+
+    override suspend fun getRandomEntry(): Entry? {
+        return try {
+            entryDao.getRandomEntries(
+                count = 1,
+                srcLangCodeName = Language.BTK.codeName,
+            ).first().toEntry()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     override fun toggleBookmarkEntry(
@@ -112,14 +158,77 @@ class DictionaryRepositoryImpl(
         }
     }
 
+    override fun postSuggestion(
+        suggestion: Suggestion,
+    ): Flow<SimpleResource> = flow {
+        emit(Resource.Loading())
+
+        try {
+            when (suggestion) {
+                is Suggestion.NewEntry -> {
+                    when {
+                        suggestion.word.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_word_blank)))
+                            return@flow
+                        }
+
+                        suggestion.meaning.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_meaning_blank)))
+                            return@flow
+                        }
+                    }
+
+                    entryApi.postNewEntrySuggestion(
+                        srcLang = suggestion.srcLang.codeName,
+                        word = suggestion.word,
+                        meaning = suggestion.meaning,
+                    )
+                }
+
+                is Suggestion.OldEntry -> {
+                    when {
+                        suggestion.word.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_word_blank)))
+                            return@flow
+                        }
+
+                        suggestion.meaning.isBlank() -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_meaning_blank)))
+                            return@flow
+                        }
+
+                        suggestion.word == suggestion.oldWord && suggestion.meaning == suggestion.oldMeaning -> {
+                            emit(Resource.Error(UIText.StringResource(R.string.em_no_diff_entry)))
+                            return@flow
+                        }
+                    }
+
+                    entryApi.postOldEntrySuggestion(
+                        entryId = suggestion.entryId,
+                        word = suggestion.word,
+                        meaning = suggestion.meaning,
+                    )
+                }
+            }
+
+            emit(Resource.Success(Unit))
+        } catch (e: Exception) {
+            logcat { e.asLog() }
+            when (e) {
+                is HttpException -> UIText.StringResource(R.string.em_http_exception)
+                is IOException -> UIText.StringResource(R.string.em_io_exception)
+                else -> UIText.StringResource(R.string.em_unknown)
+            }.let { emit(Resource.Error(uiText = it)) }
+        }
+    }
+
     override fun updateLocalDb(): Flow<SimpleResource> = flow {
         emit(Resource.Loading())
 
         try {
             val latestEntryUpdatedAt = entryDao.getLatestEntryUpdatedAt()
             val params = when {
-                isFullOfflineSupported() && !latestEntryUpdatedAt.isNullOrBlank() ->
-                    mapOf(EntryDto.Field.UPDATED_AT to "gt.$latestEntryUpdatedAt")
+                isFullOfflineSupported() && !latestEntryUpdatedAt.isNullOrBlank() -> mapOf(EntryDto.Field.UPDATED_AT to "gt.$latestEntryUpdatedAt")
                 else -> emptyMap()
             }
             val remoteEntries = entryApi.getEntries(params = params)
@@ -129,7 +238,7 @@ class DictionaryRepositoryImpl(
 
             emit(Resource.Success(Unit))
         } catch (e: Exception) {
-            logcat { "downloadUpdate: ${e::class.java.simpleName}" }
+            logcat { e.asLog() }
             when (e) {
                 is HttpException -> UIText.StringResource(R.string.em_http_exception)
                 is IOException -> UIText.StringResource(R.string.em_io_exception)
@@ -146,5 +255,30 @@ class DictionaryRepositoryImpl(
 
     private suspend fun isFullOfflineSupported(): Boolean {
         return localDbLastUpdatedAt.firstOrNull() != null
+    }
+
+    private fun createQuizItem(entries: List<EntryEntity>): QuizItem {
+        val firstEntry = entries[0]
+
+        var answerKeyIdx = 0
+
+        val options: List<String> = mutableMapOf<String, Boolean>().apply {
+            putAll(
+                entries.slice(1..entries.lastIndex)
+                    .map { it.meaning to false }) // Add false options
+            put(firstEntry.meaning, true) // Add true option
+        }.toList().shuffled().mapIndexed { index, pair ->
+            if (pair.second) answerKeyIdx = index // Mark answerkey index
+            pair.first // Map to its meaning
+        }.map {
+            it.split(";".toRegex()).first() // Get the first meaning of the word
+        }
+
+        return QuizItem(
+            entryId = firstEntry.id,
+            question = firstEntry.word,
+            options = options,
+            answerKeyIdx = answerKeyIdx,
+        )
     }
 }

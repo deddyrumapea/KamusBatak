@@ -3,17 +3,17 @@ package com.romnan.kamusbatak.domain.model
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.util.UIText
 
-sealed class Language {
-    abstract val displayName: UIText
-    abstract val codeName: String
+enum class Language(
+    val displayName: UIText,
+    val codeName: String,
+) {
+    BTK(
+        displayName = UIText.StringResource(R.string.batak),
+        codeName = "btk",
+    ),
 
-    object Ind : Language() {
-        override val displayName: UIText = UIText.StringResource(R.string.indonesia)
-        override val codeName: String = "ind"
-    }
-
-    object Btk : Language() {
-        override val displayName: UIText = UIText.StringResource(R.string.batak)
-        override val codeName: String = "btk"
-    }
+    IND(
+        displayName = UIText.StringResource(R.string.indonesia),
+        codeName = "ind",
+    ),
 }
