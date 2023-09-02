@@ -13,9 +13,16 @@ import com.romnan.kamusbatak.domain.util.UIText
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -68,6 +75,7 @@ class PreferencesViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> _state.value =
                         state.value.copy(isUpdatingLocalDb = false)
+
                     is Resource.Loading -> _state.value = state.value.copy(isUpdatingLocalDb = true)
                     is Resource.Error -> {
                         _state.value = state.value.copy(isUpdatingLocalDb = false)
@@ -122,5 +130,21 @@ class PreferencesViewModel @Inject constructor(
         onClickAppVersionJob = viewModelScope.launch {
             _eventFlow.emit(UIEvent.ShowSnackbar(UIText.StringResource(R.string.about)))
         }
+    }
+
+    fun onPermissionResult(permission: String, isGranted: Boolean) {
+        if (!isGranted && !state.value.visiblePermissionDialogQueue.contains(permission)) {
+            _state.value = state.value.copy(
+                visiblePermissionDialogQueue = state.value.visiblePermissionDialogQueue.toMutableList()
+                    .apply { add(permission) },
+            )
+        }
+    }
+
+    fun onDismissPermissionDialog() {
+        _state.value = state.value.copy(
+            visiblePermissionDialogQueue = state.value.visiblePermissionDialogQueue.toMutableList()
+                .apply { removeFirst() },
+        )
     }
 }

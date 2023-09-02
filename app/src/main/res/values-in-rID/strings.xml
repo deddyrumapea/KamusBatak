@@ -56,7 +56,6 @@
     <string name="em_dictionary_data_needed">Data kamus dibutuhkan untuk fitur ini</string>
     <string name="suggestions">Saran</string>
     <string name="submitting">Mengirim…</string>
-    <string name="submit">Kirim</string>
     <string name="sm_suggestions">Saran Anda sudah berhasil dikirim</string>
     <string name="send_suggestions">Kirim saran</string>
     <string name="word">Kata</string>
@@ -69,4 +68,9 @@
     <string name="submit_suggestion">Kirim Saran</string>
     <string name="app_version">Versi aplikasi</string>
     <string name="about">Aplikasi Kamus Batak\nDikembangkan oleh Deddy Romnan Rumapea</string>
+    <string name="rationale_word_of_the_day_notification">Mohon izinkan notifikasi agar dapat menerima notifikasi Kata Harian</string>
+    <string name="close_dialog">Tutup dialog</string>
+    <string name="permission_request">Permintaan Izin</string>
+    <string name="rationale_default">Mohon izinkan akses untuk mendukung fungsi penuh</string>
+    <string name="go_to_settings">Pergi ke Pengaturan</string>
 </resources>
