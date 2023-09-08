@@ -55,7 +55,6 @@
     <string name="notif_title_word_of_the_day">Word of The Day: %1$s</string>
     <string name="em_dictionary_data_needed">Dictionary data is needed for this feature</string>
     <string name="suggestions">Suggestions</string>
-    <string name="submit">Submit</string>
     <string name="submitting">Submitting…</string>
     <string name="sm_suggestions">Your suggestions are successfully sent</string>
     <string name="send_suggestions">Send suggestions</string>
@@ -69,4 +68,9 @@
     <string name="submit_suggestion">Submit Suggestion</string>
     <string name="app_version">App version</string>
     <string name="about">Kamus Batak App\nDeveloped by Deddy Romnan Rumapea</string>
+    <string name="rationale_word_of_the_day_notification">Please allow notification permission to be able to receive Word of The Day notifications</string>
+    <string name="close_dialog">Close dialog</string>
+    <string name="permission_request">Permission Request</string>
+    <string name="rationale_default">Please allow the requested permissions to support full functionalities</string>
+    <string name="go_to_settings">Go to Settings</string>
 </resources>

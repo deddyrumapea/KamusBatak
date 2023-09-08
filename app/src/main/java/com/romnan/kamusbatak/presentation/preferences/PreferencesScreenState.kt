@@ -8,6 +8,8 @@ data class PreferencesScreenState(
     val localDbLastUpdatedAt: Long?,
     val currentThemeMode: ThemeMode,
     val isThemeModeDialogVisible: Boolean,
+
+    val visiblePermissionDialogQueue: List<String>,
 ) {
     val appVersion: String
         get() = BuildConfig.VERSION_NAME
@@ -18,6 +20,8 @@ data class PreferencesScreenState(
             localDbLastUpdatedAt = null,
             currentThemeMode = ThemeMode.System,
             isThemeModeDialogVisible = false,
+
+            visiblePermissionDialogQueue = emptyList(),
         )
     }
 }
