@@ -1,34 +1,27 @@
-# Kamus Batak - Aplikasi Kamus Bahasa Batak
+# Kamus Batak
 
 <a href="https://play.google.com/store/apps/details?id=com.romnan.kamusbatak" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="100"/></a>
 
+Horas! Welcome to the GitHub repository for Kamus Batak, the most comprehensive and the only open-source Batak-Indonesian dictionary app!
 
-Horas! Selamat datang di repositori GitHub untuk Kamus Batak, aplikasi kamus bahasa Batak - Indonesia.
+## Introduction
 
-## Tentang Aplikasi Kamus Batak
+Kamus Batak is more than just a dictionary app; it's a tool for learning and preserving the rich Batak culture. With a wide range of features designed to aid in language comprehension and cultural preservation, Kamus Batak is the perfect reference for anyone interested in the Batak language and culture.
 
-Kamus Batak adalah sebuah aplikasi kamus yang dirancang untuk memfasilitasi terjemahan antara bahasa Batak dan bahasa Indonesia. Aplikasi ini merupakan sumber daya yang sangat berguna bagi siapa saja yang ingin memahami dan mempelajari bahasa dan budaya Batak.
+## Features
 
-### Fitur Utama
+- **Batak to Indonesian Translation**: Easily translate from Batak to Indonesian.
+- **Indonesian to Batak Translation**: Translate from Indonesian to Batak with ease.
+- **Offline Word Search**: Search for words offline, ensuring you have access anytime, anywhere.
+- **Ad-Free Experience**: Enjoy a seamless dictionary experience without pesky ads.
+- **Up-to-Date Dictionary Entries**: Access the latest dictionary entries for accurate translations.
+- **Batak Vocabulary Quiz**: Challenge yourself with a Batak vocabulary quiz.
+- **Batak Phrasebook**: Explore a list of Batak phrases for practical use.
+- **Daily Vocabulary Notifications (Optional)**: Receive daily vocabulary notifications to enhance your language skills.
+- **And More**: Stay tuned for additional features to be added in the future.
 
-- **Terjemahan Batak-Indonesia & Indonesia-Batak**: Aplikasi ini memungkinkan pengguna untuk dengan mudah menerjemahkan teks dari bahasa Batak ke bahasa Indonesia dan sebaliknya.
-
-- **Pencarian Kata Offline**: Kami memahami bahwa konektivitas internet tidak selalu tersedia, jadi aplikasi ini memungkinkan Anda untuk mencari kata-kata tanpa harus terhubung ke internet.
-
-- **Tanpa Gangguan Iklan**: Kami sangat menghargai pengalaman pengguna, oleh karena itu, Kamus Batak tidak mengandung iklan yang mengganggu.
-
-- **Entri Kamus Terupdate**: Kami berkomitmen untuk terus memperbarui entri kamus kami untuk memastikan akurasi dan kelengkapan terjemahan.
-
-- **Permainan Kuis Kosakata Batak**: Selain menjadi alat yang berguna untuk belajar bahasa Batak, aplikasi ini juga menyediakan permainan kuis kosakata Batak yang seru.
-
-- **Daftar Partuturan Batak**: Untuk lebih memahami bahasa Batak secara mendalam, aplikasi ini juga menyediakan daftar partuturan Batak.
-
-- **Notifikasi Kosakata Harian (opsional)**: Anda dapat mengaktifkan notifikasi harian untuk memperkaya kosa kata Anda secara bertahap.
-
-- **Pengembangan Aktif**: Kami selalu mengupayakan untuk menambahkan fitur-fitur baru yang berguna. Anda juga dapat berkontribusi dalam pengembangan aplikasi ini.
-
-## Lisensi
+## License
 
     Copyright 2022-present Deddy Romnan Rumapea
 
