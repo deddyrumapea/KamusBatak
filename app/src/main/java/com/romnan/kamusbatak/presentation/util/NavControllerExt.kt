@@ -12,7 +12,7 @@ fun NavController.asNavigator() = object : DestinationsNavigator {
     override fun navigate(
         route: String,
         onlyIfResumed: Boolean,
-        builder: NavOptionsBuilder.() -> Unit,
+        builder: NavOptionsBuilder.() -> Unit
     ) {
         return this@asNavigator.navigate(
             route = route,
@@ -31,12 +31,12 @@ fun NavController.asNavigator() = object : DestinationsNavigator {
     override fun popBackStack(
         route: String,
         inclusive: Boolean,
-        saveState: Boolean,
+        saveState: Boolean
     ): Boolean {
         return this@asNavigator.popBackStack(
             route = route,
             inclusive = inclusive,
-            saveState = saveState,
+            saveState = saveState
         )
     }
 }

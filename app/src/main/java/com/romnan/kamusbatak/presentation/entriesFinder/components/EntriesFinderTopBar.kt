@@ -1,22 +1,13 @@
 package com.romnan.kamusbatak.presentation.entriesFinder.components
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
@@ -29,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.romnan.kamusbatak.R
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun EntriesFinderTopBar(
     modifier: Modifier = Modifier,
@@ -60,19 +52,18 @@ fun EntriesFinderTopBar(
             }
 
             AnimatedContent(
-                targetState = sourceLangName,
+                targetState = targetLangName,
                 modifier = Modifier.weight(1f),
                 transitionSpec = {
                     slideIntoContainer(
-                        towards = AnimatedContentTransitionScope.SlideDirection.Left
-                    ) togetherWith slideOutOfContainer(
-                        towards = AnimatedContentTransitionScope.SlideDirection.Right
+                        towards = AnimatedContentScope.SlideDirection.Left
+                    ) with slideOutOfContainer(
+                        towards = AnimatedContentScope.SlideDirection.Right
                     )
-                },
-                label = "sourceLangName",
+                }
             ) {
                 Text(
-                    text = it,
+                    text = sourceLangName,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.h6,
                     color = MaterialTheme.colors.onSurface
@@ -97,15 +88,14 @@ fun EntriesFinderTopBar(
                 modifier = Modifier.weight(1f),
                 transitionSpec = {
                     slideIntoContainer(
-                        towards = AnimatedContentTransitionScope.SlideDirection.Right
-                    ) togetherWith slideOutOfContainer(
-                        towards = AnimatedContentTransitionScope.SlideDirection.Left
+                        towards = AnimatedContentScope.SlideDirection.Right
+                    ) with slideOutOfContainer(
+                        towards = AnimatedContentScope.SlideDirection.Left
                     )
-                },
-                label = "targetLangName",
+                }
             ) {
                 Text(
-                    text = it,
+                    text = targetLangName,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.h6,
                     color = MaterialTheme.colors.onSurface
