@@ -5,7 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-parcelize'
-    id 'com.google.devtools.ksp' version '1.9.0-1.0.13'
+    id 'com.google.devtools.ksp' version '1.6.10-1.0.2'
 }
 
 kotlin {
@@ -26,8 +26,8 @@ android {
         applicationId "com.romnan.kamusbatak"
         minSdk 21
         targetSdk 34
-        versionCode 20230919
-        versionName "2023.09.19"
+        versionCode 20230920
+        versionName "2023.09.20"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -41,10 +41,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
-//        debug {
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//        }
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
 
     compileOptions {
@@ -84,14 +84,13 @@ android {
     }
 
     ndkVersion '23.1.7779620'
-    namespace 'com.romnan.kamusbatak'
 }
 dependencies {
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.activity:activity-compose:1.4.0'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     def lifecycle_version = "2.4.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
@@ -105,8 +104,6 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
 
-    implementation "androidx.navigation:navigation-compose:2.7.1"
-
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
@@ -116,7 +113,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     //Dagger - Hilt
-    def dagger_hilt_version = "2.46.1"
+    def dagger_hilt_version = "2.41"
     def hilt_version = "1.0.0"
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$dagger_hilt_version"
@@ -132,10 +129,10 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     // Room
-    def room_version = "2.5.2"
+    def room_version = "2.4.2"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-    ksp "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
 //    // LeakCanary
 //    def leak_canary_version = "2.8.1"
@@ -155,7 +152,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$serialization_version"
 
     // Accompanist
-    def accompanist_version = "0.25.1"
+    def accompanist_version = "0.17.0"
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
     // Logcat
@@ -168,7 +165,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager-indicators:$pager_version"
 
     // SplashScreen
-    def splash_screen_version = "1.0.1"
+    def splash_screen_version = "1.0.0"
     implementation "androidx.core:core-splashscreen:$splash_screen_version"
 
     // Konfetti
