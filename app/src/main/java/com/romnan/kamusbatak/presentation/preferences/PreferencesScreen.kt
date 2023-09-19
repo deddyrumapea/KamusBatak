@@ -165,14 +165,32 @@ fun PreferencesScreen(
                     }
                 },
                 onCheckedChange = {
-                    if (!dailyNotif.value.isActivated) TimePickerDialog(
-                        context = context,
-                        initHourOfDay = dailyNotif.value.calendar[Calendar.HOUR_OF_DAY],
-                        initMinute = dailyNotif.value.calendar[Calendar.MINUTE],
-                        onPicked = { hourOfDay: Int, minute: Int ->
-                            viewModel.onDailyWordTimePicked(hourOfDay = hourOfDay, minute = minute)
-                        },
-                    ).show() else viewModel.onTurnOffDailyWord()
+                    when {
+                        notifPermissions?.any {
+                            PermissionChecker.checkSelfPermission(
+                                context,
+                                it,
+                            ) == PermissionChecker.PERMISSION_DENIED
+                        } == true -> {
+                            notifPermissionReqLauncher.launch(notifPermissions)
+                        }
+
+                        !dailyNotif.value.isActivated -> {
+                            TimePickerDialog(
+                                context = context,
+                                initHourOfDay = dailyNotif.value.calendar[Calendar.HOUR_OF_DAY],
+                                initMinute = dailyNotif.value.calendar[Calendar.MINUTE],
+                                onPicked = { hourOfDay: Int, minute: Int ->
+                                    viewModel.onDailyWordTimePicked(
+                                        hourOfDay = hourOfDay,
+                                        minute = minute,
+                                    )
+                                },
+                            ).show()
+                        }
+
+                        else -> viewModel.onTurnOffDailyWord()
+                    }
                 },
             )
 
