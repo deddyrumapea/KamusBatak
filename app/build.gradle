@@ -26,8 +26,8 @@ android {
         applicationId "com.romnan.kamusbatak"
         minSdk 21
         targetSdk 34
-        versionCode 20230920
-        versionName "2023.09.20"
+        versionCode 20240420
+        versionName "2024.04.20"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
