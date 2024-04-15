@@ -73,4 +73,8 @@
     <string name="permission_request">Permintaan Izin</string>
     <string name="rationale_default">Mohon izinkan akses untuk mendukung fungsi penuh</string>
     <string name="go_to_settings">Pergi ke Pengaturan</string>
+    <string name="suggestions_for_kamus_batak">Saran untuk Kamus Batak</string>
+    <string name="entry_suggestion_email_body">Ketik saran di sini:\n\n\n\n\n\n\n\n---\nKata: %1$s\nArti: %2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nVersi Aplikasi %7$s\n---</string>
+    <string name="type_your_suggestions_here">Ketik saran di sini:\n\n\n\n\n\n\n\n</string>
+    <string name="quiz_item_suggestion_email_body">Ketik saran di sini:\n\n\n\n\n\n\n\n---\nKata: %1$s\nPilihan:\n%2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nVersi Aplikasi %7$s\n---</string>
 </resources>

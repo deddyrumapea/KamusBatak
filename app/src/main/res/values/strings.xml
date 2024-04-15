@@ -73,4 +73,8 @@
     <string name="permission_request">Permission Request</string>
     <string name="rationale_default">Please allow the requested permissions to support full functionalities</string>
     <string name="go_to_settings">Go to Settings</string>
+    <string name="suggestions_for_kamus_batak">Suggestions for Kamus Batak</string>
+    <string name="entry_suggestion_email_body">Type your suggestions here:\n\n\n\n\n\n\n\n---\nWord: %1$s\nMeaning: %2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nApp Version %7$s\n---</string>
+    <string name="type_your_suggestions_here">Type your suggestions here:\n\n\n\n\n\n\n\n</string>
+    <string name="quiz_item_suggestion_email_body">Type your suggestions here:\n\n\n\n\n\n\n\n---\nWord: %1$s\nOptions:\n%2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nApp Version %7$s\n---</string>
 </resources>
