@@ -134,9 +134,14 @@ fun EntriesFinderScreen(
 
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(viewModel.entries.value.size) { i ->
-                    EntryItem(entry = viewModel.entries.value[i], onClick = {
-                        if (it.id != null) navigator.navigate(EntryDetailScreenDestination(entryId = it.id))
-                    })
+                    EntryItem(
+                        entry = viewModel.entries.value[i],
+                        onClick = {
+                            if (it.id != null) navigator.navigate(
+                                EntryDetailScreenDestination(entryId = it.id)
+                            )
+                        },
+                    )
                 }
             }
         }

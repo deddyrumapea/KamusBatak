@@ -1,7 +1,5 @@
 package com.romnan.kamusbatak.presentation.preferences
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.romnan.kamusbatak.R
@@ -11,9 +9,11 @@ import com.romnan.kamusbatak.domain.repository.PreferencesRepository
 import com.romnan.kamusbatak.domain.util.Resource
 import com.romnan.kamusbatak.domain.util.UIText
 import com.romnan.kamusbatak.presentation.util.UIEvent
+import com.zhuinden.flowcombinetuplekt.combineTuple
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
@@ -31,8 +32,41 @@ class PreferencesViewModel @Inject constructor(
     private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(PreferencesScreenState.defaultValue)
-    val state: State<PreferencesScreenState> = _state
+    private val isUpdatingLocalDb = MutableStateFlow(false)
+    private val localDbLastUpdatedAt = dictionaryRepository.localDbLastUpdatedAt
+    private val currentThemeMode = preferencesRepository.themeMode
+    private val isThemeModeDialogVisible = MutableStateFlow(false)
+    private val visiblePermissionDialogQueue = MutableStateFlow<List<String>>(emptyList())
+    private val isAppRatingDialogVisible = MutableStateFlow(false)
+
+    val state: StateFlow<PreferencesScreenState> = combineTuple(
+        isUpdatingLocalDb,
+        localDbLastUpdatedAt,
+        currentThemeMode,
+        isThemeModeDialogVisible,
+        visiblePermissionDialogQueue,
+        isAppRatingDialogVisible,
+    ).map { (
+                isUpdatingLocalDb,
+                localDbLastUpdatedAt,
+                currentThemeMode,
+                isThemeModeDialogVisible,
+                visiblePermissionDialogQueue,
+                isAppRatingDialogVisible,
+            ) ->
+        PreferencesScreenState(
+            isUpdatingLocalDb = isUpdatingLocalDb,
+            localDbLastUpdatedAt = localDbLastUpdatedAt,
+            currentThemeMode = currentThemeMode,
+            isThemeModeDialogVisible = isThemeModeDialogVisible,
+            visiblePermissionDialogQueue = visiblePermissionDialogQueue,
+            isAppRatingDialogVisible = isAppRatingDialogVisible,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = PreferencesScreenState(),
+    )
 
     val dailyWordSettings: StateFlow<DailyWordSettingsPresentation> =
         preferencesRepository.dailyWordTime.map { DailyWordSettingsPresentation(it) }.stateIn(
@@ -42,43 +76,22 @@ class PreferencesViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    init {
-        getLastUpdated()
-        getCurrentThemeMode()
-    }
-
-    private var getCurrentThemeModeJob: Job? = null
-    private fun getCurrentThemeMode() {
-        getCurrentThemeModeJob?.cancel()
-        getCurrentThemeModeJob = viewModelScope.launch {
-            preferencesRepository.themeMode.onEach { themeMode ->
-                _state.value = state.value.copy(currentThemeMode = themeMode)
-            }.launchIn(this)
-        }
-    }
-
-    private var getLastUpdatedJob: Job? = null
-    private fun getLastUpdated() {
-        getLastUpdatedJob?.cancel()
-        getLastUpdatedJob = viewModelScope.launch {
-            dictionaryRepository.localDbLastUpdatedAt.onEach { timeMillis ->
-                _state.value = state.value.copy(localDbLastUpdatedAt = timeMillis)
-            }.launchIn(this)
-        }
-    }
-
     private var onUpdateLocalDbJob: Job? = null
     fun onUpdateLocalDb() {
         onUpdateLocalDbJob?.cancel()
         onUpdateLocalDbJob = viewModelScope.launch {
             dictionaryRepository.updateLocalDb().onEach { result ->
                 when (result) {
-                    is Resource.Success -> _state.value =
-                        state.value.copy(isUpdatingLocalDb = false)
+                    is Resource.Success -> {
+                        isUpdatingLocalDb.update { false }
+                    }
 
-                    is Resource.Loading -> _state.value = state.value.copy(isUpdatingLocalDb = true)
+                    is Resource.Loading -> {
+                        isUpdatingLocalDb.update { true }
+                    }
+
                     is Resource.Error -> {
-                        _state.value = state.value.copy(isUpdatingLocalDb = false)
+                        isUpdatingLocalDb.update { false }
                         _eventFlow.emit(
                             UIEvent.ShowSnackbar(
                                 result.uiText ?: UIText.StringResource(R.string.em_unknown)
@@ -100,7 +113,7 @@ class PreferencesViewModel @Inject constructor(
     }
 
     fun onThemeModeDialogVisibilityChange(visible: Boolean) {
-        _state.value = state.value.copy(isThemeModeDialogVisible = visible)
+        isThemeModeDialogVisible.update { visible }
     }
 
     private var onDailyWordTimePickedJob: Job? = null
@@ -134,17 +147,21 @@ class PreferencesViewModel @Inject constructor(
 
     fun onPermissionResult(permission: String, isGranted: Boolean) {
         if (!isGranted && !state.value.visiblePermissionDialogQueue.contains(permission)) {
-            _state.value = state.value.copy(
-                visiblePermissionDialogQueue = state.value.visiblePermissionDialogQueue.toMutableList()
-                    .apply { add(permission) },
-            )
+            visiblePermissionDialogQueue.update { it + permission }
         }
     }
 
     fun onDismissPermissionDialog() {
-        _state.value = state.value.copy(
-            visiblePermissionDialogQueue = state.value.visiblePermissionDialogQueue.toMutableList()
-                .apply { removeFirst() },
-        )
+        visiblePermissionDialogQueue.update {
+            it.toMutableList().apply { removeFirst() }
+        }
+    }
+
+    fun onClickRateApp() {
+        isAppRatingDialogVisible.update { true }
+    }
+
+    fun onDismissRateAppDialog() {
+        isAppRatingDialogVisible.update { false }
     }
 }

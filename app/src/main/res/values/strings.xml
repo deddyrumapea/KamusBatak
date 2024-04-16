@@ -51,7 +51,7 @@
     <string name="see_meaning">See meaning</string>
     <string name="notif_channel_name_daily_notif">Daily Word Notification</string>
     <string name="notif_channel_desc_daily_notif">Notification that will send you daily Batak Toba word and meaning</string>
-    <string name="pref_title_daily_notif">Word of The Day Notifications</string>
+    <string name="pref_title_daily_notif">Word of The Day notifications</string>
     <string name="notif_title_word_of_the_day">Word of The Day: %1$s</string>
     <string name="em_dictionary_data_needed">Dictionary data is needed for this feature</string>
     <string name="suggestions">Suggestions</string>
@@ -77,4 +77,21 @@
     <string name="entry_suggestion_email_body">Type your suggestions here:\n\n\n\n\n\n\n\n---\nWord: %1$s\nMeaning: %2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nApp Version %7$s\n---</string>
     <string name="type_your_suggestions_here">Type your suggestions here:\n\n\n\n\n\n\n\n</string>
     <string name="quiz_item_suggestion_email_body">Type your suggestions here:\n\n\n\n\n\n\n\n---\nWord: %1$s\nOptions:\n%2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nApp Version %7$s\n---</string>
+    <string name="theme">Theme</string>
+    <string name="rate_this_app">Rate this app</string>
+    <string name="source_code">Source code</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="tell_us_how_do_you_like_this_app">Tell us how do you like this app</string>
+    <string name="help_spread_the_word_to_your_friends">Help spread the word to your friends</string>
+    <string name="contact_support">Contact support</string>
+    <string name="report_a_problem_or_give_suggestions">Report a problem or give suggestions</string>
+    <string name="close">Close</string>
+    <string name="privacy_policy_url" translatable="false">https://docs.google.com/document/d/1AhHuDzReTBLzcg3OUOzY06Ky3xcUQAIIqlhg7EiHdKg/preview</string>
+    <string name="source_code_url" translatable="false">https://github.com/deddyrumapea/KamusBatak</string>
+    <string name="play_store_url" translatable="false">market://details?id=com.romnan.kamusbatak</string>
+    <string name="thanks_for_your_rating">Thanks for your rating!</string>
+    <string name="please_leave_a_review_on_the_play_store">Please leave a review on the Play Store.</string>
+    <string name="review_on_play_store">Review on Play Store</string>
+    <string name="please_let_us_know_how_we_can_improve">Please let us know how we can improve.</string>
+    <string name="send_feedback">Send Feedback</string>
 </resources>

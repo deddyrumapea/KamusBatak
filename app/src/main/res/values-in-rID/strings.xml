@@ -77,4 +77,18 @@
     <string name="entry_suggestion_email_body">Ketik saran di sini:\n\n\n\n\n\n\n\n---\nKata: %1$s\nArti: %2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nVersi Aplikasi %7$s\n---</string>
     <string name="type_your_suggestions_here">Ketik saran di sini:\n\n\n\n\n\n\n\n</string>
     <string name="quiz_item_suggestion_email_body">Ketik saran di sini:\n\n\n\n\n\n\n\n---\nKata: %1$s\nPilihan:\n%2$s\nID: %3$s\n---\nAndroid %4$s\nModel %5$s %6$s\nVersi Aplikasi %7$s\n---</string>
+    <string name="theme">Tema</string>
+    <string name="rate_this_app">Nilai aplikasi ini</string>
+    <string name="source_code">Kode sumber</string>
+    <string name="privacy_policy">Kebijakan privasi</string>
+    <string name="tell_us_how_do_you_like_this_app">Beritahu kami bagaimana pendapatmu tentang aplikasi ini</string>
+    <string name="help_spread_the_word_to_your_friends">Bantu sebarkan ke teman-temanmu</string>
+    <string name="contact_support">Kontak dukungan</string>
+    <string name="report_a_problem_or_give_suggestions">Laporkan masalah atau berikan saran</string>
+    <string name="close">Tutup</string>
+    <string name="thanks_for_your_rating">Terima kasih atas penilaiannya!</string>
+    <string name="please_leave_a_review_on_the_play_store">Mohon berikan ulasan di Play Store.</string>
+    <string name="review_on_play_store">Nilai di Play Store</string>
+    <string name="please_let_us_know_how_we_can_improve">Mohon beri tahu bagaimana kami dapat memperbaikinya.</string>
+    <string name="send_feedback">Berikan Saran</string>
 </resources>
