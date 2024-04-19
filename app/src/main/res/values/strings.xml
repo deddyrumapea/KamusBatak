@@ -86,7 +86,7 @@
     <string name="contact_support">Contact support</string>
     <string name="report_a_problem_or_give_suggestions">Report a problem or give suggestions</string>
     <string name="close">Close</string>
-    <string name="privacy_policy_url" translatable="false">https://docs.google.com/document/d/1AhHuDzReTBLzcg3OUOzY06Ky3xcUQAIIqlhg7EiHdKg/preview</string>
+    <string name="privacy_policy_url" translatable="false">https://github.com/deddyrumapea/KamusBatak/blob/main/PRIVACY_POLICY.md</string>
     <string name="source_code_url" translatable="false">https://github.com/deddyrumapea/KamusBatak</string>
     <string name="play_store_url" translatable="false">market://details?id=com.romnan.kamusbatak</string>
     <string name="thanks_for_your_rating">Thanks for your rating!</string>
