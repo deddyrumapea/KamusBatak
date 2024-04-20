@@ -384,6 +384,7 @@ fun PreferencesScreen(
 
                                 RoundedEndsButton(
                                     onClick = {
+                                        viewModel.onDismissRateAppDialog()
                                         Intent(Intent.ACTION_VIEW).apply {
                                             data =
                                                 Uri.parse(context.getString(R.string.play_store_url))
@@ -427,7 +428,10 @@ fun PreferencesScreen(
                                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
                                 RoundedEndsButton(
-                                    onClick = { launchSendSuggestionIntent(context = context) },
+                                    onClick = {
+                                        viewModel.onDismissRateAppDialog()
+                                        launchSendSuggestionIntent(context = context)
+                                    },
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Email,
