@@ -1,11 +1,38 @@
 package com.romnan.kamusbatak.presentation.quizGame
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -18,7 +45,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.romnan.kamusbatak.R
@@ -26,13 +52,12 @@ import com.romnan.kamusbatak.domain.model.QuizGame
 import com.romnan.kamusbatak.presentation.components.RoundedEndsButton
 import com.romnan.kamusbatak.presentation.destinations.QuizGamesScreenDestination
 import com.romnan.kamusbatak.presentation.destinations.QuizResultScreenDestination
-import com.romnan.kamusbatak.presentation.destinations.SuggestionsScreenDestination
 import com.romnan.kamusbatak.presentation.quizGame.component.AnswerSheetContent
 import com.romnan.kamusbatak.presentation.quizGame.component.QuizOptionItem
 import com.romnan.kamusbatak.presentation.theme.spacing
-import com.romnan.kamusbatak.presentation.util.OnLifecycleEvent
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
+import com.romnan.kamusbatak.presentation.util.launchSendSuggestionIntent
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -90,7 +115,10 @@ fun QuizPlayingScreen(
                     }
                 },
                 onClickReport = {
-                    navigator.navigate(SuggestionsScreenDestination(viewModel.currQuizItem.entryId))
+                    launchSendSuggestionIntent(
+                        context = context,
+                        quizItem = viewModel.currQuizItem,
+                    )
                 },
             )
         },

@@ -2,7 +2,13 @@ package com.romnan.kamusbatak.presentation.preferences.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -18,7 +24,7 @@ fun BasicPreference(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     title: String,
-    description: String,
+    description: String? = null,
     onClick: () -> Unit,
 ) {
     Column(
@@ -49,11 +55,13 @@ fun BasicPreference(
                     color = MaterialTheme.colors.onSurface
                 )
 
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.onSurface,
-                )
+                description?.let { desc: String ->
+                    Text(
+                        text = desc,
+                        style = MaterialTheme.typography.body2,
+                        color = MaterialTheme.colors.onSurface,
+                    )
+                }
             }
         }
 

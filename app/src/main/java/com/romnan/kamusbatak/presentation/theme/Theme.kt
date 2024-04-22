@@ -49,7 +49,8 @@ private val DarkColorPalette = darkColors(
 
 @Composable
 fun KamusBatakTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
