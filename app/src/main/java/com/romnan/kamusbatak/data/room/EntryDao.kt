@@ -11,7 +11,7 @@ interface EntryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(cachedEntries: List<EntryEntity>)
 
-    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLangCodeName AND (word LIKE :keyword || '%' OR word LIKE '%' || :keyword || '%') ORDER BY CASE WHEN word LIKE :keyword || '%' THEN 1 ELSE 2 END, word")
+    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLangCodeName AND (word LIKE :keyword || '%' OR word LIKE '%' || :keyword || '%' OR meaning LIKE '%' || :keyword || '%') ORDER BY CASE WHEN word LIKE :keyword || '%' THEN 1 WHEN word LIKE '%' || :keyword || '%' THEN 2 ELSE 3 END, word")
     suspend fun findByKeyword(
         keyword: String,
         srcLangCodeName: String
