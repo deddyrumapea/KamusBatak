@@ -42,3 +42,6 @@ target_link_libraries( # Specifies the target library.
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
+
+# To support compiling 16 KB-aligned shared libraries with Android NDK version r27 and higher
+target_link_options(native-lib PRIVATE "-Wl,-z,max-page-size=16384")
