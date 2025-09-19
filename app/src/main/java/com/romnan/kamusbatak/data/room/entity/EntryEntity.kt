@@ -7,16 +7,30 @@ import com.romnan.kamusbatak.domain.model.Entry
 @Entity
 data class EntryEntity(
     @PrimaryKey val id: Int? = null,
-    val srcLang: String,
-    val word: String,
-    val meaning: String,
-    val updatedAt: String,
+    val createdAt: String?,
+    val definition: String?,
+    val deletedAt: String?,
+    val headword: String?,
+    val partOfSpeech: String?,
+    val semanticCategories: String?,
+    val sourceDialect: String?,
+    val sourceLang: String?,
+    val targetLang: String?,
+    val updatedAt: String?,
     val bookmarkedAt: String? = null,
 ) {
     fun toEntry() = Entry(
         id = id,
-        word = word,
-        meaning = meaning,
-        isBookmarked = !bookmarkedAt.isNullOrBlank(),
+        createdAt = createdAt,
+        definition = definition,
+        deletedAt = deletedAt,
+        headword = headword,
+        partOfSpeech = partOfSpeech,
+        semanticCategories = semanticCategories,
+        sourceDialect = sourceDialect,
+        sourceLang = sourceLang,
+        targetLang = targetLang,
+        updatedAt = updatedAt,
+        bookmarkedAt = bookmarkedAt,
     )
 }

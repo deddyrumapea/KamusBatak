@@ -1,12 +1,15 @@
 package com.romnan.kamusbatak.data.helper
 
+import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -54,11 +57,23 @@ class NotificationHelperImpl(
                 .setSmallIcon(R.drawable.ic_logo)
                 .setContentIntent(pendingIntent)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentTitle(appContext.getString(R.string.notif_title_word_of_the_day, entry.word))
-                .setContentText(entry.meaning)
+                .setContentTitle(
+                    appContext.getString(
+                        R.string.notif_title_word_of_the_day,
+                        entry.headword.orEmpty()
+                    )
+                )
+                .setContentText(entry.definition.orEmpty())
                 .setAutoCancel(true)
                 .build()
 
+        if (ActivityCompat.checkSelfPermission(
+                appContext,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         notificationManager.notify(NotificationConstants.NOTIFICATION_ID_DAILY_WORD, notification)
     }
 

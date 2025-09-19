@@ -96,7 +96,7 @@ fun QuizPlayingScreen(
         sheetContent = {
             AnswerSheetContent(
                 isAnswerCorrect = { viewModel.isAnswerCorrect },
-                correctAnswer = { viewModel.currQuizItem.correctOption ?: "" },
+                correctAnswer = { viewModel.currQuizItem.correctOption.orEmpty() },
                 onClickNext = {
                     scope.launch {
                         sheetState.hide()

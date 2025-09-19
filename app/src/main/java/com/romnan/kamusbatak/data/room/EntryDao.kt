@@ -11,7 +11,7 @@ interface EntryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(cachedEntries: List<EntryEntity>)
 
-    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLangCodeName AND (word LIKE :keyword || '%' OR word LIKE '%' || :keyword || '%' OR meaning LIKE '%' || :keyword || '%') ORDER BY CASE WHEN word LIKE :keyword || '%' THEN 1 WHEN word LIKE '%' || :keyword || '%' THEN 2 ELSE 3 END, word")
+    @Query("SELECT * FROM entryentity WHERE sourceLang = :srcLangCodeName AND (headword LIKE :keyword || '%' OR headword LIKE '%' || :keyword || '%' OR definition LIKE '%' || :keyword || '%') ORDER BY CASE WHEN headword LIKE :keyword || '%' THEN 1 WHEN headword LIKE '%' || :keyword || '%' THEN 2 ELSE 3 END, headword")
     suspend fun findByKeyword(
         keyword: String,
         srcLangCodeName: String
@@ -26,12 +26,12 @@ interface EntryDao {
     @Query("SELECT * FROM entryentity WHERE id = :id")
     suspend fun findById(id: Int): EntryEntity?
 
-    @Query("SELECT * FROM entryentity WHERE bookmarkedAt IS NOT NULL AND srcLang = :srcLangCodeName ORDER BY bookmarkedAt DESC")
+    @Query("SELECT * FROM entryentity WHERE bookmarkedAt IS NOT NULL AND sourceLang = :srcLangCodeName ORDER BY bookmarkedAt DESC")
     suspend fun findBookmarked(
         srcLangCodeName: String,
     ): List<EntryEntity>
 
-    @Query("SELECT * FROM entryentity WHERE srcLang =:srcLangCodeName ORDER BY RANDOM() LIMIT :count")
+    @Query("SELECT * FROM entryentity WHERE sourceLang =:srcLangCodeName ORDER BY RANDOM() LIMIT :count")
     suspend fun getRandomEntries(
         count: Int,
         srcLangCodeName: String,

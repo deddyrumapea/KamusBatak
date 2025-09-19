@@ -6,7 +6,7 @@ import com.romnan.kamusbatak.data.room.entity.EntryEntity
 
 @Database(
     entities = [EntryEntity::class],
-    version = 3,
+    version = 4,
     exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {

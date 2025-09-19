@@ -40,13 +40,13 @@ fun EntryItem(
                 AnnotatedString.Range(
                     item = SpanStyle(fontWeight = FontWeight.Bold),
                     start = 0,
-                    end = entry.word.length
+                    end = entry.headword.orEmpty().length
                 )
             )
 
             Text(
                 text = AnnotatedString(
-                    text = "${entry.word}  ${entry.meaning}",
+                    text = "${entry.headword.orEmpty()}  ${entry.definition.orEmpty()}",
                     spanStyles = spanStyles
                 ),
                 maxLines = 3,

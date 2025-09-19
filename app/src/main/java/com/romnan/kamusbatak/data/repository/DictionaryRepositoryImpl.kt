@@ -3,7 +3,6 @@ package com.romnan.kamusbatak.data.repository
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
 import com.romnan.kamusbatak.data.retrofit.EntryApi
-import com.romnan.kamusbatak.data.retrofit.dto.EntryDto
 import com.romnan.kamusbatak.data.room.EntryDao
 import com.romnan.kamusbatak.data.room.entity.EntryEntity
 import com.romnan.kamusbatak.domain.model.Entry
@@ -57,8 +56,8 @@ class DictionaryRepositoryImpl(
 
             val remoteEntries = entryApi.getEntries(
                 params = mapOf(
-                    EntryDto.Field.WORD to "like.%$keyword%".lowercase(),
-                    EntryDto.Field.SRC_LANG to "eq.${srcLang.codeName}"
+                    "headword" to "like.%$keyword%".lowercase(),
+                    "source_lang" to "eq.${srcLang.codeName}"
                 )
             )
 
@@ -168,7 +167,7 @@ class DictionaryRepositoryImpl(
         try {
             val latestEntryUpdatedAt = entryDao.getLatestEntryUpdatedAt()
             val params = when {
-                isFullOfflineSupported() && !latestEntryUpdatedAt.isNullOrBlank() -> mapOf(EntryDto.Field.UPDATED_AT to "gt.$latestEntryUpdatedAt")
+                isFullOfflineSupported() && !latestEntryUpdatedAt.isNullOrBlank() -> mapOf("updated_at" to "gt.$latestEntryUpdatedAt")
                 else -> emptyMap()
             }
             val remoteEntries = entryApi.getEntries(params = params)
@@ -205,18 +204,18 @@ class DictionaryRepositoryImpl(
         val options: List<String> = mutableMapOf<String, Boolean>().apply {
             putAll(
                 entries.slice(1..entries.lastIndex)
-                    .map { it.meaning to false }) // Add false options
-            put(firstEntry.meaning, true) // Add true option
+                    .map { it.definition.orEmpty() to false }) // Add false options
+            put(firstEntry.definition.orEmpty(), true) // Add true option
         }.toList().shuffled().mapIndexed { index, pair ->
             if (pair.second) answerKeyIdx = index // Mark answerkey index
-            pair.first // Map to its meaning
+            pair.first // Map to its definition
         }.map {
-            it.split(";".toRegex()).first() // Get the first meaning of the word
+            it.split(";".toRegex()).first() // Get the first definition of the word
         }
 
         return QuizItem(
             entryId = firstEntry.id,
-            question = firstEntry.word,
+            question = firstEntry.headword.orEmpty().orEmpty(),
             options = options,
             answerKeyIdx = answerKeyIdx,
         )
