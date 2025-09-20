@@ -110,7 +110,7 @@ fun EntryDetailScreen(
                     Text(
                         text = state.entry.definitions.orEmpty()
                             .replace(
-                                Regex(";\\s*(\\d+)\\.\\s*"),
+                                Regex("\\s*;\\s*(\\d+)\\.\\s*"),
                                 "\n\n$1. ",
                             ),
                         style = MaterialTheme.typography.body1,
