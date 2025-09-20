@@ -11,10 +11,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.romnan.kamusbatak.domain.model.Entry
 
@@ -36,19 +38,27 @@ fun EntryItem(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp, horizontal = 16.dp)
         ) {
-            val spanStyles = listOf(
-                AnnotatedString.Range(
-                    item = SpanStyle(fontWeight = FontWeight.Bold),
-                    start = 0,
-                    end = entry.headword.orEmpty().length
-                )
-            )
-
             Text(
-                text = AnnotatedString(
-                    text = "${entry.headword.orEmpty()}  ${entry.definitions.orEmpty()}",
-                    spanStyles = spanStyles
-                ),
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(entry.headword.orEmpty())
+                    }
+
+                    append(" ")
+
+                    withStyle(
+                        SpanStyle(
+                            fontStyle = FontStyle.Italic,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
+                        ),
+                    ) {
+                        append(entry.shortPosLabel.orEmpty())
+                    }
+
+                    append(" ")
+
+                    append(entry.definitions.orEmpty())
+                },
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis
             )

@@ -1,5 +1,8 @@
 package com.romnan.kamusbatak.domain.model
 
+import com.romnan.kamusbatak.presentation.util.uposToLabel
+import com.romnan.kamusbatak.presentation.util.uposToShortLabel
+
 data class Entry(
     val id: Int? = null,
     val createdAt: String? = null,
@@ -16,4 +19,10 @@ data class Entry(
 ) {
     val isBookmarked: Boolean
         get() = bookmarkedAt != null
+
+    val shortPosLabel: String?
+        get() = uposToShortLabel[partOfSpeech]
+
+    val posLabel: String?
+        get() = uposToLabel[partOfSpeech]
 }

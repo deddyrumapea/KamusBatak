@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -94,6 +95,14 @@ fun EntryDetailScreen(
                         style = MaterialTheme.typography.h6,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colors.onSurface,
+                    )
+
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+
+                    Text(
+                        text = state.entry.posLabel.orEmpty(),
+                        color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
+                        fontStyle = FontStyle.Italic,
                     )
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
