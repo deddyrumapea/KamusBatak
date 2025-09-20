@@ -108,7 +108,11 @@ fun EntryDetailScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
                     Text(
-                        text = state.entry.definitions.orEmpty(),
+                        text = state.entry.definitions.orEmpty()
+                            .replace(
+                                Regex(";\\s*(\\d+)\\.\\s*"),
+                                ";\n\n$1. ",
+                            ),
                         style = MaterialTheme.typography.body1,
                         color = MaterialTheme.colors.onSurface,
                     )
