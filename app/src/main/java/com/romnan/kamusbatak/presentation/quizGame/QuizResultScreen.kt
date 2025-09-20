@@ -104,7 +104,7 @@ fun QuizResultScreen(
                     Icon(
                         imageVector = Icons.Default.Share,
                         contentDescription = stringResource(R.string.cd_share),
-                        tint = MaterialTheme.colors.onPrimary,
+                        tint = MaterialTheme.colors.onSurface,
                     )
                 }
             }
