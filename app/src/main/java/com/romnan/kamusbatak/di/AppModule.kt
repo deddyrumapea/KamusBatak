@@ -3,7 +3,8 @@ package com.romnan.kamusbatak.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.romnan.kamusbatak.BuildConfig
+import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.romnan.kamusbatak.application.KamusBatakApp
 import com.romnan.kamusbatak.application.SecretValues
 import com.romnan.kamusbatak.data.datastore.AppPreferencesManager
 import com.romnan.kamusbatak.data.helper.NotificationHelperImpl
@@ -44,7 +45,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppRetrofit(): Retrofit {
+    fun provideAppRetrofit(
+        @ApplicationContext appContext: Context,
+    ): Retrofit {
         val interceptor = Interceptor { chain ->
             val request = chain.request()
                 .newBuilder()
@@ -57,9 +60,10 @@ object AppModule {
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .apply {
-                if (BuildConfig.DEBUG) addInterceptor(
-                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-                )
+                if ((appContext as KamusBatakApp).isDebuggable) {
+                    addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    addInterceptor(ChuckerInterceptor(appContext))
+                }
             }
             .build()
 
