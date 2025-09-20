@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.romnan.kamusbatak.domain.model.Entry
 
-@Entity
+@Entity(tableName = "dict_entries")
 data class EntryEntity(
     @PrimaryKey val id: Int? = null,
     val createdAt: String?,

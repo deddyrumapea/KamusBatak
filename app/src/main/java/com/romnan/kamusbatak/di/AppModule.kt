@@ -39,8 +39,13 @@ object AppModule {
     @Singleton
     fun provideAppDatabase(app: Application): AppDatabase {
         return Room.databaseBuilder(
-            app, AppDatabase::class.java, AppDatabase.NAME
-        ).fallbackToDestructiveMigration().build()
+            context = app,
+            klass = AppDatabase::class.java,
+            name = AppDatabase.NAME,
+        )
+            .fallbackToDestructiveMigration()
+            .createFromAsset("kamus_batak.db")
+            .build()
     }
 
     @Provides
