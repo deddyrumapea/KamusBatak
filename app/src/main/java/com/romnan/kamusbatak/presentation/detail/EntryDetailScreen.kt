@@ -111,7 +111,7 @@ fun EntryDetailScreen(
                         text = state.entry.definitions.orEmpty()
                             .replace(
                                 Regex(";\\s*(\\d+)\\.\\s*"),
-                                ";\n\n$1. ",
+                                "\n\n$1. ",
                             ),
                         style = MaterialTheme.typography.body1,
                         color = MaterialTheme.colors.onSurface,
