@@ -34,7 +34,6 @@ import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BrightnessMedium
-import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Downloading
 import androidx.compose.material.icons.filled.Email
@@ -42,7 +41,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarRate
@@ -289,26 +287,6 @@ fun PreferencesScreen(
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
-
-            BasicPreference(
-                imageVector = Icons.Default.Code,
-                title = stringResource(R.string.source_code),
-                onClick = {
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse(context.getString(R.string.source_code_url))
-                    }.let { context.startActivity(it) }
-                },
-            )
-
-            BasicPreference(
-                imageVector = Icons.Default.PrivacyTip,
-                title = stringResource(R.string.privacy_policy),
-                onClick = {
-                    Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse(context.getString(R.string.privacy_policy_url))
-                    }.let { context.startActivity(it) }
-                },
-            )
 
             BasicPreference(
                 imageVector = Icons.Default.Info,
