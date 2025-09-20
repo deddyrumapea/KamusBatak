@@ -30,7 +30,7 @@ class DictionaryRepositoryImpl(
     private val appPreferencesManager: AppPreferencesManager
 ) : DictionaryRepository {
 
-    override val localDbLastUpdatedAt: Flow<Long?>
+    override val localDbLastUpdatedAt: Flow<Long>
         get() = appPreferencesManager.dataStore.data.map { it.localDbLastUpdatedAt }
 
     override fun getEntries(

@@ -1,18 +1,12 @@
 package com.romnan.kamusbatak.domain.model
 
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
 
+@OptIn(InternalSerializationApi::class)
 @Serializable
 data class AppPreferences(
-    val localDbLastUpdatedAt: Long?,
-    val themeModeName: String,
-    val dailyWordTimeInMillis: Long?,
-) {
-    companion object {
-        val defaultValue = AppPreferences(
-            localDbLastUpdatedAt = null,
-            themeModeName = ThemeMode.System.name,
-            dailyWordTimeInMillis = null,
-        )
-    }
-}
+    val localDbLastUpdatedAt: Long = 1758326400000L,
+    val themeModeName: String = ThemeMode.System.name,
+    val dailyWordTimeInMillis: Long? = null,
+)
