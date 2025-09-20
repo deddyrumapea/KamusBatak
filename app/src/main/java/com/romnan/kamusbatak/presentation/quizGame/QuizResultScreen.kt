@@ -2,14 +2,28 @@ package com.romnan.kamusbatak.presentation.quizGame
 
 import android.content.Intent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.contentColorFor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,7 +68,7 @@ fun QuizResultScreen(
         scaffoldState = rememberScaffoldState(),
         topBar = {
             TopAppBar(
-                backgroundColor = MaterialTheme.colors.primary,
+                backgroundColor = MaterialTheme.colors.surface,
                 modifier = Modifier.fillMaxWidth(),
                 elevation = 0.dp,
             ) {
@@ -62,14 +76,14 @@ fun QuizResultScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = stringResource(R.string.cd_nav_back),
-                        tint = contentColorFor(backgroundColor = MaterialTheme.colors.primary),
+                        tint = contentColorFor(backgroundColor = MaterialTheme.colors.surface),
                     )
                 }
 
                 Text(
                     text = stringResource(R.string.quiz_results),
                     style = MaterialTheme.typography.h6,
-                    color = contentColorFor(backgroundColor = MaterialTheme.colors.primary),
+                    color = contentColorFor(backgroundColor = MaterialTheme.colors.surface),
                 )
 
                 Spacer(modifier = Modifier.weight(1f))

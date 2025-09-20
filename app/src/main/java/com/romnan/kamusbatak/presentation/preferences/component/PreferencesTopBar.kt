@@ -2,7 +2,11 @@ package com.romnan.kamusbatak.presentation.preferences.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
@@ -17,7 +21,7 @@ fun PreferencesTopBar(
     onOpenDrawer: () -> Unit,
 ) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = MaterialTheme.colors.surface,
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
@@ -28,14 +32,14 @@ fun PreferencesTopBar(
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = stringResource(R.string.menu),
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onSurface,
                 )
             }
 
             Text(
                 text = stringResource(R.string.preferences),
                 style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.onPrimary,
+                color = MaterialTheme.colors.onSurface,
             )
         }
     }

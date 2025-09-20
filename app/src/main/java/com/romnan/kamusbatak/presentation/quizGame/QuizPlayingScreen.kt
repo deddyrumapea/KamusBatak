@@ -127,7 +127,7 @@ fun QuizPlayingScreen(
             scaffoldState = scaffoldState,
             topBar = {
                 TopAppBar(
-                    backgroundColor = MaterialTheme.colors.primary,
+                    backgroundColor = MaterialTheme.colors.surface,
                     modifier = Modifier.fillMaxWidth(),
                     elevation = 0.dp,
                 ) {
@@ -135,14 +135,14 @@ fun QuizPlayingScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = stringResource(R.string.cd_nav_back),
-                            tint = contentColorFor(backgroundColor = MaterialTheme.colors.primary),
+                            tint = contentColorFor(backgroundColor = MaterialTheme.colors.surface),
                         )
                     }
 
                     Text(
                         text = stringResource(id = R.string.playing_quiz),
                         style = MaterialTheme.typography.h6,
-                        color = contentColorFor(backgroundColor = MaterialTheme.colors.primary),
+                        color = contentColorFor(backgroundColor = MaterialTheme.colors.surface),
                     )
 
                     Spacer(modifier = Modifier.weight(1f))

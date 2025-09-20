@@ -28,7 +28,7 @@ fun EntryDetailTopBar(
     onToggleBookmark: () -> Unit,
 ) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = MaterialTheme.colors.surface,
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
@@ -40,7 +40,7 @@ fun EntryDetailTopBar(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = stringResource(id = R.string.cd_nav_back),
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onSurface,
                 )
             }
 
@@ -49,13 +49,13 @@ fun EntryDetailTopBar(
             IconButton(onClick = onToggleBookmark) {
                 Icon(
                     imageVector =
-                    if (isBookmarked) Icons.Default.Bookmark
-                    else Icons.Default.BookmarkBorder,
+                        if (isBookmarked) Icons.Default.Bookmark
+                        else Icons.Default.BookmarkBorder,
                     contentDescription = stringResource(
                         if (isBookmarked) R.string.unsave_entry
                         else R.string.save_entry
                     ),
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onSurface,
                 )
             }
 
@@ -63,7 +63,7 @@ fun EntryDetailTopBar(
                 Icon(
                     imageVector = Icons.Default.Share,
                     contentDescription = stringResource(R.string.cd_share),
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onSurface,
                 )
             }
         }
