@@ -8,7 +8,7 @@ import com.romnan.kamusbatak.domain.model.Entry
 data class EntryEntity(
     @PrimaryKey val id: Int? = null,
     val createdAt: String?,
-    val definition: String?,
+    val definitions: String?,
     val deletedAt: String?,
     val headword: String?,
     val partOfSpeech: String?,
@@ -22,7 +22,7 @@ data class EntryEntity(
     fun toEntry() = Entry(
         id = id,
         createdAt = createdAt,
-        definition = definition,
+        definitions = definitions,
         deletedAt = deletedAt,
         headword = headword,
         partOfSpeech = partOfSpeech,

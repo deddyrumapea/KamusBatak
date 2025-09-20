@@ -3,7 +3,7 @@ package com.romnan.kamusbatak.domain.model
 data class Entry(
     val id: Int? = null,
     val createdAt: String? = null,
-    val definition: String? = null,
+    val definitions: String? = null,
     val deletedAt: String? = null,
     val headword: String? = null,
     val partOfSpeech: String? = null,

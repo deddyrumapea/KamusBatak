@@ -204,13 +204,13 @@ class DictionaryRepositoryImpl(
         val options: List<String> = mutableMapOf<String, Boolean>().apply {
             putAll(
                 entries.slice(1..entries.lastIndex)
-                    .map { it.definition.orEmpty() to false }) // Add false options
-            put(firstEntry.definition.orEmpty(), true) // Add true option
+                    .map { it.definitions.orEmpty() to false }) // Add false options
+            put(firstEntry.definitions.orEmpty(), true) // Add true option
         }.toList().shuffled().mapIndexed { index, pair ->
             if (pair.second) answerKeyIdx = index // Mark answerkey index
-            pair.first // Map to its definition
+            pair.first // Map to its definitions
         }.map {
-            it.split(";".toRegex()).first() // Get the first definition of the word
+            it.split(";".toRegex()).first() // Get the first definitions of the word
         }
 
         return QuizItem(

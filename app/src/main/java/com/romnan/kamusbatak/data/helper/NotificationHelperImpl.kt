@@ -63,7 +63,7 @@ class NotificationHelperImpl(
                         entry.headword.orEmpty()
                     )
                 )
-                .setContentText(entry.definition.orEmpty())
+                .setContentText(entry.definitions.orEmpty())
                 .setAutoCancel(true)
                 .build()
 

@@ -5,7 +5,7 @@ import com.romnan.kamusbatak.data.room.entity.EntryEntity
 
 data class EntryDto(
     @SerializedName("created_at") val createdAt: String? = null,
-    @SerializedName("definition") val definition: String? = null,
+    @SerializedName("definitions") val definitions: String? = null,
     @SerializedName("deleted_at") val deletedAt: String? = null,
     @SerializedName("headword") val headword: String? = null,
     @SerializedName("id") val id: Int? = null,
@@ -18,7 +18,7 @@ data class EntryDto(
 ) {
     fun toEntryEntity() = EntryEntity(
         createdAt = createdAt,
-        definition = definition,
+        definitions = definitions,
         deletedAt = deletedAt,
         headword = headword,
         id = id,

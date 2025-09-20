@@ -60,7 +60,7 @@ fun EntryDetailScreen(
                 val shareText = context.getString(
                     R.string.format_share_entry_message,
                     state.entry.headword.orEmpty(),
-                    state.entry.definition.orEmpty(),
+                    state.entry.definitions.orEmpty(),
                 )
 
                 Intent(Intent.ACTION_SEND).let { intent ->
@@ -99,7 +99,7 @@ fun EntryDetailScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
                     Text(
-                        text = state.entry.definition.orEmpty(),
+                        text = state.entry.definitions.orEmpty(),
                         style = MaterialTheme.typography.body1,
                         color = MaterialTheme.colors.onSurface,
                     )

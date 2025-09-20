@@ -46,7 +46,7 @@ fun EntryItem(
 
             Text(
                 text = AnnotatedString(
-                    text = "${entry.headword.orEmpty()}  ${entry.definition.orEmpty()}",
+                    text = "${entry.headword.orEmpty()}  ${entry.definitions.orEmpty()}",
                     spanStyles = spanStyles
                 ),
                 maxLines = 3,

@@ -21,7 +21,7 @@ fun launchSendSuggestionIntent(
     val body = context.getString(
         R.string.entry_suggestion_email_body,
         entry.headword.orEmpty(),
-        entry.definition.orEmpty(),
+        entry.definitions.orEmpty(),
         entry.id.toString(),
         Build.VERSION.SDK_INT.toString(),
         Build.MANUFACTURER,
