@@ -11,27 +11,89 @@ interface EntryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(cachedEntries: List<EntryEntity>)
 
-    @Query("SELECT * FROM entryentity WHERE srcLang = :srcLangCodeName AND (word LIKE :keyword || '%' OR word LIKE '%' || :keyword || '%' OR meaning LIKE '%' || :keyword || '%') ORDER BY CASE WHEN word LIKE :keyword || '%' THEN 1 WHEN word LIKE '%' || :keyword || '%' THEN 2 ELSE 3 END, word")
+    @Query(
+        """
+        SELECT * 
+        FROM dict_entries 
+        WHERE sourceLang = :srcLangCodeName 
+        AND deletedAt IS NULL
+        AND (
+            headword LIKE :keyword || '%' 
+            OR headword LIKE '%' || :keyword || '%' 
+            OR definitions LIKE '%' || :keyword || '%'
+            OR definitions LIKE :keyword || '%'
+        ) 
+        ORDER BY 
+            CASE 
+                WHEN headword LIKE :keyword || '%' THEN 1 
+                WHEN headword LIKE '%' || :keyword || '%' THEN 2 
+                ELSE 3 
+            END, 
+            headword;
+    """
+    )
     suspend fun findByKeyword(
         keyword: String,
         srcLangCodeName: String
     ): List<EntryEntity>
 
-    @Query("SELECT updatedAt FROM entryentity ORDER BY updatedAt DESC LIMIT 1")
+    @Query(
+        """
+        SELECT updatedAt 
+        FROM dict_entries 
+        ORDER BY updatedAt DESC 
+        LIMIT 1
+    """
+    )
     suspend fun getLatestEntryUpdatedAt(): String?
 
-    @Query("UPDATE entryentity SET bookmarkedAt = CASE WHEN bookmarkedAt IS NULL THEN CURRENT_TIMESTAMP ELSE NULL END WHERE id = :id")
+    @Query(
+        """
+        UPDATE dict_entries 
+        SET bookmarkedAt = 
+            CASE 
+                WHEN bookmarkedAt IS NULL THEN CURRENT_TIMESTAMP 
+                ELSE NULL 
+            END 
+        WHERE id = :id
+    """
+    )
     suspend fun toggleBookmark(id: Int)
 
-    @Query("SELECT * FROM entryentity WHERE id = :id")
+    @Query(
+        """
+        SELECT * 
+        FROM dict_entries 
+        WHERE id = :id
+            AND deletedAt IS NULL
+    """
+    )
     suspend fun findById(id: Int): EntryEntity?
 
-    @Query("SELECT * FROM entryentity WHERE bookmarkedAt IS NOT NULL AND srcLang = :srcLangCodeName ORDER BY bookmarkedAt DESC")
+    @Query(
+        """
+        SELECT * 
+        FROM dict_entries 
+        WHERE bookmarkedAt IS NOT NULL 
+            AND sourceLang = :srcLangCodeName 
+            AND deletedAt IS NULL 
+        ORDER BY bookmarkedAt DESC
+    """
+    )
     suspend fun findBookmarked(
         srcLangCodeName: String,
     ): List<EntryEntity>
 
-    @Query("SELECT * FROM entryentity WHERE srcLang =:srcLangCodeName ORDER BY RANDOM() LIMIT :count")
+    @Query(
+        """
+        SELECT * 
+        FROM dict_entries 
+        WHERE sourceLang =:srcLangCodeName
+            AND deletedAt IS NULL
+        ORDER BY RANDOM()
+        LIMIT :count
+    """
+    )
     suspend fun getRandomEntries(
         count: Int,
         srcLangCodeName: String,

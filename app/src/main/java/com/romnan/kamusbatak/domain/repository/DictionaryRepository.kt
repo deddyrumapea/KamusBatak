@@ -8,7 +8,7 @@ import com.romnan.kamusbatak.domain.util.SimpleResource
 import kotlinx.coroutines.flow.Flow
 
 interface DictionaryRepository {
-    val localDbLastUpdatedAt: Flow<Long?>
+    val localDbLastUpdatedAt: Flow<Long>
 
     fun getEntries(
         keyword: String,

@@ -6,13 +6,13 @@ import com.romnan.kamusbatak.data.room.entity.EntryEntity
 
 @Database(
     entities = [EntryEntity::class],
-    version = 3,
+    version = 4,
     exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract val entryDao: EntryDao
 
     companion object {
-        const val NAME = "db_kamus_batak"
+        const val NAME = "kamus_batak.db"
     }
 }

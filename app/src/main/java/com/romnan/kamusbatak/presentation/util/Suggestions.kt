@@ -3,8 +3,8 @@ package com.romnan.kamusbatak.presentation.util
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
+import androidx.core.net.toUri
 import com.romnan.kamusbatak.BuildConfig
 import com.romnan.kamusbatak.R
 import com.romnan.kamusbatak.domain.model.Entry
@@ -20,8 +20,8 @@ fun launchSendSuggestionIntent(
 ) {
     val body = context.getString(
         R.string.entry_suggestion_email_body,
-        entry.word,
-        entry.meaning,
+        entry.headword.orEmpty(),
+        entry.definitions.orEmpty(),
         entry.id.toString(),
         Build.VERSION.SDK_INT.toString(),
         Build.MANUFACTURER,
@@ -30,7 +30,7 @@ fun launchSendSuggestionIntent(
     )
 
     val intent = Intent(Intent.ACTION_SEND).apply {
-        data = Uri.parse("mailto:$SUGGESTION_EMAIL_ADDRESS")
+        data = "mailto:$SUGGESTION_EMAIL_ADDRESS".toUri()
         putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.suggestions_for_kamus_batak))
         putExtra(Intent.EXTRA_TEXT, body)
     }
@@ -46,7 +46,7 @@ fun launchSendSuggestionIntent(
     context: Context,
 ) {
     val intent = Intent(Intent.ACTION_SEND).apply {
-        data = Uri.parse("mailto:$SUGGESTION_EMAIL_ADDRESS")
+        data = "mailto:$SUGGESTION_EMAIL_ADDRESS".toUri()
         putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.suggestions_for_kamus_batak))
         putExtra(Intent.EXTRA_TEXT, context.getString(R.string.type_your_suggestions_here))
     }
@@ -79,7 +79,7 @@ fun launchSendSuggestionIntent(
     ).trimIndent()
 
     val intent = Intent(Intent.ACTION_SEND).apply {
-        data = Uri.parse("mailto:$SUGGESTION_EMAIL_ADDRESS")
+        data = "mailto:$SUGGESTION_EMAIL_ADDRESS".toUri()
         putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.suggestions_for_kamus_batak))
         putExtra(Intent.EXTRA_TEXT, body)
     }

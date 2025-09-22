@@ -16,7 +16,7 @@ fun DefaultTopBar(
     title: @Composable () -> String,
     onOpenDrawer: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: @Composable () -> Color = { MaterialTheme.colors.primary },
+    backgroundColor: @Composable () -> Color = { MaterialTheme.colors.surface },
 ) = TopAppBar(
     backgroundColor = backgroundColor(),
     modifier = modifier.fillMaxWidth(),

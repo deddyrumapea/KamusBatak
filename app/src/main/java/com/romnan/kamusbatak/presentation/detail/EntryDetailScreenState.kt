@@ -8,12 +8,7 @@ data class EntryDetailScreenState(
 ) {
     companion object {
         val defaultValue = EntryDetailScreenState(
-            entry = Entry(
-                id = null,
-                word = "",
-                meaning = "",
-                isBookmarked = false,
-            ),
+            entry = Entry(),
             isLoading = false,
         )
     }

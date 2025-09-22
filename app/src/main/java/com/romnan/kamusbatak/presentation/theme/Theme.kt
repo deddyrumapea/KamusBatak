@@ -54,8 +54,8 @@ fun KamusBatakTheme(
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
-        if (darkTheme) Color.Black
-        else LightColorPalette.primary
+        if (darkTheme) DarkColorPalette.surface
+        else LightColorPalette.surface
     )
 
     CompositionLocalProvider(LocalSpacing provides Spacing()) {

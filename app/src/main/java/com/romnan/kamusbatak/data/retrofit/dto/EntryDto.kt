@@ -4,26 +4,29 @@ import com.google.gson.annotations.SerializedName
 import com.romnan.kamusbatak.data.room.entity.EntryEntity
 
 data class EntryDto(
-    @SerializedName(Field.ID) val id: Int?,
-    @SerializedName(Field.SRC_LANG) val srcLang: String?,
-    @SerializedName(Field.WORD) val word: String?,
-    @SerializedName(Field.MEANING) val meaning: String?,
-    @SerializedName(Field.UPDATED_AT) val updatedAt: String?
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("definitions") val definitions: String? = null,
+    @SerializedName("deleted_at") val deletedAt: String? = null,
+    @SerializedName("headword") val headword: String? = null,
+    @SerializedName("id") val id: Int? = null,
+    @SerializedName("part_of_speech") val partOfSpeech: String? = null,
+    @SerializedName("semantic_categories") val semanticCategories: String? = null,
+    @SerializedName("source_dialect") val sourceDialect: String? = null,
+    @SerializedName("source_lang") val sourceLang: String? = null,
+    @SerializedName("target_lang") val targetLang: String? = null,
+    @SerializedName("updated_at") val updatedAt: String? = null,
 ) {
     fun toEntryEntity() = EntryEntity(
+        createdAt = createdAt,
+        definitions = definitions,
+        deletedAt = deletedAt,
+        headword = headword,
         id = id,
-        srcLang = srcLang ?: "",
-        word = word ?: "",
-        meaning = meaning ?: "",
-        updatedAt = updatedAt ?: "",
-        bookmarkedAt = null,
+        partOfSpeech = partOfSpeech,
+        semanticCategories = semanticCategories,
+        sourceDialect = sourceDialect,
+        sourceLang = sourceLang,
+        targetLang = targetLang,
+        updatedAt = updatedAt,
     )
-
-    object Field {
-        const val ID = "id"
-        const val SRC_LANG = "src_lang"
-        const val WORD = "word"
-        const val MEANING = "meaning"
-        const val UPDATED_AT = "updated_at"
-    }
 }

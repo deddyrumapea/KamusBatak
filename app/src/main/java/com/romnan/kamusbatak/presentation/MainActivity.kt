@@ -24,7 +24,11 @@ import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.romnan.kamusbatak.domain.model.ThemeMode
 import com.romnan.kamusbatak.presentation.bookmarks.BookmarksScreen
 import com.romnan.kamusbatak.presentation.components.NavigationDrawerContent
-import com.romnan.kamusbatak.presentation.destinations.*
+import com.romnan.kamusbatak.presentation.destinations.BookmarksScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.EntriesFinderScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.PartuturanScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.PreferencesScreenDestination
+import com.romnan.kamusbatak.presentation.destinations.QuizGamesScreenDestination
 import com.romnan.kamusbatak.presentation.entriesFinder.EntriesFinderScreen
 import com.romnan.kamusbatak.presentation.partuturan.PartuturanScreen
 import com.romnan.kamusbatak.presentation.preferences.PreferencesScreen
@@ -48,7 +52,6 @@ class MainActivity : ComponentActivity() {
             val navController = engine.rememberNavController()
             val scaffoldState = rememberScaffoldState()
             val scope = rememberCoroutineScope()
-
             val themeMode = viewModel.themeMode.collectAsState().value
 
             KamusBatakTheme(

@@ -10,7 +10,7 @@ import java.io.OutputStream
 
 object AppPreferencesSerializer : Serializer<AppPreferences> {
     override val defaultValue: AppPreferences
-        get() = AppPreferences.defaultValue
+        get() = AppPreferences()
 
     override suspend fun readFrom(
         input: InputStream

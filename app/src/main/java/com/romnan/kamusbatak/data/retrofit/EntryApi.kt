@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.QueryMap
 
 interface EntryApi {
-    @GET("entry")
+    @GET("dict_entries")
     suspend fun getEntries(
         @QueryMap params: Map<String, String>,
     ): List<EntryDto>

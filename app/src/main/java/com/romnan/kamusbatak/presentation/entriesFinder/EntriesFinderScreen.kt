@@ -48,10 +48,12 @@ import com.romnan.kamusbatak.presentation.theme.spacing
 import com.romnan.kamusbatak.presentation.util.UIEvent
 import com.romnan.kamusbatak.presentation.util.asString
 import com.romnan.kamusbatak.presentation.util.launchSendSuggestionIntent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import logcat.asLog
 import logcat.logcat
+import kotlin.time.Duration.Companion.milliseconds
 
 @RootNavGraph(start = true)
 @Destination
@@ -67,6 +69,18 @@ fun EntriesFinderScreen(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val searchQueryFocusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is UIEvent.ShowSnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.uiText.asString(context)
+                    )
+                }
+            }
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -121,6 +135,16 @@ fun EntriesFinderScreen(
                     .padding(horizontal = MaterialTheme.spacing.small)
                     .focusRequester(searchQueryFocusRequester)
             )
+            LaunchedEffect(Unit) {
+                try {
+                    delay(200.milliseconds)
+                    searchQueryFocusRequester.requestFocus()
+                } catch (e: Exception) {
+                    logcat { e.asLog() }
+                } finally {
+                    viewModel.onRefocusSearchQuery()
+                }
+            }
 
             AnimatedVisibility(visible = state.isLoadingEntries) {
                 LinearProgressIndicator(
@@ -141,26 +165,6 @@ fun EntriesFinderScreen(
                                 EntryDetailScreenDestination(entryId = it.id)
                             )
                         },
-                    )
-                }
-            }
-        }
-    }
-
-    LaunchedEffect(key1 = true) {
-        try {
-            searchQueryFocusRequester.requestFocus()
-        } catch (e: Exception) {
-            logcat { e.asLog() }
-        } finally {
-            viewModel.onRefocusSearchQuery()
-        }
-
-        viewModel.eventFlow.collectLatest { event ->
-            when (event) {
-                is UIEvent.ShowSnackbar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = event.uiText.asString(context)
                     )
                 }
             }

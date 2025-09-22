@@ -19,10 +19,11 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,7 +46,7 @@ fun EntryDetailScreen(
     navigator: DestinationsNavigator,
     viewModel: EntryDetailViewModel = hiltViewModel(),
 ) {
-    remember { viewModel.onReceiveEntryId(entryId) }
+    LaunchedEffect(Unit) { viewModel.onReceiveEntryId(entryId) }
 
     val context = LocalContext.current
     val scaffoldState = rememberScaffoldState()
@@ -59,8 +60,8 @@ fun EntryDetailScreen(
             onShareClick = {
                 val shareText = context.getString(
                     R.string.format_share_entry_message,
-                    state.entry.word,
-                    state.entry.meaning,
+                    state.entry.headword.orEmpty(),
+                    state.entry.definitions.orEmpty(),
                 )
 
                 Intent(Intent.ACTION_SEND).let { intent ->
@@ -90,7 +91,7 @@ fun EntryDetailScreen(
                         .padding(MaterialTheme.spacing.medium)
                 ) {
                     Text(
-                        text = state.entry.word,
+                        text = state.entry.headword.orEmpty(),
                         style = MaterialTheme.typography.h6,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colors.onSurface,
@@ -99,7 +100,19 @@ fun EntryDetailScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
 
                     Text(
-                        text = state.entry.meaning,
+                        text = state.entry.posLabel.orEmpty(),
+                        color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
+                        fontStyle = FontStyle.Italic,
+                    )
+
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+
+                    Text(
+                        text = state.entry.definitions.orEmpty()
+                            .replace(
+                                Regex("\\s*;\\s*(\\d+)\\.\\s*"),
+                                "\n\n$1. ",
+                            ),
                         style = MaterialTheme.typography.body1,
                         color = MaterialTheme.colors.onSurface,
                     )
